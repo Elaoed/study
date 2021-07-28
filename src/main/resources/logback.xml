@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false" scanPeriod="60" debug="false">
+    <contextName>test-log-app</contextName>
+    <springProperty scop="context" name="application" source="spring.application.name" defaultValue="default"/>
+    <property name="PROJECT_NAME" value="${application}"/>
+    <property name="LOG_PATH" value="${user.home}/logs"/>
+
+    <property scope="context" name="maxHistory" value="${maxHistory}"/>
+    <springProperty scope="context" name="maxHistory" source="log.maxHistory" defaultValue="7"/>
+    <springProperty scope="context" name="loglevel" source="log.level" defaultValue="INFO"/>
+
+    <!--ip转换-->
+    <conversionRule conversionWord="ip" converterClass="cn.seenew.future.his.log.IpConvert"/>
+    <property name="LOG_PATTERN" value="%date{yyyy-MM-dd HH:mm:ss.SSS} |%-5level |%thread |%-40.40logger{39} |%X{EagleEye-TraceID} %L|%msg%n"/>
+
+    <!-- Console 输出设置 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="SYSTEM_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <file>${LOG_PATH}/${PROJECT_NAME}/log-info.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${PROJECT_NAME}/%d{yyyy-MM-dd}/log-info.log</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="SYSTEM_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <file>${LOG_PATH}/${PROJECT_NAME}/log-error.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${PROJECT_NAME}/%d{yyyy-MM-dd}/log-error.log</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!--     api_monitor_log日志       -->
+<!--    <appender name="API_MONITOR_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>${LOG_PATTERN}</pattern>-->
+<!--            <charset>UTF-8</charset>-->
+<!--        </encoder>-->
+<!--        <file>${LOG_PATH}/${PROJECT_NAME}/api_monitor.log</file>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${LOG_PATH}/${PROJECT_NAME}/%d{yyyy-MM-dd}/api_monitor.log</fileNamePattern>-->
+<!--            <maxHistory>${maxHistory}</maxHistory>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+
+
+<!--    &lt;!&ndash;     api_slow_request       &ndash;&gt;-->
+<!--    <appender name="API_SLOW_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>${LOG_PATTERN}</pattern>-->
+<!--            <charset>UTF-8</charset>-->
+<!--        </encoder>-->
+<!--        <file>${LOG_PATH}/${PROJECT_NAME}/api_slow_request.log</file>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${LOG_PATH}/${PROJECT_NAME}/%d{yyyy-MM-dd}/api_slow_request.log</fileNamePattern>-->
+<!--            <maxHistory>3</maxHistory>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+
+<!--    &lt;!&ndash;     api_slow_request       &ndash;&gt;-->
+<!--    <appender name="CONSOLE_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>${LOG_PATTERN}</pattern>-->
+<!--            <charset>UTF-8</charset>-->
+<!--        </encoder>-->
+<!--        <file>${LOG_PATH}/${PROJECT_NAME}/console_log.log</file>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${LOG_PATH}/${PROJECT_NAME}/%d{yyyy-MM-dd}/console_log.log</fileNamePattern>-->
+<!--            <maxHistory>4</maxHistory>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+
+    <!--     慢SQL日志       -->
+<!--    <appender name="slow_sql_log_appender" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>${LOG_PATTERN}</pattern>-->
+<!--            <charset>UTF-8</charset>-->
+<!--        </encoder>-->
+<!--        <file>${LOG_PATH}/${PROJECT_NAME}/log-slow-sql.log</file>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${LOG_PATH}/${PROJECT_NAME}/%d{yyyy-MM-dd}/log-slow-sql.log</fileNamePattern>-->
+<!--            <maxHistory>${maxHistory}</maxHistory>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+
+
+    <appender name="RocketmqClientAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <file>${LOG_PATH}/rocketmq/rocketmq.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${PROJECT_NAME}/rocketmq.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%d{yy-MM-dd.HH:mm:ss.SSS} [%-16t] %-5p %-22c{0} %X{ServiceId} - %m%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="DubboAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <file>${LOG_PATH}/dubbo/dubbo.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${PROJECT_NAME}/dubbo.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="alibabaAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <file>${LOG_PATH}/${PROJECT_NAME}/alibaba.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${PROJECT_NAME}/alibaba.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+<!--    <appender name="DbBizAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>${LOG_PATTERN}</pattern>-->
+<!--            <charset>UTF-8</charset>-->
+<!--        </encoder>-->
+<!--        <file>${LOG_PATH}/${PROJECT_NAME}/db_biz.log</file>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${LOG_PATH}/${PROJECT_NAME}/db_biz.log.%d{yyyy-MM-dd}</fileNamePattern>-->
+<!--            <maxHistory>${maxHistory}</maxHistory>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+
+
+    <logger name="db_biz_log" additivity="false" level="INFO">
+        <appender-ref ref="DbBizAppender"/>
+    </logger>
+
+    <logger name="console_log" additivity="false" level="${loglevel}">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="CONSOLE_LOG_FILE"/>
+    </logger>
+
+    <logger name="org.apache.dubbo" additivity="false" level="INFO">
+        <appender-ref ref="alibabaAppender"/>
+        <springProfile name="gmc-dev,gmc-test,local">
+            <appender-ref ref="CONSOLE"/>
+        </springProfile>
+    </logger>
+
+    <logger name="com.alibaba" additivity="false" level="INFO">
+        <appender-ref ref="alibabaAppender"/>
+        <springProfile name="gmc-dev,gmc-test,local">
+            <appender-ref ref="CONSOLE"/>
+        </springProfile>
+    </logger>
+
+    <logger name="RocketmqClient" additivity="false" level ="INFO" >
+        <appender-ref ref="RocketmqClientAppender"/>
+        <springProfile name="gmc-dev,gmc-test,local">
+            <appender-ref ref="CONSOLE"/>
+        </springProfile>
+    </logger>
+
+    <logger name="info_log" additivity="false" level="${loglevel}">
+        <appender-ref ref="SYSTEM_INFO"/>
+    </logger>
+
+    <logger name="error_log" additivity="false" level="ERROR">
+        <appender-ref ref="SYSTEM_ERROR"/>
+    </logger>
+
+    <logger name="slow_sql_log" additivity="false" level="INFO">
+        <appender-ref ref="DbBizAppender"/>
+    </logger>
+
+
+    <logger name="api_monitor_log" additivity="false" level="INFO">
+        <appender-ref ref="API_MONITOR_INFO"/>
+    </logger>
+
+    <logger name="api_slow_log" additivity="false" level="INFO">
+        <appender-ref ref="API_SLOW_INFO"/>
+    </logger>
+
+    <logger name="cn" additivity="false" level="INFO">
+        <appender-ref ref="SYSTEM_INFO"/>
+        <springProfile name="gmc-dev,gmc-test,local">
+            <appender-ref ref="CONSOLE"/>
+        </springProfile>
+    </logger>
+
+    <logger name="com" additivity="false" level="INFO">
+        <appender-ref ref="SYSTEM_INFO"/>
+        <springProfile name="gmc-dev,gmc-test,local">
+            <appender-ref ref="CONSOLE"/>
+        </springProfile>
+    </logger>
+
+
+    <logger name="org" additivity="false" level="INFO">
+        <appender-ref ref="SYSTEM_INFO"/>
+        <springProfile name="gmc-dev,gmc-test,local">
+            <appender-ref ref="CONSOLE"/>
+        </springProfile>
+    </logger>
+
+    <root level="ERROR">
+        <appender-ref ref="SYSTEM_ERROR"/>
+        <springProfile name="gmc-dev,gmc-test,local">
+            <appender-ref ref="CONSOLE"/>
+        </springProfile>
+    </root>
+</configuration>
