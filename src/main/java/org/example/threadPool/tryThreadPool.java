@@ -1,7 +1,13 @@
 package org.example.threadPool;
 
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -31,20 +37,69 @@ public class tryThreadPool {
     // 为啥是队列满了之后再生成非核心线程: 设计的本意是靠核心线程 + 任务队列就解决所有大部分问题 非核心线程只是一个保底
     // https://www.zhihu.com/question/412524104/answer/1390541676
 
-    public static void main(String[] args) {
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(20, 40, 10L, TimeUnit.SECONDS, new ArrayBlockingQueue(100), r -> {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(20, 40, 10L, TimeUnit.SECONDS, new ArrayBlockingQueue<>(100), r -> {
             System.out.println("in new Thread");
-            return new Thread();
+//            r.run();
+            return new Thread(r);
         }, new ThreadPoolExecutor.AbortPolicy());
 
-        threadPoolExecutor.submit(() -> System.out.println("111"));
+        Future<?> future = threadPoolExecutor.submit(() -> "11");
+        Object o = future.get();
+        // 这玩意为什么get不到一直阻塞 因为任务没执行吗 笑死了 因为返回的Thread里面就根本没有包含runnable的入参 大意了
+        System.out.println(o);
         threadPoolExecutor.execute(() -> System.out.println("1111"));
+        threadPoolExecutor.shutdown();
+
+
 //        Executors.newCachedThreadPool();
-//        Executors.newFixedThreadPool(10);
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        Future<String> submit = executorService.submit(() -> "2222");
+        System.out.println("submit.get(): " + submit.get());
 //        Executors.newSingleThreadExecutor();
+        // execute和submit的区别 在于返回值
+        // Executors转runnable为callable 也是假的callable 就算转过来的还是不会抛异常和正常结果的返回值呀
+        Callable<Object> callable = Executors.callable(() -> System.out.println("11"));
 
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
         scheduledExecutorService.scheduleAtFixedRate(() -> System.out.println("111"), 1, 3, TimeUnit.SECONDS);
+
+        FutureTask<String> stringFutureTask = new FutureTask<>(() -> "1");
+        stringFutureTask.run();
+        // 多少个线程比较合适 如果是CPU密集型的 cpuNum + 1, 如果是IO密集型的 通过cat和skyWalking等
+        // 查看整体的耗时和IO的耗时 IO / 整体 - IO 就行了得到一个理论值 然后根据实际情况微调
+
+        CompletableFuture<String> stringCompletableFuture = new CompletableFuture<>();
+        stringCompletableFuture.complete("Future's Result Here Manually");
+        String s = stringCompletableFuture.get();
+
+        CompletableFuture<Void> oo = CompletableFuture.runAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                throw new IllegalStateException(e);
+            }
+            System.out.println("运行在一个单独的线程当中");
+        });
+        Void unused = oo.get();
+
+        CompletableFuture<String> supplyResult = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                throw new IllegalStateException(e);
+            }
+            System.out.println("yeeah supply async");
+            return "我有返回值";
+        });
+        String s1 = supplyResult.get();
+        System.out.println(s1);
+
+        CompletableFuture.supplyAsync(() -> "111")
+                .thenApply(r -> r + "222")
+                .thenAccept(System.out::println);
+        // 为啥我的代码里面没有什么地方用到异步的
+
 
     }
 
