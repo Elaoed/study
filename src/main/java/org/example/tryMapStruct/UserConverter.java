@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-// 可以不用Component
+// 可以不用Component Component只是让Spring托管而已
 @Mapper(uses = {OuterUtils.class})
 public interface UserConverter {
 
