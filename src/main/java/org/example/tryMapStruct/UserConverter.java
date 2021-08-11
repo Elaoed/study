@@ -9,13 +9,18 @@ import org.mapstruct.factory.Mappers;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-@Mapper
+// 可以不用Component
+@Mapper(uses = {OuterUtils.class})
 public interface UserConverter {
 
     UserConverter INSTANCE = Mappers.getMapper(UserConverter.class);
 
     @Mappings({
-            @Mapping(source = "amount", target = "amount", qualifiedByName = "bigDecimalScale")
+            @Mapping(source = "amount", target = "amount", qualifiedByName = "bigDecimalScale"),
+            @Mapping(source = "name", target = "name", ignore = true),
+            @Mapping(source = "weight", target = "weight", qualifiedByName = {"OuterUtils", "weightConvert"}),
+            @Mapping(source = "createTime", target = "createTime", qualifiedByName = {"OuterUtils", "getStringToDate"}),
+            @Mapping(source = "updateTime", target = "updateTime", qualifiedByName = {"OuterUtils", "getDateToString"})
     })
     UserDTO doToDto(UserDO userDO);
 
