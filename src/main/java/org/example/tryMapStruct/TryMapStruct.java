@@ -14,8 +14,8 @@ public class TryMapStruct {
         userDO.setCreateTime(LocalDateTime.now());
         userDO.setUpdateTime("2021-03-21 00:00:00");
 
-        UserDTO userDTO = UserConverter.INSTANCE.doToDto(userDO);
-        System.out.println(userDTO);
+//        UserDTO userDTO = UserConverter.INSTANCE.doToDto(userDO);
+//        System.out.println(userDTO);
 
     }
 

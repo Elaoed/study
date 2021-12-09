@@ -1,19 +1,13 @@
-package org.example;
+package org.example.algorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.example.TestLogApp;
 
-import java.util.LinkedList;
+public class TwoNumberSUm {
 
-public class TestLogApp {
     public static void main(String[] args) {
-//        Logger log = LoggerFactory.getLogger(Object.class);
-//        log.error("Hello error");
-
         ListNode l1 = new ListNode(2);
         l1.next = new ListNode(4);
         l1.next.next = new ListNode(3);
-
         ListNode l2 = new ListNode(5);
         l2.next = new ListNode(6);
         l2.next.next = new ListNode(4);
