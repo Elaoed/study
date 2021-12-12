@@ -1,4 +1,4 @@
-package org.example.algorithm;
+package org.example.algorithm.easy;
 
 /**
  * 说是这类题目有两种解法，自上而下的斐波那契数列解法，和自下而上的动态规划解法

@@ -1,4 +1,4 @@
-package org.example.algorithm;
+package org.example.algorithm.middle;
 
 /**
  * 题目里面给出的第三个构造函数太迷惑人了，第一个和第三个构造函数都用不到
@@ -8,7 +8,7 @@ package org.example.algorithm;
  * 3. 循环完成之后还要考虑进位的问题，
  * 返回的是head，后续列表的增加需要set tail的next，所以需要两个变量
  */
-public class TwoNumberSum {
+public class AddTwoNumbers {
 
     public static void main(String[] args) {
         ListNode l1 = new ListNode(2);

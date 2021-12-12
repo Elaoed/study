@@ -1,4 +1,4 @@
-package org.example.algorithm;
+package org.example.algorithm.easy;
 
 /**
  * 怎么这么简单一道题我还要做这么久的

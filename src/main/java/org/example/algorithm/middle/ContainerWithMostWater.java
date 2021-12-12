@@ -1,4 +1,4 @@
-package org.example.algorithm;
+package org.example.algorithm.middle;
 
 /**
  * 作为一个长方体，长乘以高是解题的唯一思路
