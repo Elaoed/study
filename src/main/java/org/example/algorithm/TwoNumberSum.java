@@ -1,8 +1,14 @@
 package org.example.algorithm;
 
-import org.example.TestLogApp;
-
-public class TwoNumberSUm {
+/**
+ * 题目里面给出的第三个构造函数太迷惑人了，第一个和第三个构造函数都用不到
+ * 其实一共就三点
+ * 1. 一个循环把两个node节点里面的值相加考虑进位后数值-10，
+ * 2. 下次相加要把进位也加上去，
+ * 3. 循环完成之后还要考虑进位的问题，
+ * 返回的是head，后续列表的增加需要set tail的next，所以需要两个变量
+ */
+public class TwoNumberSum {
 
     public static void main(String[] args) {
         ListNode l1 = new ListNode(2);
