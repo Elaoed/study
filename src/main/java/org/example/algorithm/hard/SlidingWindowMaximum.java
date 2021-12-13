@@ -119,6 +119,13 @@ public class SlidingWindowMaximum {
 
     }
 
+    /**
+     * これは　これは 单调队列
+     * 空间复杂度 O(n-k吧) 时间复杂度O(n)
+     * @param nums
+     * @param k
+     * @return
+     */
     public static int[] maxSlidingWindow3(int[] nums, int k) {
 
         if (k == 0 || nums.length == 0) {
