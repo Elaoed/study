@@ -79,11 +79,13 @@ public class DailyTemperatures {
 //                if (nums[i] < nums[j]) {
 //                    result[i] = j - i;
 //                    break;
+//             // break不能忘;
 //                } else if (result[j] == 0) {
 //                    result[i] = 0;
 //                    break;
 //                }
 //            }
+            // 思维方式不一样
 
         }
         return result;
