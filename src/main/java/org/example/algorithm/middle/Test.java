@@ -1,43 +1,41 @@
 package org.example.algorithm.middle;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
+/**
+ * 还是想错方向了，尽管花了这么久，每次思维变更之后，还是要好好梳理一下条件的变化，省的来回调试
+ * 21，22，23，24 如果是这种情况，简单的从后面撞就不行了，根据奇偶数会一会儿特别大一会儿特别小
+ * 这个就看经验了，从小撞到大，从大撞到小(两种情况，撞完之后新数也纳入计算最大最小/还是不纳入)，最大最小撞 -- 这种就是普通迭代思维，如果是动态规划就是递归思维
+ * 但是一般递归会简单一点
+ */
 public class Test {
 
-    // recursive 里面的内容不能影响上层的内容 不然就无解了
-    public static void version1(List<String> result, StringBuilder builder, int open, int close) {
-        // 应该是像一棵树一样开枝散叶 等左右括号都变成空了就返回 这也是一种 而不是像之前的
-        // 搞清楚返回的是什么
-        if (open == 0) {
-            if (close == 0) {
-                result.add(builder.toString());
-//                builder.delete(0, builder.length());
-            } else {
-                version1(result, builder.append(")"), open, close - 1);
-            }
-            builder.deleteCharAt(builder.length() - 1);
-            return;
-        }
-
-        // 如果左右括号一样了就只能加左括号
-        if (open == close) {
-            version1(result, builder.append("("), open - 1, close);
-            builder.deleteCharAt(builder.length() - 1);
-            return;
-        }
-
-
-        // 所以这块儿怎么处理？ 其实每个函数的open和close都不会被消耗，传到下一层的是形参
-        version1(result, builder.append("("), open - 1, close);
-        version1(result, builder.append(")"), open, close - 1);
-
-    }
-
     public static void main(String[] args) {
-        List<String> result = new ArrayList<>();
-        int n = 3;
-        version1(result, new StringBuilder(), n, n);
-        System.out.println(result);
+        int[] nums = new int[]{2, 7, 4, 1, 8, 1};
+        Arrays.sort(nums);
+//        int last = nums[nums.length - 1];
+//        for (int i = nums.length - 2; i >= 0; i--) {
+//            last = Math.abs(last - nums[i]);
+//        }
+//        System.out.println(last);
+        boolean flag = true;
+        int last;
+        while (flag) {
+            for (int i = 0; i < nums.length / 2; i++) {
+                last = nums[i] - nums[nums.length - i];
+                if (last > 0) {
+                    nums[i] = last;
+                    nums[nums.length - 1] = 0;
+                } else if (last < 0) {
+                    nums[nums.length - 1] = last;
+                    nums[0] = 0;
+                } else {
+                    nums[i] = 0;
+                    nums[nums.length - 1] = 0;
+                }
+            }
+        }
+
     }
+
 }
