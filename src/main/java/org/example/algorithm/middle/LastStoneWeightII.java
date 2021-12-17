@@ -65,10 +65,11 @@ public class LastStoneWeightII {
     }
 
     public static void main(String[] args) {
-        int[] n = {2, 7, 4, 1, 8, 1};
-        int res = lastStoneWeightII(n);
-        for (int i = 0; i < res; i++) {
-            System.out.println(res);
-        }
+        System.out.println("In Stone Main....");
+//        int[] n = {2, 7, 4, 1, 8, 1};
+//        int res = lastStoneWeightII(n);
+//        for (int i = 0; i < res; i++) {
+//            System.out.println(res);
+//        }
     }
 }
