@@ -14,7 +14,7 @@ import java.util.Queue;
  * 深度优先：发现一条路一直走到终点，再返回到最深的有分支的点再进行其他分支的搜索，直到搜索完毕。
  * 广度优先：从开始节点a找与它相邻的节点全部节点，假设有b,c,d,e，然后再找b所有未遍历的相邻的节点，然后再找c的，依次进行下去
  */
-public class NumberOfIsland {
+public class NumbersOfIslands {
 
     static void dfs(char[][] grid, int r, int c) {
         int nr = grid.length;
