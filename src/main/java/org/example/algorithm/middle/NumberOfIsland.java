@@ -6,8 +6,13 @@ import java.util.Queue;
 /**
  * 这道题的解法 想法就跟我不谋而合
  * 先找到那个点，以他为原点开始向外延展，原先我走不下去的原因是 下右右，只考虑了右下 不知道怎么上和左
+ * 有一个父类节点，确定了父类之后去找他的子类，找完了再回到父类
+ * <p>
  * 看了这个代码之后其实也挺清楚的，主要是结束的条件要好好考虑
  * 剩下就是上下左右
+ * 深度和广度可以是一个系列的题
+ * 深度优先：发现一条路一直走到终点，再返回到最深的有分支的点再进行其他分支的搜索，直到搜索完毕。
+ * 广度优先：从开始节点a找与它相邻的节点全部节点，假设有b,c,d,e，然后再找b所有未遍历的相邻的节点，然后再找c的，依次进行下去
  */
 public class NumberOfIsland {
 
@@ -60,27 +65,27 @@ public class NumberOfIsland {
                 if (grid[r][c] == '1') {
                     ++num_islands;
                     grid[r][c] = '0';
-                    Queue<Integer> neighbors = new LinkedList<>();
-                    neighbors.add(r * nc + c);
+                    Queue<int[]> neighbors = new LinkedList<>();
+                    neighbors.add(new int[]{r, c});
                     while (!neighbors.isEmpty()) {
-                        int id = neighbors.remove();
-                        int row = id / nc;
-                        int col = id % nc;
-                        if (row - 1 >= 0 && grid[row-1][col] == '1') {
-                            neighbors.add((row-1) * nc + col);
-                            grid[row-1][col] = '0';
+                        int[] coordinate = neighbors.remove();
+                        int row = coordinate[0];
+                        int col = coordinate[1];
+                        if (row - 1 >= 0 && grid[row - 1][col] == '1') {
+                            neighbors.add(new int[]{(row - 1), col});
+                            grid[row - 1][col] = '0';
                         }
-                        if (row + 1 < nr && grid[row+1][col] == '1') {
-                            neighbors.add((row+1) * nc + col);
-                            grid[row+1][col] = '0';
+                        if (row + 1 < nr && grid[row + 1][col] == '1') {
+                            neighbors.add(new int[]{(row + 1), col});
+                            grid[row + 1][col] = '0';
                         }
-                        if (col - 1 >= 0 && grid[row][col-1] == '1') {
-                            neighbors.add(row * nc + col-1);
-                            grid[row][col-1] = '0';
+                        if (col - 1 >= 0 && grid[row][col - 1] == '1') {
+                            neighbors.add(new int[]{row, col - 1});
+                            grid[row][col - 1] = '0';
                         }
-                        if (col + 1 < nc && grid[row][col+1] == '1') {
-                            neighbors.add(row * nc + col+1);
-                            grid[row][col+1] = '0';
+                        if (col + 1 < nc && grid[row][col + 1] == '1') {
+                            neighbors.add(new int[]{row, col + 1});
+                            grid[row][col + 1] = '0';
                         }
                     }
                 }
@@ -94,9 +99,9 @@ public class NumberOfIsland {
         char[][] grid = new char[][]{
                 {'1', '1', '1', '1', '0'},
                 {'1', '1', '0', '1', '0'},
-                {'1', '1', '0', '0', '0'},
+                {'1', '0', '1', '0', '0'},
                 {'0', '0', '0', '0', '0'}
         };
-        System.out.println(dfsVersion(grid));
+        System.out.println(bfsVersion(grid));
     }
 }
