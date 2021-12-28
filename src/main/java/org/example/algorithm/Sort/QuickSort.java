@@ -1,4 +1,4 @@
-package org.example.algorithm.QuickMergeSort;
+package org.example.algorithm.Sort;
 
 /**
  * 终于要接触一下快排了
