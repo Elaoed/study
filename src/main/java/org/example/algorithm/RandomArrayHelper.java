@@ -21,7 +21,7 @@ public class RandomArrayHelper {
             arr[i] = ii;
         }
 
-        log.info("随机数组: {}", Arrays.toString(arr));
+        System.out.println("随机数组: " + Arrays.toString(arr));
         return arr;
     }
 
