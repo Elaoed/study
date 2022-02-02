@@ -12,6 +12,12 @@ import java.util.Arrays;
  */
 public class SortColors {
 
+    private static void swap(int[] nums, int index1, int index2) {
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+    }
+
     public static void sortColors(int[] nums) {
         if (nums.length == 0) {
             return;
@@ -19,42 +25,58 @@ public class SortColors {
 
         int index0 = 0;
         int index2 = nums.length - 1;
-        while (index0 < nums.length) {
-            if (nums[index0] != 0) {
-                break;
+//        while (index0 < nums.length) {
+//            if (nums[index0] != 0) {
+//                break;
+//            }
+//            index0++;
+//        }
+//
+//        while (index2 >= 0) {
+//            if (nums[index2] != 2) {
+//                break;
+//            }
+//            index2--;
+//        }
+
+        int i = index0;
+        while (i < index2) {
+            if (nums[i] == 0) {
+                swap(nums, i, index0);
+                index0++;
+                i++;
+            } else if (nums[i] == 1) {
+                i++;
+            } else {
+                swap(nums, i, index2);
+                index2--;
+                // 通过i不加的方式来控制 模拟我上面的while循环
             }
-            index0++;
+
         }
 
-        while (index2 >= 0) {
-            if (nums[index2] != 2) {
-                break;
-            }
-            index2--;
-        }
-
-        int tmp;
-        for (int i = index0; i <= index2 ; i++) {
-            while (nums[i] != 1) {
-                if (nums[i] == 0) {
-                    tmp = nums[index0];
-                    nums[index0] = nums[i];
-                    nums[i] = tmp;
-                    index0++;
-                }
-                if (nums[i] == 2) {
-                    tmp = nums[index2];
-                    nums[index2] = nums[i];
-                    nums[i] = tmp;
-                    index2--;
-                }
-            }
-        }
+//        int tmp;
+//        for (int i = index0; i <= index2 ; i++) {
+//            while (nums[i] != 1) {
+//                if (nums[i] == 0 && nums[index0] != 0) {
+//                    tmp = nums[index0];
+//                    nums[index0] = nums[i];
+//                    nums[i] = tmp;
+//                    index0++;
+//                }
+//                if (nums[i] == 2 && nums[index2] != 2) {
+//                    tmp = nums[index2];
+//                    nums[index2] = nums[i];
+//                    nums[i] = tmp;
+//                    index2--;
+//                }
+//            }
+//        }
     }
 
     public static void main(String[] args) {
 //        int[] nums = new int[]{2, 0, 2, 1, 1, 0};
-        int[] nums = new int[]{2,0,2,1,1,0};
+        int[] nums = new int[]{2, 0, 2, 1, 1, 0};
         sortColors(nums);
         System.out.println(Arrays.toString(nums));
     }
