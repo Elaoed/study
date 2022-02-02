@@ -1,6 +1,5 @@
 package org.example.algorithm.Sort;
 
-import com.sun.tools.javac.util.Pair;
 import lombok.Data;
 
 /**
@@ -17,6 +16,15 @@ import lombok.Data;
  */
 public class SortList {
 
+    @Data
+    public static class Pair<T1, T2> {
+        private T1 fst;
+        private T2 snd;
+        public Pair(T1 fst, T2 snd) {
+            this.fst = fst;
+            this.snd = snd;
+        }
+    }
     // 无递归 空间复杂度为O1, 时间复杂度为两个list的长度和
     // 虽然这一个方法里面空间复杂度是O1, 但是因为是递归 会有logN的方法也就会有OlogN的总空间复杂度, 怪不得是说栈的深度
     // 递归是属于top-down方法, merge这个方法可以通用的
