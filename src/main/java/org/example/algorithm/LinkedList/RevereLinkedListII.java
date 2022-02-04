@@ -11,6 +11,7 @@ import org.example.algorithm.ListNode;
  */
 public class RevereLinkedListII {
 
+    // 头插法三个字给我了灵感
     public static ListNode version2(ListNode head, int left, int right) {
 
         // 有dummy的写法
@@ -26,9 +27,12 @@ public class RevereLinkedListII {
             ListNode next = head.next; // next是第left这个节点
             head.next = next.next;
             next.next = prev.next;
-            prev.next = next;
+            prev.next = next; // 应该核心是这一行，把新的头插入到prev后面 dummy就是给第一个节点都要翻转的用的
+            // prev是不变的永远是endNodeOfFirstList, next是最新要头插的节点
+            // 1, 2, 3, 4, 5 - 2后面连4，1后面连3，3后面连2
+            // 相当于是吧i个元素后面的元素插到头上去
         }
-        return dummy.next;
+        return dummy.next; // 仿真头的各种作用
 
     }
 

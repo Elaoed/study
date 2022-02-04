@@ -8,7 +8,8 @@ package org.example.algorithm;
  */
 public class ListHelper {
 
-    public static ListNode makeList(int[] nums) {
+    public static ListNode makeList(int... nums) {
+
         if (nums.length == 0) {
             return null;
         }
@@ -27,6 +28,25 @@ public class ListHelper {
         return tail;
 
     }
+//    public static ListNode makeList(int[] nums) {
+//        if (nums.length == 0) {
+//            return null;
+//        }
+//
+//        ListNode tail = new ListNode(nums[nums.length - 1]);
+//        if (nums.length == 1) {
+//            return tail;
+//        }
+//
+//        for (int i = nums.length - 2; i >= 0; i--) {
+//            tail = new ListNode(nums[i], tail);
+//        }
+//
+////        printList(tail);
+//
+//        return tail;
+//
+//    }
 
     public static void printList(ListNode head) {
         while (head != null) {
