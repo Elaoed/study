@@ -20,6 +20,7 @@ public class MergeSort {
     private static void merge(int[] arr, int left, int mid, int right) {
 
         // 搞一个空数组，两个指针分别开始移动 i, j 分别代表左数组和右数组
+        // 左开右闭
         int[] aux = Arrays.copyOfRange(arr, left, right + 1);
         int i = left, j = mid + 1;
         for (int k = left; k <= right; k++) {

@@ -6,6 +6,7 @@ package org.example.algorithm.Sort;
  * Note that it is the kth largest element in the sorted order, not the kth distinct element.
  * 1. quick Sort
  * 2. quick Select -> a side of quick sort 快速选择在快速排序的基础之上还蛮简单的 稍微改造一下 主要k要传进去 而且数值要变一下
+ * 如果什么什么怎么办 我们可以引入随机化来加速过程
  */
 public class KthLargestElement {
 
