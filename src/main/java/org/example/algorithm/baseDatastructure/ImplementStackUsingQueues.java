@@ -1,8 +1,7 @@
-package org.example.algorithm.Queue;
+package org.example.algorithm.baseDatastructure;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * 225. Implement Stack using Queues

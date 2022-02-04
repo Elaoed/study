@@ -45,10 +45,10 @@ Leetcode 225. Implement Stack using Queues
 Leetcode 346. Moving Average from Data Stream  # leetcode plus会员才能做 后面再说
 Leetcode 281. Zigzag Iterator # leetcode plus
 Leetcode 1429. First Unique Number # leetcode plus
-Leetcode 54. Spiral Matrix #
-Leetcode 362. Design Hit Counter
+Leetcode 54. Spiral Matrix
+Leetcode 362. Design Hit Counter # leetcode plus
 Stack题目：
-Leetcode 155. Min Stack (follow up Leetcode 716 Max Stack)
+Leetcode 155. Min Stack (follow up Leetcode 716 Max Stack # leetcode plus)
 Leetcode 232. Implement Queue using Stacks
 Leetcode 150. Evaluate Reverse Polish Notation
 Leetcode 224. Basic Calculator II (I, II, III, IV)
@@ -80,8 +80,8 @@ Leetcode 295. Find Median from Data Stream （标准解法是双heap，但是Sor
 Leetcode 767. Reorganize String
 Leetcode 1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit (这个题用单调双端队列、TreeMap、双heap都可以)
 Leetcode 895. Maximum Frequency Stack
-二分法（Binary Search）：
 
+二分法（Binary Search）：
 基础知识：二分法是用来解法基本模板，时间复杂度logN；常见的二分法题目可以分为两大类，显式与隐式，即是否能从字面上一眼看出二分法的特点：要查找的数据是否可以分为两部分，前半部分为X，后半部分为O
 显式二分法：
 Leetcode 34. Find First and Last Position of Element in Sorted Array
@@ -100,8 +100,8 @@ Leetcode 1300. Sum of Mutated Array Closest to Target
 Leetcode 1060. Missing Element in Sorted Array
 Leetcode 1062. Longest Repeating Substring
 Leetcode 1891. Cutting Ribbons
-双指针（2 Pointer）：
 
+双指针（2 Pointer）：
 基础知识：常见双指针算法分为三类，同向（即两个指针都相同一个方向移动），背向（两个指针从相同或者相邻的位置出发，背向移动直到其中一根指针到达边界为止），相向（两个指针从两边出发一起向中间移动直到两个指针相遇）
 背向双指针：(基本上全是回文串的题)
 Leetcode 409. Longest Palindrome
@@ -125,8 +125,8 @@ Leetcode 424. Longest Repeating Character Replacement
 Leetcode 76. Minimum Window Substring
 Leetcode 3. Longest Substring Without Repeating Characters
 Leetcode 1004 Max Consecutive Ones III
-宽度优先搜索（BFS）：面试中最常考的
 
+宽度优先搜索（BFS）：面试中最常考的
 基础知识：
 常见的BFS用来解决什么问题？(1) 简单图（有向无向皆可）的最短路径长度，注意是长度而不是具体的路径（2）拓扑排序 （3） 遍历一个图（或者树）
 BFS基本模板（需要记录层数或者不需要记录层数）

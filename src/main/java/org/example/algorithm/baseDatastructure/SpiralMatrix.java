@@ -1,4 +1,4 @@
-package org.example.algorithm.Queue;
+package org.example.algorithm.baseDatastructure;
 
 import java.util.ArrayList;
 import java.util.List;
