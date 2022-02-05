@@ -8,6 +8,7 @@ import java.util.Stack;
  * We are given an array asteroids of integers representing asteroids in a row.
  * For each asteroid, the absolute value represents its size, and the sign represents its direction (positive meaning right, negative meaning left). Each asteroid moves at the same speed.
  * Find out the state of the asteroids after all collisions. If two asteroids meet, the smaller one will explode. If both are the same size, both will explode. Two asteroids moving in the same direction will never meet.
+ * 笑死 还有个更简单的方案 一边循环就行了 for 0 - size - 2, 判断i和i+1的相撞程度, 剩下的都赋值成0 最后把0的都干掉, 因为只有都撞完了才知道 剩下有几个
  */
 public class AsteroidCollision {
 
