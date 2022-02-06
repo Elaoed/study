@@ -37,7 +37,7 @@ public class InsertDeleteGetRandomO1 {
     public boolean insert(int val) {
         if (map.get(val) == null) {
             array.add(val);
-            map.put(val, array.size() - 1);
+            map.put(val, array.size() - 1); // 反一下size就变了，这种位置影响内容的一定要注意再注意
         }
         return true;
     }
