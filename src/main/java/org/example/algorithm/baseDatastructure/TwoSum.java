@@ -1,11 +1,12 @@
-package org.example.algorithm.easy;
+package org.example.algorithm.baseDatastructure;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 先做一遍最蠢的解法
- * and 善用map, 存储 并且比较<差额></差额>
+ * and 善用map, 存储 并且比较--差额--
+ * 给出解决方案的时候还是要多想想，用HashSet能找到又怎么样，只能返回true/false
  */
 public class TwoSum {
 
