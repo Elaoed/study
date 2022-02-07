@@ -16,6 +16,9 @@ import java.util.PriorityQueue;
  * 计算是真的很简单,x^2 + y^2比大小，但是问题是怎么存储这些值并且进行排序
  * 我这的确是一种方案，另外一种最快的就是直接对points进行排序
  * 然后看看大根堆，这个heap怎么整
+ * 这种本质就是一个排序，根据一个值
+ *
+ *
  */
 public class KClosestPoints {
 
@@ -23,7 +26,10 @@ public class KClosestPoints {
         Arrays.sort(points, (p1, p2) -> Math.abs(p1[0]) * Math.abs(p1[0]) + Math.abs(p1[1]) * Math.abs(p1[1]) - Math.abs(p2[0]) * Math.abs(p2[0]) - Math.abs(p2[1]) * Math.abs(p2[1]));
         return Arrays.copyOfRange(points, 0, k);
     }
-    public static int[][] kClosest(int[][] points, int k) {
+
+    // 另外就是手写一个小顶堆 大小为k, 判断如果插入之后数量大于k 则要移除一个最小项目, 移除的时间是O(1)，但是插入需要上浮
+
+  public static int[][] kClosest(int[][] points, int k) {
         // 现在有两个元素 int[] 的坐标，和x^2 + y^2的距离，是根据距离进行排序
         PriorityQueue<Integer> pQueue = new PriorityQueue<>(points.length);
         Map<Integer, List<int[]>> cache = new HashMap<>();
