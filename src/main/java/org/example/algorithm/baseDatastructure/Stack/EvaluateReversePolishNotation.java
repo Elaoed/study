@@ -1,4 +1,4 @@
-package org.example.algorithm.baseDatastructure;
+package org.example.algorithm.baseDatastructure.Stack;
 
 import java.util.Arrays;
 import java.util.List;

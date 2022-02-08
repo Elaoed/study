@@ -1,4 +1,4 @@
-package org.example.algorithm.baseDatastructure;
+package org.example.algorithm.baseDatastructure.Queue;
 
 import java.util.LinkedList;
 import java.util.Queue;

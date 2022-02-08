@@ -1,4 +1,4 @@
-package org.example.algorithm.baseDatastructure;
+package org.example.algorithm.baseDatastructure.Heap;
 
 import org.example.algorithm.ListHelper;
 import org.example.algorithm.ListNode;

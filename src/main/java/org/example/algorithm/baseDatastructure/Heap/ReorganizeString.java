@@ -1,4 +1,4 @@
-package org.example.algorithm.baseDatastructure;
+package org.example.algorithm.baseDatastructure.Heap;
 
 import java.util.Arrays;
 import java.util.PriorityQueue;

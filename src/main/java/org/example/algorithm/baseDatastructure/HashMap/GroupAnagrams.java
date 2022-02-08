@@ -1,4 +1,4 @@
-package org.example.algorithm.baseDatastructure;
+package org.example.algorithm.baseDatastructure.HashMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;

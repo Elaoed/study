@@ -1,4 +1,4 @@
-package org.example.algorithm.baseDatastructure;
+package org.example.algorithm.baseDatastructure.Stack;
 
 /**
  * 1209. Remove All Adjacent Duplicates in String II

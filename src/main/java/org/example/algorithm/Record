@@ -78,7 +78,7 @@ Leetcode 692. Top K Frequent Words
 Leetcode 378. Kth Smallest Element in a Sorted Matrix  // 我真的不太喜欢 matrix
 Leetcode 295. Find Median from Data Stream （标准解法是双heap，但是SortedDict会非常容易）
 Leetcode 767. Reorganize String
-Leetcode 1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit (这个题用单调双端队列、TreeMap、双heap都可以)
+Leetcode 1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit (这个题用单调双端队列、TreeMap、双heap都可以) // 未完成
 Leetcode 895. Maximum Frequency Stack
 
 二分法（Binary Search）：
