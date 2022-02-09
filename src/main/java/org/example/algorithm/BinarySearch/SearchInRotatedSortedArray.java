@@ -13,6 +13,35 @@ package org.example.algorithm.BinarySearch;
  * while 里面<= 还是<的条件要分析清楚
  * 每当有 +1 -1的表达式的时候要记得判断边界条件
  *
+ * 我这个还是比较稳健... 更好的办法是找到pivot 判断target属于哪一边，然后只二分那一边就行了
+ * 之前也是 明明是一边的内容 或者只要关心两边节点的内容，我很容易小题大做到要关心整一个列表
+ *
+ * 这种题解就是我不喜欢 但是的确人家脑子比较清醒的
+ * class Solution {
+ * public:
+ *     int search(vector<int>& nums, int target) {
+ *         int l=0,r=nums.size()-1,mid;
+ *         while(l<r){//稍微改一下二分的算法就行，有手就行的题目
+ *             mid=(l+r)>>1;
+ *             if(nums[mid]==target)return mid;
+ *             else if(nums[mid]<nums[r]){
+ *                 if(nums[mid]<target&&nums[r]>=target){
+ *                     l=mid+1;
+ *                 }else{
+ *                     r=mid;
+ *                 }
+ *             }else{
+ *                 if(nums[mid]>target&&nums[l]<=target){
+ *                     r=mid;
+ *                 }else{
+ *                     l=mid+1;
+ *                 }
+ *             }
+ *         }
+ *         return nums[l]==target?l:-1;
+ *     }
+ * };
+ *
  */
 public class SearchInRotatedSortedArray {
 

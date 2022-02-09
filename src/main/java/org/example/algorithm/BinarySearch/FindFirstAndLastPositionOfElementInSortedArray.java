@@ -13,6 +13,7 @@ import java.util.Arrays;
  * 左右区间要搞清楚，左右都是开区间 left = 0, right = nums.length - 1
  * left <= right / 如果没找到默认返回 -1
  * 外层再对默认值进行判断
+ *
  */
 public class FindFirstAndLastPositionOfElementInSortedArray {
 
