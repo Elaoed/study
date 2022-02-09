@@ -7,7 +7,7 @@ import java.util.Arrays;
  * Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.
  * If target is not found in the array, return [-1, -1].
  * You must write an algorithm with O(log n) runtime complexity.
- * 这道题基本上还是能一眼看出二分法的，sorted, O(log n) 都是标志
+ * 这道题基本上还是能一眼看出二分法的，sorted, O(log n) 都是标志 有一边的数据都是一样的比如bed version
  * 二分法的基本套路是咋样的？
  * 递归二分和迭代二分，必选迭代二分
  * 左右区间要搞清楚，左右都是开区间 left = 0, right = nums.length - 1
