@@ -1,10 +1,13 @@
 package org.example.algorithm.BinarySearch;
 
+/**
+ * 二分法界的精髓
+ */
 public class SimpleBinarySearch {
     public static int binarySearch(int[] nums, int target) {
 
-        int left = 0, right = nums.length;
-        // 好奇怪 怎么又和之前的不一样了
+        int left = 0, right = nums.length; // right 永远是不可达的
+        // 好奇怪 怎么又和之前的不一样了, 一样的一样的
         while (left < right) {
             int middle = left + (right - left) / 2;
             // 总是爱先写nums[middle]
