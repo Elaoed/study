@@ -12,9 +12,10 @@ package org.example.algorithm.BinarySearch;
  */
 public class SearchA2DMatrixII {
 
+    // matrix = 4 * 5
     public static boolean searchMatrix(int[][] matrix, int target) {
         // 先二分左边，再二分右边
-        int left = 0, right = matrix.length - 1;
+        int left = 0, right = matrix.length;
         while (left < right) {
             int middle = (left + right) / 2;
             if (matrix[middle][0] == target) {
@@ -28,7 +29,8 @@ public class SearchA2DMatrixII {
             }
         }
 
-        int end = right;
+        // 因为end总会比那个数大，而我们要找的可能在上一行, 那如果只有一行呢, left = 0, right = 1, middle = 0 没毛病
+        int end = right; // 这里也不用 - 1, right可能是个不可达的位置
         left = 0;
         while (left < right) {
             int middle = left + (right - left) / 2;
@@ -43,8 +45,9 @@ public class SearchA2DMatrixII {
             }
         }
 
+        // 这是血统最正规的答案了
         int start = left;
-        for (int i = start; i <= end; i++) {
+        for (int i = start; i < end; i++) {
             // 这里也可以改成二分
             if (target > matrix[i][matrix[0].length - 1])  {
                 continue;
@@ -72,7 +75,7 @@ public class SearchA2DMatrixII {
     }
 
     public static void main(String[] args) {
-        System.out.println(searchMatrix(new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}}, 5));
+        System.out.println(searchMatrix(new int[][]{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}}, 20));
     }
 
 }
