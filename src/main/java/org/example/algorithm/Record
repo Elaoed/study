@@ -96,10 +96,10 @@ Leetcode 69. Sqrt(x) ==============> 02-10-10:00 here
 Leetcode 540. Single Element in a Sorted Array ==============> 02-10-13:53 done here
 Leetcode 644. Maximum Average Subarray II    leetcode plus
 Leetcode 528. Random Pick with Weight ======== done here
-Leetcode 1300. Sum of Mutated Array Closest to Target
-Leetcode 1060. Missing Element in Sorted Array
-Leetcode 1062. Longest Repeating Substring
-Leetcode 1891. Cutting Ribbons
+Leetcode 1300. Sum of Mutated Array Closest to Target // hi 真难受 不做了
+Leetcode 1060. Missing Element in Sorted Array leetcode plus
+Leetcode 1062. Longest Repeating Substring leetcode plus
+Leetcode 1891. Cutting Ribbons leetcode plus
 
 双指针（2 Pointer）： 19题
 基础知识：常见双指针算法分为三类，同向（即两个指针都相同一个方向移动），背向（两个指针从相同或者相邻的位置出发，背向移动直到其中一根指针到达边界为止），相向（两个指针从两边出发一起向中间移动直到两个指针相遇）
