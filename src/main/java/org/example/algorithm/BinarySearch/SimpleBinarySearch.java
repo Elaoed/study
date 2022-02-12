@@ -6,6 +6,7 @@ package org.example.algorithm.BinarySearch;
 public class SimpleBinarySearch {
 
     public static int lastIndexOf(int[] nums, int target) {
+        // return的条件改了一下，nums[middle] == target 的情况下，if nums[middle + 1] > target 则返回 else left = middle + 1
         return -1;
     }
 

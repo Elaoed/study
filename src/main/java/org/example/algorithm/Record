@@ -106,7 +106,7 @@ Leetcode 1891. Cutting Ribbons leetcode plus
 背向双指针：(基本上全是回文串的题)
 Leetcode 409. Longest Palindrome
 Leetcode 125. Valid Palindrome
-Leetcode 5. Longest Palindromic Substring
+Leetcode 5. Longest Palindromic Substring  这题的正解是dp
 相向双指针：(以two sum为基础的一系列题)
 Leetcode 1. Two Sum (这里使用的是先排序的双指针算法，不同于hashmap做法)
 Leetcode 167. Two Sum II - Input array is sorted
