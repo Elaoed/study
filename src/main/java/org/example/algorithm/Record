@@ -109,12 +109,12 @@ Leetcode 125. Valid Palindrome
 Leetcode 5. Longest Palindromic Substring  这题的正解是dp
 相向双指针：(以two sum为基础的一系列题)
 Leetcode 1. Two Sum (这里使用的是先排序的双指针算法，不同于hashmap做法)
-Leetcode 167. Two Sum II - Input array is sorted
+Leetcode 167. Two Sum II - Input array is sorted (都说用指针了 constant为常数 O(1) 如果用hash的话就是O(n)了)
 Leetcode 15. 3Sum
 Leetcode 16. 3Sum Closest
 Leetcode 18. 4Sum
 Leetcode 454. 4Sum II
-Leetcode 277. Find the Celebrity
+Leetcode 277. Find the Celebrity  ======== > leetcode plus
 Leetcode 11. Container With Most Water
 同向双指针：（个人觉得最难的一类题，可以参考下这里 TimothyL：Leetcode 同向双指针/滑动窗口类代码模板）
 Leetcode 283. Move Zeroes

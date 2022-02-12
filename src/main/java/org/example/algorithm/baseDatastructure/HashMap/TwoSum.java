@@ -1,5 +1,6 @@
 package org.example.algorithm.baseDatastructure.HashMap;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +17,16 @@ public class TwoSum {
 //        version1(list, target);
         version2(list, target);
     }
+
+//    public static void version3(int[] nums, int target) {
+//        int left = 0, right = nums.length - 1;
+//        Arrays.sort(nums);
+//        while (left < right) {
+//            if (left + right)
+//        }
+//
+//    }
+
     public static void version2(int[] list, int target) {
         Map<Integer, Integer> map = new HashMap<>(list.length);
         for (int i = 0; i < list.length; i++) {
