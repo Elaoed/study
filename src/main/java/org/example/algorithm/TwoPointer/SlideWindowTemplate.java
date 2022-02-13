@@ -10,6 +10,19 @@ import java.util.Map;
  */
 public class SlideWindowTemplate {
 
+    public static int slideWindowTemplate(String s) {
+
+        int left = 0, right = 0, res = 0;
+        while (right < s.length()) {
+//            while (condition) {
+//                left++;
+//            }
+            // update res;
+            right++;
+        }
+        return res;
+
+    }
     //
     public static ListNode template(ListNode head) {
         // 1. 定义变量，防止无法进入循环

@@ -38,6 +38,7 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
             // sum是达标数量
             int qualifiedKind = 0;
 
+            // 但凡右边走一步，要考虑走一步对变量的影响，并且要开始循环判断左边是否要shrink
             while (right < s.length()) {
                 int rightIndex = s.charAt(right) - 'a';
                 cnt[rightIndex]++;
