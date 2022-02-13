@@ -43,11 +43,14 @@ public class LongestRepeatingCharacterReplacement {
         while (right < s.length()) {
             // 右指针前进会加，左指针前进会减 所以不用每次都写，
             counter[s.charAt(right) - 'A']++;
-            // 想法是一样的, 拿diffN 和maxn原理是一样的
+            // 想法是一样的, 拿diffN 和maxn原理是一样的, 如果只是需要最多的值的数量，相当于是把数组分成了两类，最多的和其他的，用一个maxn就够了
 
             // 每次走过去的时候计算一下好了，左边也过去的时候不再重新计算一下？
+            // 只有在右指针往前走的时候，新的这个元素才可能成为maxn
             maxn = Math.max(maxn, counter[s.charAt(right) - 'A']);
             while (right - left + 1 - maxn > k) {
+                // 左边走过去的时候不需要重新计算maxn吗, mostChar和secondMostChar
+                // 不用吧 不管怎么样都不会超过原来的xn
                 counter[s.charAt(left++) - 'A']--;
             }
 
@@ -63,7 +66,7 @@ public class LongestRepeatingCharacterReplacement {
     }
 
     public static void main(String[] args) {
-        System.out.println(characterReplacement("ABAB", 2));
+        System.out.println(characterReplacement("AABABABBBB", 2));
     }
 
 }
