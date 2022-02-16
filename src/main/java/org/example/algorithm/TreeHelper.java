@@ -2,7 +2,6 @@ package org.example.algorithm;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Stack;
 
 public class TreeHelper {
 
@@ -71,6 +70,14 @@ public class TreeHelper {
             }
         }
 
+    }
+
+    // 左右子节点都为null则为叶子节点
+    public static boolean isLeaf(TreeNode node) {
+        if (node == null) {
+            return true;
+        }
+        return node.getLeft() == null && node.getRight() == null;
     }
 
 }
