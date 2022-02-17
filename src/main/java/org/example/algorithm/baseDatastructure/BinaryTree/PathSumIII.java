@@ -27,8 +27,8 @@ public class PathSumIII {
         // 已经把带头的都算上去了
         int res = rootSum(root, targetSum);
         // 都是不带头的解决方案
-        res += pathSum(root.getLeft(), targetSum);
-        res += pathSum(root.getRight(), targetSum);
+        res += pathSum(root.left, targetSum);
+        res += pathSum(root.right, targetSum);
 
         return res;
 
@@ -37,14 +37,14 @@ public class PathSumIII {
     public static int rootSum(TreeNode root, int targetSum) {
         int res = 0;
         // 带头的又是只有头自己的
-        if (root.getVal() == targetSum) {
+        if (root.val == targetSum) {
             res += 1;
         }
         // 和不仅有自己还有子子孙孙的 之所以上面==targetSum不return 是因为头是5 孩子还有加起来=0的
         // 带了头的 就要把头减去 剩下的来算 不过为啥是root而不是path, 就这么说吧一旦头带了，连下去的就必须带头
         // rootSum和pathSum的区别就在于 可不可以不带头 而在这个环境下 必须要带
-        res += rootSum(root.getLeft(), targetSum - root.getVal());
-        res += rootSum(root.getRight(), targetSum - root.getVal());
+        res += rootSum(root.left, targetSum - root.val);
+        res += rootSum(root.right, targetSum - root.val);
         return res;
     }
 

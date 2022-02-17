@@ -8,16 +8,17 @@ public class TreeHelper {
     public static TreeNode makeTree() {
         TreeNode root = new TreeNode(10);
         TreeNode left1 = new TreeNode(8);
-        root.setLeft(left1);
+        root.left = left1;
         TreeNode right1 = new TreeNode(6);
-        root.setRight(right1);
+        root.right = right1;
         TreeNode left2 = new TreeNode(4);
-        left1.setLeft(left2);
+        left1.left = left2;
         TreeNode left3 = new TreeNode(2);
-        left2.setLeft(left3);
+        left2.left = left3;
         return root;
     }
 
+    // 有缺陷 这个只针对于一个堆可以用
     public static TreeNode makeTree(Integer... nodeList) {
 
         if (nodeList.length == 0) {
@@ -35,9 +36,9 @@ public class TreeHelper {
             TreeNode father = map.get(i % 2 == 0 ? (i - 2) / 2 : (i - 1) / 2);
             TreeNode child = new TreeNode(nodeList[i]);
             if (i % 2 == 1) {
-                father.setLeft(child);
+                father.left = child;
             } else {
-                father.setRight(child);
+                father.right = child;
             }
             map.put(i, child);
         }
@@ -57,16 +58,16 @@ public class TreeHelper {
                 System.out.println("null");
                 continue;
             }
-            System.out.println(node.getVal());
-            if (node.getLeft() != null) {
-                queue.add(node.getLeft());
+            System.out.println(node.val);
+            if (node.left != null) {
+                queue.add(node.left);
             } else {
                 queue.add(null);
             }
-            if (node.getRight() != null) {
-                queue.add(node.getRight());
+            if (node.right != null) {
+                queue.add(node.right);
             } else {
-                queue.add(node.getRight());
+                queue.add(node.right);
             }
         }
 
@@ -77,7 +78,7 @@ public class TreeHelper {
         if (node == null) {
             return true;
         }
-        return node.getLeft() == null && node.getRight() == null;
+        return node.left == null && node.right == null;
     }
 
 }

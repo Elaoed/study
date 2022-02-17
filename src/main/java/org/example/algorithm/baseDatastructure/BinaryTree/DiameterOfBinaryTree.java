@@ -24,8 +24,8 @@ public class DiameterOfBinaryTree {
         if (node == null) {
             return 0;
         }
-        int leftDepth = helper(node.getLeft());
-        int rightDepth = helper(node.getRight());
+        int leftDepth = helper(node.left);
+        int rightDepth = helper(node.right);
         firstMax = max(leftDepth + rightDepth + 1, firstMax);
 //        if (leftDepth > max) {
 //            secondMax = max;

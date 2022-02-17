@@ -3,6 +3,8 @@ package org.example.algorithm.baseDatastructure.BinaryTree;
 import org.example.algorithm.TreeHelper;
 import org.example.algorithm.TreeNode;
 
+import java.util.Stack;
+
 
 /**
  *  对于二叉树这种题目就很容易 基本上都是 每一个节点有些什么样的考虑 从上还是从下
@@ -15,7 +17,7 @@ public class BaseBinaryTree {
         if (tree == null) {
             return 0;
         }
-        return Math.max(getDepthCapacity(tree.getLeft()) + 1, getDepthCapacity(tree.getRight()) + 1);
+        return Math.max(getDepthCapacity(tree.left) + 1, getDepthCapacity(tree.right) + 1);
     }
 
     /**
@@ -34,8 +36,8 @@ public class BaseBinaryTree {
         if (treeNode == null) {
             return 0;
         }
-        int left = getMaximumDepth(treeNode.getLeft());
-        int right = getMaximumDepth(treeNode.getRight());
+        int left = getMaximumDepth(treeNode.left);
+        int right = getMaximumDepth(treeNode.right);
         if (left == -1 || right == -1 || Math.abs(left - right) > 1) {
             return -1;
         }
@@ -45,11 +47,51 @@ public class BaseBinaryTree {
         return 1 + Math.max(left, right);
     }
 
+    /**
+     * 标准的递归版前序遍历，相当于隐式的维护了一个栈
+     * @param root
+     */
+    public static void preorderTraversal(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        System.out.println(root.val);
+        preorderTraversal(root.left);
+        preorderTraversal(root.right);
+
+    }
+
+    // 还有中序 后序 层序，前三者都是深度优先，层序是广度优先 通过Queue来实现
+    /**
+     * 前序遍历的迭代版本，需要显示的维护一个栈
+     * @param root
+     */
+    public static void preorderTraversalIterVersion(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode node = root;
+        stack.push(root);
+        while (!stack.isEmpty() || node == null) {
+            while (node != null) {
+                System.out.println(node.val);
+                stack.push(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            node = node.right;
+        }
+    }
+
 
     public static void main(String[] args) {
         TreeNode root = TreeHelper.makeTree();
         System.out.println(getDepthCapacity(root));
         System.out.println(isBalancedTree(root));
+        System.out.println("================> preorder traversal recursive version");
+//        root = TreeHelper.makeTree(1, null, 2, 3);
+        root = TreeHelper.makeTree();
+        preorderTraversal(root);
+        System.out.println("================> preorder traversal iteration version");
+        preorderTraversalIterVersion(root);
 
     }
 }
