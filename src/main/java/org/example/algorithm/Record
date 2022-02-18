@@ -125,7 +125,7 @@ Leetcode 340. Longest Substring with At Most K Distinct Characters  leetcode plu
 Leetcode 424. Longest Repeating Character Replacement *** 还需要再考虑看看 后面再来回味吧 先往前走走看
 Leetcode 76. Minimum Window Substring // 这tm就是变态 巨难 后面再好好看看题解
 Leetcode 3. Longest Substring Without Repeating Characters  ** 模板方法的基础版本
-Leetcode 1004 Max Consecutive Ones III ===> done herer
+Leetcode 1004 Max Consecutive Ones III ===> done here
 
 宽度优先搜索（BFS）：面试中最常考的 20题
 基础知识：

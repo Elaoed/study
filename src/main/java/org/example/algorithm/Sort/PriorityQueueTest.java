@@ -1,4 +1,4 @@
-package org.example.datastructure;
+package org.example.algorithm.Sort;
 
 /**
  * 队列FIFO特性，优先两大功能1. Priority可以插队，2. deleteMin删除最小者

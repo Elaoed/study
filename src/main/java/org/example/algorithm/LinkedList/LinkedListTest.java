@@ -1,4 +1,4 @@
-package org.example.datastructure;
+package org.example.algorithm.LinkedList;
 
 /**
  * 此家伙是双向队列，实现的是优先级队列, 所以内部可以排序？ 刚刚的case里面没看出来
