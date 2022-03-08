@@ -1,7 +1,6 @@
 package org.example.algorithm.DynamicProgramming;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 /**
  * 浓浓的dp味儿
@@ -45,21 +44,26 @@ public class DecodeWays91 {
         // climbingStairs dp里面装的是当前的几种步数，这不是一样的吗, 还不太一样 那边求的是走几步能走到
         // 一模一样的宝，how many distinct ways
         // 这里就多了一个'0'的判断选项
-        int[] dp = new int[s.length() + 1];
-        Arrays.fill(dp, 1);
+        // 这道题的核心点在于 把string转成数字 和前面一个数字合并看是否合法
+        // 而且跟爬台阶一样其实只有两步，把两步相加好了
+        s = "0" + s; // 哨兵节点
+        int[] dp = new int[s.length()];
+        Arrays.fill(dp, 0);
+        dp[0] = 1; // 因为如果满足条件后面不是用加的 而是用直接带过去的
 
-        for (int i = 2; i <= s.length(); i++) {
-            if (s.charAt(i - 1) == '0') {
+        final char[] chars = s.toCharArray();
+        for (int i = 1; i < chars.length; i++) {
+            int a = chars[i] - '0';
+            int b = (chars[i - 1] - '0') * 10 + a;
+            if (chars[i] != '0') {
                 dp[i] = dp[i - 1];
             }
-            if (isValid(s.substring(i - 1, i + 1))) {
-                dp[i] = dp[i - 1] + 1;
-            } else {
-                dp[i] = dp[i - 1];
+            if (b >= 10 && b <= 26) {
+                dp[i] += dp[i - 1];
             }
         }
 
-        return dp[s.length()];
+        return dp[s.length() - 1];
     }
 
     public static void main(String[] args) {
