@@ -1,10 +1,25 @@
 @startuml
 actor 操作员
-boundary boundary
-control control
-entity entity
+note over Alice: 11111
+note over Alice, Bob #FFAAAA: 22222
+note across : 22222
+hnote across : 22222
+Alice -> Bob: do other thins
+loop
+    Alice -> Bob: looping
+end
+alt if condition
+    Alice -> Bob: I like you
+    note left: hey im note left
+else else condition
+    Alice -> Cindy : I like you
+    note right: hey im note right
+end
+@enduml
+
 database database
 collections collections
 boundary -> control: do something
-Alice -> Bob: do other thins
-@enduml
+boundary boundary
+control control
+entity entity
