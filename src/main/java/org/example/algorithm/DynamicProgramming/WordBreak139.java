@@ -12,6 +12,7 @@ import java.util.List;
  * 那用什么结构来存储呢
  * dp里面存的应该是下标把
  * 从这一题引申出背包问题？
+ * https://leetcode-cn.com/problems/word-break/solution/dong-tai-gui-hua-ji-yi-hua-hui-su-zhu-xing-jie-shi/
  */
 public class WordBreak139 {
 

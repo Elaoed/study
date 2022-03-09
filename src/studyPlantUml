@@ -1,0 +1,10 @@
+@startuml
+actor 操作员
+boundary boundary
+control control
+entity entity
+database database
+collections collections
+boundary -> control: do something
+Alice -> Bob: do other thins
+@enduml
