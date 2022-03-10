@@ -5,6 +5,7 @@ import java.util.Arrays;
 /**
  * 动态规划里面的背包问题
  * 最基本的背包问题就是
+ *
  * 01背包问题：
  * 一共有 N 件物品，第 i（i 从 1 开始）件物品的重量为 w[i]，价值为 v[i]。
  * 在总重量不超过背包承载上限 W 的情况下，能够装入背包的最大价值是多少？
@@ -15,7 +16,23 @@ import java.util.Arrays;
  * <p>
  * 416 / 494 / 139 / 279 / 322 / 377 / 518 / 1049
  *
+ * 是否可以根据一个 target（直接给出或间接求出），target 可以是数字也可以是字符串，
+ * 再给定一个数组 arrs，问：能否使用 arrs 中的元素做各种排列组合得到 target。
  * 本质上也是组合问题，可以使用search, 使用二叉树长度为0，x0-xn 每个节点存01
+ *
+ * 类型: 0-1,完全,分组
+ * 最值,存在,组合(求....的排列组合)
+ * 首先是背包分类的模板：
+ * 1、0/1背包：外循环nums,内循环target,target倒序且target>=nums[i];
+ * 2、完全背包：外循环nums,内循环target,target正序且target>=nums[i];
+ * 3、组合背包(考虑顺序)：外循环target,内循环nums,target正序且target>=nums[i];
+ * 4、分组背包：这个比较特殊，需要三重循环：外循环背包bags,内部两层循环根据题目的要求转化为1,2,3三种背包类型的模板
+ * 然后是问题分类的模板：
+ * 1、最值问题: dp[i] = max/min(dp[i], dp[i-nums]+1)或dp[i] = max/min(dp[i], dp[i-num]+nums);
+ * 2、存在问题(bool)：dp[i]=dp[i]||dp[i-num];
+ * 3、组合问题：dp[i]+=dp[i-num];
+ *
+ * 背包一定都是>= <=不要忘记等于号
  */
 public class Knapsack {
     public static int answer = 0;
@@ -46,7 +63,8 @@ public class Knapsack {
     public static void main(String[] args) {
         // 第一个物品?
 //        dfs(0, 0, 0);
-        dpOneDimensionVersion();
+        dpTwoDimensionVersion();
+//        dpOneDimensionVersion();
         System.out.println(answer);
     }
 
@@ -105,8 +123,8 @@ public class Knapsack {
         int[] dp = new int[bagWeight + 1];
         Arrays.fill(dp, 0);
 
-        // 两层循环还是不能少
-        for (int i = 1; i < itemNum; i++) {
+        // 两层循环还是不能少, 这个i即代表了能放几个东西，也代表了准备拿第几个东西 (双重含义所以比较难理解)
+        for (int i = 1; i <= itemNum; i++) {
             // 旧的物品都用过了不管, 也不一定是用过，后面可能要拿出来的那拿出来再说
             // 拿出来也算用过派和拿出来算没用过派
             int w = weight[i - 1], v = value[i - 1];
@@ -124,7 +142,62 @@ public class Knapsack {
 
     }
 
+    public static void dpFullKnapsack() {
 
+        Arrays.fill(dp[0], 0);
+
+        for (int i = 1; i <= itemNum; i++) {
+            int itemWeight = weight[i - 1];
+            int itemValue = value[i - 1];
+            for (int j = 0; j <= bagWeight; j++) {
+                if (j < itemWeight) {
+                    dp[i][j] = dp[i - 1][j];
+                } else {
+                    // 如果是0，1背包，在拿了新东西之后只要判断拿不拿就行了 max(dp[i - 1][j], dp[i - 1][j - itemWeight] + itemValue);
+                    // 而完全背包 要考虑我拿一次还是要拿两次 max(dp[i - 1][j], dp[i - 1][j - itemWeight] + itemValue, dp[i - 1][j - 2 * itemWeight] + 2 * itemValue);
+                    // 等等无限多的考虑 so -? 后来发现其实之前的问题在之前都考虑过了 这一行
+                    // 差异仅仅是从i - 1变成i, 考虑这两者的区别
+                    // 0, 1背包外层循环到这里已经是没有新物品时候的最优解，只要判断要不要放入就行
+                    // 完全背包用i行的数据 上一层把没有新物品的完全背包问题完成了，这一行加了新物品之后要看放几个合适
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - itemWeight] + itemValue);
+                }
+            }
+        }
+
+        for (int[] ints : dp) {
+            System.out.println(Arrays.toString(ints));
+        }
+        answer = dp[itemNum][bagWeight];
+
+    }
+
+    public static void dpFullKnapsackOneDimension() {
+
+        int[] dp = new int[bagWeight + 1];
+        Arrays.fill(dp, 0);
+
+        for (int i = 1; i < itemNum; i++) {
+            int w = weight[i - 1], v = value[i - 1];
+            // 正向和逆向的区别在于要不要历史的小数据来支撑 TODO:
+            for (int j = w; j <= bagWeight; j++) {
+                dp[j] = Math.max(dp[j], dp[j - w] + v);
+            }
+        }
+        System.out.println(Arrays.toString(dp));
+        answer = dp[bagWeight];
+
+    }
+
+    // 据说这种情况要把target放外层循环? 组合背包问题
+    public static void dpFullKnapsackOneDimensionOrdered() {
+
+
+    }
+
+    //
+    public static void dpMultiKnapsack() {
+
+    }
 
 
 }
