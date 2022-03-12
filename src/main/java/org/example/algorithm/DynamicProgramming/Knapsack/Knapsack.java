@@ -33,6 +33,12 @@ import java.util.Arrays;
  * 3、组合问题：dp[i]+=dp[i-num];
  *
  * 背包一定都是>= <=不要忘记等于号
+ *
+ * dp表格如何画 第一行作为表头代表target的递增，第一列作为表头代表nums数量的增加 // 回头再吸收一下花花的方法
+ * ==============
+ * ==============
+ * ==============
+ * 或许二维的方案更容易理解和拓展？
  */
 public class Knapsack {
     public static int answer = 0;
