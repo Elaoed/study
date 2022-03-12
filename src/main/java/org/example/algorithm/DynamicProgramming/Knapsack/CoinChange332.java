@@ -1,9 +1,12 @@
-package org.example.algorithm.middle;
+package org.example.algorithm.DynamicProgramming.Knapsack;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
 /**
+ * You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+ * Return the <<"fewest">> number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+ * You may assume that you have an #infinite# number of each kind of coin. 完全背包问题
  * 果然不愧是一道middled的体型 还是我naive了，以为只要双重循环从大数开始-下来就行
  * 实际上优先需要满足的是能够凑上，凑上里面再挑数量最少的那个答案
  * 大方向宗旨是不变的，只是不满足的这个条件需要等到所有情况都遍历完了才知道
@@ -13,19 +16,16 @@ import java.util.HashMap;
  * question1: 什么条件下返回 amount <= 0;
  * 没有列表的情况下 需要全局maxN计数比较
  * 当amount = 0的时候需要比较maxN并进行替换
- * // 如果提示用了动态规划的话就会激活记忆 当前这一步是由前一步决定的..
- * 是这样吗
- * // 处理不好那个返回值的问题了
- * 简化模型
- * Integer.MAX_VALUE 比小的时候可以用maxValue简化模型
+ * 简化模型: Integer.MAX_VALUE 比小的时候可以用maxValue简化模型
  * 考虑不超过的时候需要有限考虑最大次数i的数量
  * 有限的for循环中为了拿到返回值可以多次初始化int res;
- * // dp 一步一步往上走的方案看起来很粗暴啊
+ * // dp 一步一步往上走的方案看起来很粗暴啊 -- 哈哈是啊 真的很粗暴又很简单 主要是有overlapping question
+ * 这道题可以用bfs/dfs等等来做: powcai的评论
+ *
  */
-public class CoinChange {
+public class CoinChange332 {
 
     // 设置初始值 如果没有硬币满足则返回初始值
-    //
     public static int minN = -1;
     // 增加缓存, key: amountLeft, value: n
     // 什么时候放？
@@ -164,11 +164,40 @@ public class CoinChange {
         // 现在做不动
     }
 
+    // 模板有了剩下的都是细节, 比如这里要的是数量不是价值，如果是数量就 + 1, 如果是价值就 + v
+    public static int dpVersionAfterStudied(int[] coins, int amount) {
+
+        if (amount == 0) {
+            return 0;
+        }
+
+        if (coins == null || coins.length == 0) {
+            return -1;
+        }
+
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE); // 第一个位置放0，因为amount = 0的时候 肯定coins 为0 那也说不定hhh
+        dp[0] = 0;
+
+        // coins = [2], amount = 3 的时候
+        for (int i = 1; i <= coins.length; i++) {
+            int coin = coins[i - 1];
+            // 核心是这个 dp解决子问题开始到解决大问题，从小到大就是amount从零开始的步骤
+            // 外面的coins.length只是用来换各种不同情况的
+            // j = 0 毫无意义，最大应该是当amount = amount的时候
+            for (int j = 0; j <= amount; j++) {
+                // 我tm这种取最小的很难处理的，中间的数根本没法处理，需要额外加判断前一次！=Integer.MAX_VALUE
+                if (coin <= j && dp[j - coin] != Integer.MAX_VALUE) {
+                    dp[j] = Math.min(dp[j], dp[j - coin] + 1);
+                }
+            }
+        }
+        return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
+    }
+
     public static void main(String[] args) {
-        int[] coins = new int[]{186, 419, 83, 408};
-//        int[] coins = new int[]{2};
-        int amount = 6249;
-//        int amount = 3;
-        System.out.println(coinChange(coins, amount));
+        int[] coins = new int[]{2};
+        int amount = 3;
+        System.out.println(dpVersionAfterStudied(coins, amount));
     }
 }

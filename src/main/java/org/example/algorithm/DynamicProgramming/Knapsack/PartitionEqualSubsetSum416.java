@@ -5,6 +5,8 @@ import java.util.Arrays;
 /**
  * Given a non-empty array nums containing only positive integers,
  * find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
+ * target = sum([]) / 2;
+ * 0, 1背包, 是否存在
  */
 public class PartitionEqualSubsetSum416 {
 
@@ -26,25 +28,20 @@ public class PartitionEqualSubsetSum416 {
             }
         }
 
-        // 0, 1背包可以用boolean来做
-        boolean[] dp = new boolean[nums.length + 1];
-        // 重量为0的背包能不能被当前的石子满足？ 可
+        // 这里一定是target + 1
+        final boolean[] dp = new boolean[target + 1];
+        Arrays.fill(dp, false);
         dp[0] = true;
-        // dp[i] 依赖于 dp[i - num]
-        // dp里面存的肯定是当前这个重量能不能满足条件
-        for (int num : nums) {
-            // target到num之间，背包能不能被满足，target = num的时候肯定能，再往下就不关心了
-            // 但是这个为什么是慢慢从上往下呢 dp不是从下往上吗, 这里就是原先我困惑的问题，后面的放前面是最优解怎么办
-            // i = target, i >= num 的语义是 关心从target -> num 的过程中产生的最优解 拿这个最优解冲
-            for (int i = target; i >= num; i--) {
-                // 问题是怎么找到这个转移方程
-                dp[i] = dp[i] || dp[i - num];
-                // dp[i] = dp[i] + dp[i - num];
-                // 如果只有两步的话是 dp[i] = dp[i - 1] + dp[i - 2];
 
+        // 外层什么时候用for 什么时候用fori 很简单 如果有多个条件要通过i来取对应值的时候 比如背包中的value跟weight
+        // 0, 1背包 内部倒序
+        for (int num : nums) {
+            for (int i = target; i >= num; i--) {
+                dp[i] = dp[i] || dp[i - num];
             }
         }
 
+        // 都是target啊小弟
         return dp[target];
 
     }
