@@ -44,6 +44,10 @@ import java.util.Arrays;
  * w要控制在一定范围之内 也就是weight? W(totalWeight) < 10^6
  * n >> 20
  * dp[i][j] = max(dp[i - 1][j - w[i] + v[i]), w[j] <= j <= W
+ * 状态压缩
+ * 可用可不用
+ * Time complexity:O(NW)
+ * Space complexity: O(NW) -> O(W)
  */
 public class Knapsack {
     public static int answer = 0;
@@ -130,6 +134,7 @@ public class Knapsack {
     }
 
     // 优化 代码告诉我们 我们只需要上一排的数据
+    // 一种是可以用每次数组替代，另外一种就是滚动数组 但是必须要reverse(只要一个int[])
     public static void dpOneDimensionVersion() {
         // 放的是什么？ 放的肯定不是物品的数量的，既然是bagWeight肯定是包包的重量
         int[] dp = new int[bagWeight + 1];
@@ -154,7 +159,14 @@ public class Knapsack {
 
     }
 
-    public static void dpFullKnapsack() {
+    /**
+     * can be reduce to 0-1 kanpsack problem. By expand the item list, each item appears W/w[i] times;
+     * for i = 1 to N
+     *     for j = 1 to W/w[i]
+     *          knapsack(w[i], v[i])
+     *
+     */
+    public static void dpUnBoundedKnapsack() {
 
         Arrays.fill(dp[0], 0);
 
@@ -183,7 +195,17 @@ public class Knapsack {
 
     }
 
-    public static void dpFullKnapsackOneDimension() {
+    /**
+     * for i = 1 to N:
+     * // for j = w to W:
+     *      dp[j] = max(dp[j], dp[j - w] + v)
+     * 初始化dp[0][*], dp[1][*] ?
+     *
+     * unbounded是每件物品被使用无限次
+     * bounded是每件物品被使用n次 也就是多重背包
+     * both of them can be reduce to 0 - 1 problem but low efficient
+     */
+    public static void dpUnboundedKnapsackOneDimension() {
 
         int[] dp = new int[bagWeight + 1];
         Arrays.fill(dp, 0);
