@@ -34,16 +34,6 @@ public class CombinationSumIV377 {
         }
 
         return dp1[target];
-//        for (int i = 1; i <= nums.length; i++) {
-//            int num = nums[i - 1];
-//            for (int j = 0; j <= target; j++) {
-//                if (j >= num) {
-//                    dp[i][j] = dp[i - 1][j] + dp[i][j - num];
-//                } else {
-//                    dp[i][j] = dp[i - 1][j];
-//                }
-//            }
-//        }
 
     }
 
