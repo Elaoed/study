@@ -1,0 +1,23 @@
+@startuml
+start
+mainframe 拆分先行自付方案结算流程
+
+:结算时候费用上传;
+:查询费用对照;
+:根据Extra中的selfPrePayRatio进行判断;
+
+if (selfPrePay不为空?) then (yes)
+    :处理拆分先行自付;
+    :从对照中取出自负比例;
+    :金额=金额 * (1 - 自负比例);
+    :拷贝生成一条新的费用记录
+    强制自费，金额=原金额 * 自付比例;
+
+else (no)
+    :不处理;
+endif
+    :费用上传到医保;
+    :费用合并;
+    :返回给结算中心;
+stop
+@enduml

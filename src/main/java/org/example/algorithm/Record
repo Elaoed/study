@@ -322,3 +322,5 @@ Leetcode 1043 Partition Array for Maximum Sum
 Leetcode 926 Flip String to Monotone Increasing
 
 // 第二轮的时候就可以开始写总结笔记了，比如在什么环境下可以用什么思维方式，什么模板，哪些地方需要注意什么
+// 接下来还是把dp的都刷了 再刷别的吧 其实也快的感觉
+// 翻转链表? 部分节点翻转多次链表?
