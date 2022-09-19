@@ -1,4 +1,6 @@
-package org.example.algorithm.DynamicProgramming;
+package org.example.algorithm.DynamicProgramming.Knapsack;
+
+import java.util.Arrays;
 
 /**
  * Given an integer n, return the least number of perfect square numbers that sum to n.
@@ -27,8 +29,44 @@ public class PerfectSquares279 {
         return dp[dp.length - 1];
     }
 
+    public static int knapsackVersion(int n) {
+        // 基础错了 不是只有14916 而是只要通过平方数的和求出来就行
+//        int[] nums = {1, 4, 9, 16};
+
+        if (n == 1) {
+            return 1;
+        }
+        int length = n / 2;
+        int[][] dp = new int[length + 1][n + 1];
+        for (int[] ints : dp) {
+            Arrays.fill(ints, Integer.MAX_VALUE);
+        }
+        Arrays.fill(dp[0], 0);
+        // 还是需要以这个为基础 min的东西比较难搞
+        for (int i = 0; i < dp[1].length; i++) {
+            dp[1][i] = i;
+        }
+
+        // 二元的我不会写了
+        for (int i = 2; i <= length; i++) {
+            for (int i1 = 0; i1 <= n; i1++) {
+                // 转移方程
+                if (i1 >= i * i) {
+                    dp[i][i1] = Math.min(dp[i - 1][i1], dp[i][i1 - i * i] + 1);
+                } else {
+                    dp[i][i1] = dp[i - 1][i1];
+                }
+            }
+        }
+        return dp[length][n];
+        // 有能力再简化
+        // 简单的可以用一维 复杂的还是用二维好了
+
+    }
+
     public static void main(String[] args) {
-        System.out.println(numSquares(12));
+        System.out.println(knapsackVersion(1));
+
     }
 
 }

@@ -37,7 +37,7 @@ public class GenerateParentheses {
         }
     }
 
-    // 看了第一个解决方案 把res提出变成类变量，无需传递，但是为什么无需删除尾部呢？ 因为他用的是string不会改变自身对象
+    // 看了第一个解决方案 把res提出变成类变量，无需传递，但是为什么无需删除尾部呢？ 因为他用的是string不会改变自身对象 dfs
     public static void version2(List<String> res, StringBuilder stringBuilder, int open, int close) {
 
     }
