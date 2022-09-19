@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * 动态规划里面的背包问题
  * 最基本的背包问题就是
- *
+ * <p>
  * 01背包问题：
  * 一共有 N 件物品，第 i（i 从 1 开始）件物品的重量为 w[i]，价值为 v[i]。
  * 在总重量不超过背包承载上限 W 的情况下，能够装入背包的最大价值是多少？
@@ -15,14 +15,15 @@ import java.util.Arrays;
  * 可见 01 背包问题与完全背包问题主要区别就是物品是否可以重复选取。
  * <p>
  * 416 / 494 / 139 / 279 / 322 / 377 / 518 / 1049
- *
+ * <p>
  * 是否可以根据一个 target（直接给出或间接求出），target 可以是数字也可以是字符串，
  * 再给定一个数组 arrs，问：能否使用 arrs 中的元素做各种排列组合得到 target。
  * 本质上也是组合问题，可以使用search, 使用二叉树长度为0，x0-xn 每个节点存01
- *
+ * <p>
  * 类型: 0-1,完全,分组
  * 最值,存在,组合(求....的排列组合)
  * 首先是背包分类的模板：
+ * // 不考虑顺序的话内外循环是一样的
  * 1、0/1背包：外循环nums,内循环target,target倒序且target>=nums[i];
  * 2、完全背包：外循环nums,内循环target,target正序且target>=nums[i];
  * 3、组合背包(考虑顺序)：外循环target,内循环nums,target正序且target>=nums[i];
@@ -31,14 +32,22 @@ import java.util.Arrays;
  * 1、最值问题: dp[i] = max/min(dp[i], dp[i-nums]+1)或dp[i] = max/min(dp[i], dp[i-num]+nums);
  * 2、存在问题(bool)：dp[i]=dp[i]||dp[i-num];
  * 3、组合问题：dp[i]+=dp[i-num];
- *
+ * <p>
  * 背包一定都是>= <=不要忘记等于号
- *
+ * <p>
  * dp表格如何画 第一行作为表头代表target的递增，第一列作为表头代表nums数量的增加 // 回头再吸收一下花花的方法
  * ==============
  * ==============
  * ==============
  * 或许二维的方案更容易理解和拓展？
+ * 把搜索的状态压缩
+ * w要控制在一定范围之内 也就是weight? W(totalWeight) < 10^6
+ * n >> 20
+ * dp[i][j] = max(dp[i - 1][j - w[i] + v[i]), w[j] <= j <= W
+ * 状态压缩
+ * 可用可不用
+ * Time complexity:O(NW)
+ * Space complexity: O(NW) -> O(W)
  */
 public class Knapsack {
     public static int answer = 0;
@@ -108,6 +117,7 @@ public class Knapsack {
                     // 当包重量为4的时候可以拿两个，这时候要把那个1再拿上，看下在代码里面怎么体现的
                     // 左边是 15， 右边那个是0 + 20, 再往下走是 左边的是15，右边的是15 + 20
                     // 急速定位上上一层的左侧，
+                    // 01和完全在这里的区别是要不要i - 1
                     dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - itemWeight] + value[i - 1]);
                     // 这里才是拿和不拿，上面的if是不能拿
                     // 妈的我悟了
@@ -124,6 +134,7 @@ public class Knapsack {
     }
 
     // 优化 代码告诉我们 我们只需要上一排的数据
+    // 一种是可以用每次数组替代，另外一种就是滚动数组 但是必须要reverse(只要一个int[])
     public static void dpOneDimensionVersion() {
         // 放的是什么？ 放的肯定不是物品的数量的，既然是bagWeight肯定是包包的重量
         int[] dp = new int[bagWeight + 1];
@@ -148,7 +159,14 @@ public class Knapsack {
 
     }
 
-    public static void dpFullKnapsack() {
+    /**
+     * can be reduce to 0-1 kanpsack problem. By expand the item list, each item appears W/w[i] times;
+     * for i = 1 to N
+     *     for j = 1 to W/w[i]
+     *          knapsack(w[i], v[i])
+     *
+     */
+    public static void dpUnBoundedKnapsack() {
 
         Arrays.fill(dp[0], 0);
 
@@ -177,7 +195,17 @@ public class Knapsack {
 
     }
 
-    public static void dpFullKnapsackOneDimension() {
+    /**
+     * for i = 1 to N:
+     * // for j = w to W:
+     *      dp[j] = max(dp[j], dp[j - w] + v)
+     * 初始化dp[0][*], dp[1][*] ?
+     *
+     * unbounded是每件物品被使用无限次
+     * bounded是每件物品被使用n次 也就是多重背包
+     * both of them can be reduce to 0 - 1 problem but low efficient
+     */
+    public static void dpUnboundedKnapsackOneDimension() {
 
         int[] dp = new int[bagWeight + 1];
         Arrays.fill(dp, 0);
@@ -194,15 +222,19 @@ public class Knapsack {
 
     }
 
-    // 据说这种情况要把target放外层循环? 组合背包问题
+    /**
+     * 对于排序问题来说，只能外循环是 nums， 内循环是 sum，这样子才能保证顺序 比如说 nums是 1和 5，sum 是 6，
+     * 如果外循环是 nums，内循环是 sum， 保证了当 sum = 6 的时候 只能是 6=1+5 存在顺序是，先1 后 5
+     * 如果外循环是 sum，内循环是 nums，当sum = 6 的时候 有 6 = 1+5 和 6 = 5+1 两种 具体差距在哪里还是nums
+     * 考虑顺序的话内外循环是一样的
+     */
     public static void dpFullKnapsackOneDimensionOrdered() {
-
-
+        // CoinChangeII518
     }
 
     //
     public static void dpMultiKnapsack() {
-
+        // CombinationSumIV377
     }
 
 
