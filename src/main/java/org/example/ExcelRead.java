@@ -9,6 +9,8 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class ExcelRead {
     public static List<List<String>> getStringSheet(String filePath) {
 
         List<List<String>> sheetList = new ArrayList<>();
-        try (InputStream inp = new FileInputStream(filePath)) {
+        try (InputStream inp = Files.newInputStream(Paths.get(filePath))) {
             Workbook wb = WorkbookFactory.create(inp);
             Sheet sheet = wb.getSheetAt(0);
             for (Row row : sheet) {
