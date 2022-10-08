@@ -23,7 +23,6 @@ public class TestThreadLocal {
             //打印本地变量
             print("thread2");
             System.out.println("after remove : " + threadLocal.get());
-            Thread.currentThread().get
         });
         t1.start();
         t2.start();

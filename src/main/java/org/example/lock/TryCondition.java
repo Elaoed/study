@@ -1,10 +1,11 @@
-package org.example.studyLock;
+package org.example.lock;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 // https://juejin.cn/post/6844903501772881928 AQS的核心代码部分
+// 精准的控制某个条件队列，如果是synchronized唤醒的话可能会消费者唤醒的还是消费者这样
 public class TryCondition {
 
     private Lock lock = new ReentrantLock();
@@ -15,7 +16,7 @@ public class TryCondition {
 
     final Object[] items = new Object[5];
 
-    int putptr, takeptr, count;
+    volatile int putptr, takeptr, count;
 
     public void put(Object x) {
         lock.lock();
@@ -65,6 +66,65 @@ public class TryCondition {
             lock.unlock();
         }
 
+    }
+
+    public static class Producer implements Runnable {
+
+        private TryCondition tryCondition;
+
+        public Producer(TryCondition tryCondition) {
+            this.tryCondition = tryCondition;
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                tryCondition.put(new Object());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    public static class Consumer implements Runnable {
+
+        private TryCondition tryCondition;
+
+        public Consumer(TryCondition tryCondition) {
+            this.tryCondition = tryCondition;
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                tryCondition.take();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        final TryCondition tryCondition = new TryCondition();
+        final Consumer consumer = new Consumer(tryCondition);
+        final Producer producer = new Producer(tryCondition);
+
+        final Thread t1 = new Thread(producer, "生产者1");
+        final Thread t2 = new Thread(producer, "生产者2");
+
+        final Thread t4 = new Thread(consumer, "消费者1");
+        final Thread t5 = new Thread(consumer, "消费者2");
+
+        t1.start();
+        t2.start();
+        t4.start();
+        t5.start();
     }
 
 }

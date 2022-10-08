@@ -1,4 +1,4 @@
-package org.example.studyLock;
+package org.example.lock;
 
 import lombok.SneakyThrows;
 
