@@ -30,28 +30,6 @@ public class MergeIntervals {
             }
         }
 
-//        int[] insert = null;
-//        while (i < sortedList.size()) {
-//            int[] curr = sortedList.get(i);
-//            if (insert == null) {
-//                insert = curr;
-//            } else {
-//                if (curr[0] > insert[1]) {
-//                    intResult.add(insert);
-//                    insert = curr;
-//                } else {
-//                    insert[1] = Math.max(insert[1], curr[1]);
-//                }
-//            }
-//            i++;
-//        }
-//        intResult.add(insert);
-
-//        int[][] ints = new int[intResult.size()][2];
-//        for (int i1 = 0; i1 < intResult.size(); i1++) {
-//            ints[i1] = intResult.get(i1);
-//        }
-//        return ints;
 
         return intResult.toArray(new int[intResult.size()][]);
 

@@ -1,6 +1,6 @@
 package org.example.algorithm.Sort;
 
-import org.example.algorithm.RandomArrayHelper;
+import org.example.algorithm.ArrayHelper;
 
 import java.util.Arrays;
 
@@ -11,6 +11,7 @@ import java.util.Arrays;
  * 空间复杂度为O(n)
  * 时间复杂度为O(nlogn)
  * 需要有一个辅助的数组 根据下标取这里的数组才行
+ * 如果是链表的排序，可以实现constant space
  */
 public class MergeSort {
 
@@ -56,7 +57,7 @@ public class MergeSort {
 
     public static void main(String[] args) {
         int n = 10;
-        int[] ints = RandomArrayHelper.generateArray(n, 0, 10);
+        int[] ints = ArrayHelper.generateArray(n, 0, 10);
         mergeSort(ints, 0, ints.length - 1);
 
         System.out.println("result: " + Arrays.toString(ints));

@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Arrays;
 
 @Slf4j
-public class RandomArrayHelper {
+public class ArrayHelper {
 
     /**
      * generate n numbers array from min to max
@@ -23,6 +23,12 @@ public class RandomArrayHelper {
 
         System.out.println("随机数组: " + Arrays.toString(arr));
         return arr;
+    }
+
+    public static void swap(int[] nums, int index1, int index2) {
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
     }
 
 }

@@ -18,6 +18,7 @@ package org.example.algorithm.Sort;
  * 我就说 之前一直记的都是O(logN) 但是不对啊 用二分法在有序数组里面查找一个数都要O(logN)的时间，排序怎么可能
  * 果然是我记错了 是NlogN 所谓栈的高度也不要被吓到了 其实就是递归的深度
  * 快排中递归的深度最好就是每次/2，一共是logN，最坏的时候每次左边的列表只有一个数，右边是剩下的就变成N了 再 * 有N个数 = N^2
+ * // 原理 为什么快 异常情况
  */
 public class QuickSort {
 
@@ -42,12 +43,16 @@ public class QuickSort {
         quickSort(arr, index + 1, high);
     }
 
+    // 交换法三步走
     public static int getIndex(int[] arr, int low, int high) {
         int tmp = arr[low];
         while (low < high) {
             while (low < high && arr[high] >= tmp) {
+//            while (arr[high] >= tmp) {
                 high--;
             }
+            // 这里不用else吗 不用 傻啊，因为上面有个while循环 能走到这里肯定要么满足low = high的条件了，要么找到比tmp小的数了
+            // 上面可不是if 而是while啊
             arr[low] = arr[high];
             while (low < high && arr[low] <= tmp) {
                 low++;
