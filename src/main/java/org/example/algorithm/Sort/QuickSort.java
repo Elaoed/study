@@ -22,6 +22,7 @@ package org.example.algorithm.Sort;
  */
 public class QuickSort {
 
+
     public static void main(String[] args) {
         int[] arr = {49, 38, 65, 97, 23, 22, 76, 1, 5, 8, 0, 2, -1, 22};
         quickSort(arr, 0, arr.length - 1);
