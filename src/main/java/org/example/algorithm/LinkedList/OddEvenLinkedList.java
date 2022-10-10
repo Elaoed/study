@@ -9,16 +9,6 @@ import org.example.algorithm.ListNode;
  * Note that the relative order inside both the even and odd groups should remain as it was in the input.
  * You must solve the problem in O(1) extra space complexity and O(n) time complexity.
  * <p>
- * 这么一个题里面得搞清楚几个变量
- * 1. 传进来的head
- * 2. 遍历下去的curr
- * 3. oddHead就是head
- * 4. oddTail因为后面要接上evenHead 为了往后接
- * 5. evenHead最好用dummy.next的方式表示
- * 6. evenTail 为了往后接
- * 7. 从链表里面把even摘除到even链表的时候odd记得要把next的指针指向下一个odd
- * <p>
- * version2:
  */
 public class OddEvenLinkedList {
 
@@ -27,42 +17,20 @@ public class OddEvenLinkedList {
         if (head == null || head.next == null) {
             return head;
         }
-        ListNode oddHead = head;
-        ListNode evenHead = head.next;
-        ListNode evenDummyHead = new ListNode(0, evenHead);
-        while (oddHead.next != null && evenHead.next != null) {
-            oddHead.next = oddHead.next.next;
-            oddHead = oddHead.next;
-            evenHead.next = evenHead.next.next;
-            evenHead = evenHead.next;
-        }
-        oddHead.next = evenDummyHead.next;
-        return head;
-    }
 
-    public static ListNode oddEvenList(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
+        ListNode dummyOdd = new ListNode(0, head);
+        ListNode dummyEven = new ListNode(0, head.next);
+        ListNode oddCur = dummyOdd.next;
+        ListNode evenCur = dummyEven.next;
+        // 这里的判断条件还有点把握不好
+        while (oddCur.next != null && evenCur.next != null) {
+            oddCur.next = evenCur.next;
+            oddCur = oddCur.next;
+            evenCur.next = oddCur.next;
+            evenCur = evenCur.next;
         }
-
-        ListNode oddTail = null;
-        ListNode evenDummyHead = new ListNode(0);
-        ListNode evenTail = evenDummyHead;
-        ListNode curr = head;
-        // curr must be odd 因为一次处理两步
-        while (curr != null) {
-            // curr = oddNode
-            evenTail.next = curr.next;
-            evenTail = evenTail.next;
-
-            oddTail = curr;
-            if (curr.next != null) {
-                curr.next = curr.next.next;
-            }
-            curr = curr.next;
-        }
-        oddTail.next = evenDummyHead.next;
-        return head;
+        oddCur.next = dummyEven.next;
+        return dummyOdd.next;
     }
 
     public static void main(String[] args) {

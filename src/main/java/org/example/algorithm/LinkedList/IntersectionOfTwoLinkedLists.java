@@ -5,13 +5,18 @@ import org.example.algorithm.ListNode;
 
 /**
  * 160. Intersection of Two Linked Lists
- * Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect. If the two linked lists have no intersection at all, return null.
- * Could you write a solution that runs in O(m + n) time and use only O(1) memory? 拼接链表的方法同时也满足了这个
+ * Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect.
+ * If the two linked lists have no intersection at all, return null.
+ * Could you write a solution that runs in O(m + n) time and use only O(1) memory? 遍历两个列表来获取
+ * 拼接链表的方法同时也满足了这个
+ * 最简单的想法就是反过来开始遍历 直到两个节点不相等开始，如果不相等的部分为空就喝喝返回null
+ * 其实很简单啊 因为他们尾部一定相等
+ *
  */
 public class IntersectionOfTwoLinkedLists {
 
     /**
-     * 这也是一种可行的方案 但是比较复杂
+     * 这也是一种可行的方案 但是比较复杂 不满足条件
      *
      * @param headA
      * @param headB
@@ -45,13 +50,19 @@ public class IntersectionOfTwoLinkedLists {
      */
     public static ListNode getIntersectionNode2(ListNode headA, ListNode headB) {
 
-        ListNode A = headA;
-        ListNode B = headB;
-        while (A == null || B == null || (A.val != B.val)) {
-            A = A == null ? headB : A.next;
-            B = B == null ? headA : B.next;
+        ListNode la = headA;
+        ListNode lb = headB;
+        if (la == null || lb == null) {
+            return null;
         }
-        return A;
+
+        // 两条链拼起来一定一样长, 并且因为题目中已经写了最后是到同一个链上面的，所以可以直接用la != lb来 如果只是值的话需要另做考虑
+        // 值的话就只能反过来了
+        while (la != lb) {
+            la = la == null ? headB : la.next;
+            lb = lb == null ? headA : lb.next;
+        }
+        return la;
     }
 
     public static void main(String[] args) {

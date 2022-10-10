@@ -19,11 +19,32 @@ public class KthLargestElement {
     // quickSort
     private final static Random random = new Random(System.currentTimeMillis());
 
+    // 掌握优先队列的用法
     public static int priorityQueueVersion(int[] nums, int k) {
         PriorityQueue<Integer> minHeap = new PriorityQueue<>(k, Comparator.comparingInt(a -> a));
-        for (int i = 0; i < k; i++) {
-            minHeap.offer(nums[i]);
+//        for (int i = 0; i < k; i++) {
+//            minHeap.offer(nums[i]);
+//        }
+//
+//        // 因为是小顶堆，所以从k开始
+//        for (int i = k; i < nums.length; i++) {
+//            Integer topElement = minHeap.peek();
+//            if (nums[i] > topElement) {
+//                minHeap.poll();
+//                minHeap.offer(nums[i]);
+//            }
+//        }
+//        return minHeap.peek();
+
+        for (int num : nums) {
+            if (minHeap.size() < k) {
+                minHeap.add(num);
+            } else if (minHeap.peek() < num) {
+                minHeap.poll();
+                minHeap.add(num);
+            }
         }
+        return minHeap.peek();
 
         // 有了最小堆之后，拿掉前面的n - k
     }
