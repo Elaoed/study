@@ -13,6 +13,34 @@ import java.util.HashMap;
  */
 public class LongestConsecutiveSequence {
 
+    /**
+     * 真的简洁了不止一个档次啊
+     * @param nums
+     * @return
+     */
+    public int newVersion(int[] nums) {
+
+        int max = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            if (map.get(num) != null) {
+                continue;
+            }
+
+            int left = map.getOrDefault(num - 1, 0);
+            int right = map.getOrDefault(num + 1, 0);
+            int consecutive = left + right + 1;
+            max = Math.max(max, consecutive);
+            // 更新两端点值，不然就会出现值有问题 **
+            map.put(num, consecutive);
+            map.put(num + right, consecutive);
+            map.put(num - left, consecutive);
+        }
+
+        return max;
+
+    }
+
     public static int longestConsecutive(int[] nums) {
         HashMap<Integer, Integer> cache = new HashMap<>();
         for (int num : nums) {

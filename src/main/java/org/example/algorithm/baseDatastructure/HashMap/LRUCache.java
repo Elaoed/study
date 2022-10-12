@@ -2,10 +2,7 @@ package org.example.algorithm.baseDatastructure.HashMap;
 
 import lombok.Data;
 
-import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
 
 /**
  *
@@ -23,76 +20,137 @@ import java.util.Map;
  * dummyHead and dummyTail, 所以很多初始化的时候capacity要+2
  * 很多stack里面塞进去一个1就是为了不检查边界
  *
+ * LRU的核心数据结构就是LinkedHashMap，双向列表和哈希表的结合体
+ * // 插入顺序和访问顺序的区别就是get的时候要不要makeRecentlyUsed
+ * HashMap<key, Node>;
+ * Node: key, value, prev, next;
+ * // get: if exist, make key most recently
+ * // put: if exist: update node value and make most recently, else if capacity excceed ? remove the last in list, and put it : put in map and list
+ * 默写
+ *
+ * 打不过打不过，LinkedHashMap最近的也是在尾端，还是改一下吧，方便记忆 还算清晰
+ *
  */
 @Data
 public class LRUCache {
     // capacity, get is fine, put the lru need a extra timestamp to identify, where to store?
     // the problem is in put with O(1) time complexity, and get to update to now.
     // There is no doubt that we could use HashMap to store the key val.
-    private final HashMap<Integer, Integer> cache;
-    private final Deque<Integer> deque;
-    private final int capacity;
+
+    public static class Node {
+        public int key, val;
+        public Node next, prev;
+        public Node(int k, int v) {
+            this.key = k;
+            this.val = v;
+        }
+    }
+//
+    private final HashMap<Integer, Node> cache;
+
+    private Node head = null;
+
+    // tail代表最近使用的 地位至高无上
+    private Node tail = null;
+    private int capacity;
 
     public LRUCache(int capacity) {
         this.capacity = capacity;
         cache = new HashMap<>(capacity);
-        deque = new LinkedList<>();
+    }
+
+    public void makeRecentlyUsed(Node node) {
+        if (node != tail) {
+            // 把node从上下文中解放出来
+            removeInList(node);
+            addLast(node);
+        }
+    }
+
+    public void addLast(Node node) {
+
+        // dummy -> node -> node.next 处理三者之间两对链接prev next的关系
+        if (tail == null) {
+            tail = node;
+            head = node;
+        } else {
+            Node last = tail;
+            tail = node;
+            last.next = node;
+            node.prev = last;
+        }
+        // last -> node(tail);
+
+    }
+
+    public void removeInList(Node node) {
+
+        Node prev = node.prev;
+        Node next = node.next;
+        // 清除引用关系 help gc
+        node.prev = node.next = null;
+
+        // node = head
+        if (prev == null) {
+            head = next;
+        } else {
+            prev.next = next;
+        }
+
+        // node = tail
+        if (next == null) {
+            tail = prev;
+        } else {
+            next.prev = prev;
+        }
+
+    }
+
+    public void removeFirst() {
+        removeInList(head);
     }
 
     public int get(int key) {
 
-//        cache.k
-//
-//         return node == null ? -1 : node.get();
-
-        Integer value = cache.get(key);
-        if (value == null) {
+        Node node = cache.get(key);
+        if (node == null) {
             return -1;
         }
-        // update 把key对应的entry放到头部来或者放到尾部，我要好好看一下，丢掉那种无谓的把那个元素取出来放到头部或尾部把
-        // LinkedList的put功能很好的帮你做掉了
-        cache.remove(key);
-        cache.put(key, value);
-        return value;
+        makeRecentlyUsed(node);
+        return node.val;
+
     }
 
     public void put(int key, int value) {
-        if (cache.size() == capacity) {
-            if (!cache.containsKey(key)) {
-                Map.Entry<Integer, Integer> first = cache.entrySet().iterator().next();
-                cache.remove(first.getKey());
-            } else {
-                cache.remove(key);
-            }
-            cache.put(key, value);
+
+        if (cache.containsKey(key)) {
+            Node node = cache.get(key);
+            node.val = value;
+            makeRecentlyUsed(node);
         } else {
-            cache.remove(key);
-            cache.put(key, value);
+            if (cache.size() >= capacity) {
+                cache.remove(head.key);
+                removeFirst();
+            }
+            Node node = new Node(key, value);
+            cache.put(key, node);
+            addLast(node);
         }
 
     }
 
     public static void main(String[] args) {
-//        LinkedHashMap<String, String> cache = new LinkedHashMap<>();
-//        cache.put("1", "1");
-//        cache.put("2", "2");
-//        cache.put("3", "3");
-//        System.out.println(cache);
-//        cache.put("2", "2");
-//        System.out.println(cache);
-//        cache.remove("2");
-//        cache.put("2", "2");
-//        System.out.println(cache);
-
-        final LRUCache cache2 = new LRUCache(3);
+        final LRUCache cache2 = new LRUCache(2);
         cache2.put(1, 1);
         cache2.put(2, 2);
+        System.out.println(cache2.get(1));
+
         cache2.put(3, 3);
-        System.out.println(cache2);
+        System.out.println(cache2.get(2));
         cache2.put(4, 4); // 2, 3, 4
-        System.out.println(cache2);
-        cache2.put(2, 2); // update 2, 2
-        cache2.put(5, 5); // 4, 2, 5
+        System.out.println(cache2.get(1));
+        System.out.println(cache2.get(3));
+        System.out.println(cache2.get(4));
         System.out.println(cache2);
         System.out.println(cache2.get(10));
 
