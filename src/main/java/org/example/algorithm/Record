@@ -42,21 +42,23 @@ Leetcode 328. Odd Even Linked List
 基础知识：各个数据结构的基本原理，增删查改复杂度。
 Queue题目：
 Leetcode 225. Implement Stack using Queues
-Leetcode 346. Moving Average from Data Stream  # leetcode plus会员才能做 后面再说
-Leetcode 281. Zigzag Iterator # leetcode plus
-Leetcode 1429. First Unique Number # leetcode plus
+Leetcode 346. Moving Average from Data Stream  # done 思想很简单，细节要注意挺多 比如queueSize
+Leetcode 281. Zigzag Iterator # leetcode plus // yue 主要那个k给我傻到了 行了知道了
+Leetcode 1429. First Unique Number # leetcode plus 这些题好像都不常见 done; 通过哈希去判断是否重复，重点是出入队的条件
+// =================
 Leetcode 54. Spiral Matrix
-Leetcode 362. Design Hit Counter # leetcode plus
+Leetcode 362. Design Hit Counter # leetcode plus done
+
 Stack题目：
 Leetcode 155. Min Stack (follow up Leetcode 716 Max Stack # leetcode plus)
 Leetcode 232. Implement Queue using Stacks
 Leetcode 150. Evaluate Reverse Polish Notation
-Leetcode 224. Basic Calculator II (I, II, III, IV)
+Leetcode 224. Basic Calculator II (I, II, III, IV) IV基本没遇到过 III也很少遇到
 Leetcode 20. Valid Parentheses
 Leetcode 1472. Design Browser History
 Leetcode 1209. Remove All Adjacent Duplicates in String II
 Leetcode 1249. Minimum Remove to Make Valid Parentheses
-Leetcode 735. Asteroid Collision ==================> Done here 2022/02/05
+Leetcode 735. Asteroid Collision
 Hashmap/ Hashset题目： 8题
 Leetcode 1. Two Sum
 Leetcode 146. LRU Cache (Python中可以使用OrderedDict来代替)
@@ -92,8 +94,8 @@ Leetcode 278. First Bad Version
 Leetcode 74. Search a 2D Matrix
 Leetcode 240. Search a 2D Matrix II
 隐式二分法： 8题 // 问自己一句 能不能用二分
-Leetcode 69. Sqrt(x) ==============> 02-10-10:00 here
-Leetcode 540. Single Element in a Sorted Array ==============> 02-10-13:53 done here
+Leetcode 69. Sqrt(x)
+Leetcode 540. Single Element in a Sorted Array
 Leetcode 644. Maximum Average Subarray II    leetcode plus
 Leetcode 528. Random Pick with Weight ======== done here
 Leetcode 1300. Sum of Mutated Array Closest to Target // hi 真难受 不做了

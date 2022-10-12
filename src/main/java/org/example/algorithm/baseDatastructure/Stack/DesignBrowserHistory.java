@@ -14,6 +14,7 @@ import java.util.Stack;
  * string forward(int steps)Move steps forward in history. If you can only forward x steps in the history and steps > x, you will forward only x steps. Return the current url after forwarding in history at most steps.
  *
  * 思路正确，这个应该属于简单把 还有用很长的列表实现的... 比较投机取巧
+ * 数组也可以做，但是需要维护指针一个是当前的指针，一个是最大的指针，最大后面的数据不可访问
  *
  *
  */
@@ -26,6 +27,9 @@ public class DesignBrowserHistory {
         current = homepage;
         forwardStack = new Stack<>();
         backStack = new Stack<>();
+        StringBuffer stringBuffer = new StringBuffer();
+
+
     }
 
 

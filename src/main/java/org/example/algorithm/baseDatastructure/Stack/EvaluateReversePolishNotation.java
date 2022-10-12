@@ -24,6 +24,7 @@ public class EvaluateReversePolishNotation {
 
         Stack<Integer> stack = new Stack<>();
 
+        final Integer integer = (int) tokens[0].charAt(0);
         List<String> operators = Arrays.asList("+", "-", "*", "/");
         for (int i = 0; i < tokens.length; i++) {
 

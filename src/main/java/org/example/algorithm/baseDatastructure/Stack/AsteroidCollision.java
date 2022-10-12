@@ -13,38 +13,46 @@ import java.util.Stack;
 public class AsteroidCollision {
 
     public static int[] asteroidCollision(int[] asteroids) {
-        Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> stack = new Stack<>();
+        Stack<Integer> stack2 = new Stack<>();
 
         for (int asteroid : asteroids) {
-            if (s1.isEmpty()) {
-                s1.push(asteroid);
+            if (stack.isEmpty() || asteroid > 0) {
+                // stack为空或者新陨石向右
+                stack.push(asteroid);
             } else {
-                // 处理两颗行星collision, while停止条件两颗行星同方向或者stack为空
-                boolean allCollision = false;
-                while (!s1.isEmpty() && (asteroid < 0 && s1.peek() > 0)) {
-                    Integer lastAsteroid = s1.pop();
-                    if (lastAsteroid + asteroid == 0) {
-                        allCollision = true;
+                // stack不为空 并且两个陨石方向相反
+                // 判断两个数方向相同应该还可以用位运算
+                boolean isDestroyed = false;
+                while (!stack.isEmpty() && asteroid < 0) {
+                    if (stack.peek() < 0) {
                         break;
-                    }
-
-                    if (Math.abs(lastAsteroid) > Math.abs(asteroid)) {
-                        asteroid = lastAsteroid;
+                    } else if (stack.peek() == -asteroid) {
+                        stack.pop();
+                        isDestroyed = true;
+                        break;
+                    } else if (stack.peek() > -asteroid) {
+                        isDestroyed = true;
+                        break;
+                    } else {
+                        stack.pop();
                     }
                 }
-                if (!allCollision) {
-                    s1.push(asteroid);
+                if (!isDestroyed) {
+                    stack.push(asteroid);
                 }
             }
         }
 
-        int[] res = new int[s1.size()];
-        int i = s1.size() - 1;
-        while (!s1.isEmpty()) {
-           res[i] = s1.pop();
-           i--;
+        while (!stack.isEmpty()) {
+            stack2.push(stack.pop());
         }
-
+        int[] res = new int[stack2.size()];
+        int i = 0;
+        while (!stack2.isEmpty()) {
+            res[i] = stack2.pop();
+            i++;
+        }
         return res;
     }
 

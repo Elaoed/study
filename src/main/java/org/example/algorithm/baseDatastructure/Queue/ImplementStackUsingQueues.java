@@ -20,7 +20,7 @@ public class ImplementStackUsingQueues {
         while (!queue2.isEmpty()) {
             queue1.offer(queue2.poll());
         }
-        Queue temp = queue1;
+        Queue<Integer> temp = queue1;
         queue1 = queue2;
         queue2 = temp;
     }
