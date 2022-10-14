@@ -1,5 +1,7 @@
 package org.example.algorithm.BinarySearch;
 
+import java.util.function.Predicate;
+
 /**
  * 1095. Find in Mountain Array
  * <p>
@@ -20,12 +22,10 @@ package org.example.algorithm.BinarySearch;
  * Submissions making more than 100 calls to MountainArray.get will be judged Wrong Answer. Also, any solutions that attempt to circumvent the judge will result in disqualification.
  * <p>
  * 这道题有点上一题的进阶版
- * 上一题是 / / / 这一题是/\/\/\
- * Mountain 是只会有一个山峰把
- * 一样的getPeak
- * 然后判断一些极端条件
- * 根据左右两边进行二分
- * // 在最后选择左右区间进行扫描花了很久 后面可以稍微优化下 根据条件就是左边能找到就用左边的，找不到再找右边的
+ * 上一题是 / / / 这一题是/\/\/\ Mountain 是只会有一个山峰把
+ * 一样的getPeek
+ * 在最后选择左右区间进行扫描花了很久 后面可以稍微优化下 根据条件就是左边能找到就用左边的，找不到再找右边的
+ * 花花写的真他娘的优雅 偷了偷了
  */
 public class FindInMountainArray {
 
@@ -46,52 +46,22 @@ public class FindInMountainArray {
         }
     }
 
-    // 1, 5, 2  peak = 1, target = 1
-    public static int getPeak(MountainArray mountainArray) {
-        int left = 0;
-        int mountainLength = mountainArray.length();
-        int right = mountainLength - 1;
-        while (left <= right) {
-            int middle = (left + right) / 2;
-            if (middle > 0 && middle < mountainLength && mountainArray.get(middle) > mountainArray.get(middle - 1) && mountainArray.get(middle) > mountainArray.get(middle + 1)) {
-                return middle;
-            }
-            if (mountainArray.get(middle - 1) < mountainArray.get(middle)) {
-                left = middle;
+    // 1 2 3 2 1
+    // 唯一的问题就是right能不能取到
+    public static int binarySearch(int left, int right, Predicate<Integer> cond) {
+
+        // left: 0, right: 4, mid: 2 cond: mid > mid + 1
+        while (left < right) {
+            int mid = (left + right) / 2;
+            // 这里的right = mid right是要取到的
+            if (cond.test(mid)) {
+                right = mid;
             } else {
-                right = middle;
+                left = mid + 1;
             }
         }
-        return -1;
-    }
-
-    public static int binarySearch(MountainArray mountainArray, int left, int right, int target, boolean ascend) {
-
-        while (left <= right) {
-            int middle = (left + right) / 2;
-            if (mountainArray.get(middle) == target) {
-                return middle;
-            } else {
-                // 山的左边，上升
-                if (ascend) {
-                   if (mountainArray.get(middle) > target) {
-                       // 走左边
-                       right = middle - 1;
-                   } else {
-                       left = middle + 1;
-                   }
-                   // 山的右边, 下降
-                } else {
-                    if (mountainArray.get(middle) > target) {
-                        // 走右边
-                        left = middle + 1;
-                    } else {
-                        right = middle - 1;
-                    }
-                }
-            }
-        }
-        return -1;
+        // 为什么返回left呢
+        return right;
     }
 
     public static int findInMountainArray(int target, MountainArray mountainArr) {
@@ -100,26 +70,24 @@ public class FindInMountainArray {
         }
 
         // 二分法找到中间的顶端，然后二分法分别找两条坡
-        int peak = getPeak(mountainArr);
-        if (peak == -1) {
+        int peek = binarySearch(0, mountainArr.length() - 1, (mid) -> mountainArr.get(mid) > mountainArr.get(mid + 1));
+        System.out.println("peek: " + peek);
+        if (peek == -1) {
             return -1;
         }
 
-        if ((target < mountainArr.get(0) && target < mountainArr.get(mountainArr.length() - 1)) || target > mountainArr.get(peak)) {
-            return -1;
-        }
-
-        int res = -1;
-        // 左右都是闭区间
-        if (target >= mountainArr.get(0)) {
-            // 从左边找
-            res =  binarySearch(mountainArr, 0, peak, target, true);
-        }
-        if (res > -1) {
+        // 从左边找
+        int res = binarySearch(0, peek, (mid) -> mountainArr.get(mid) >= target);;
+        System.out.println("left list result: " + res);
+        if (target == mountainArr.get(res)) {
             return res;
         }
         // 左边不行了再从右边找
-        return binarySearch(mountainArr, peak, mountainArr.length() - 1, target, false);
+        res = binarySearch(peek, mountainArr.length() - 1, (mid) -> mountainArr.get(mid) <= target);
+        if (target == mountainArr.get(res)) {
+            return res;
+        }
+        return -1;
 
     }
 
@@ -127,7 +95,7 @@ public class FindInMountainArray {
 
         MountainArray mountainArray = new MountainArray(new int[]{1, 2, 3, 4, 5, 3, 1});
 //        MountainArray mountainArray = new MountainArray(new int[]{1, 5, 2});
-        System.out.println(findInMountainArray(3, mountainArray));
+        System.out.println(findInMountainArray(6, mountainArray));
 
     }
 }

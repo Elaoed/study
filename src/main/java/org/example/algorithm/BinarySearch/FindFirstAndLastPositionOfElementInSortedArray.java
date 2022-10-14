@@ -18,9 +18,11 @@ import java.util.Arrays;
 public class FindFirstAndLastPositionOfElementInSortedArray {
 
     // 每次要弄清楚 开区间还是闭区间
-    public static int binarySearch(int[] nums, int target) {
+    public static int iterationVersion(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
         int middle;
+        // while (left != right && right >= 0 && left < nums.length)
+        // 上面这一段可以用left <= right来替代，原来的越界说白了不就是left > right了吗
         while (left <= right) {
             middle = (left + right) / 2;
             if (nums[middle] > target) {
@@ -38,19 +40,27 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
     // 他妈的这才不是二分，这是dc -> divide and conquer
     // 左开有开区间
     // recursive version
-    public static int binarySearch(int[] nums, int target, int left, int right) {
+    public static int recursiveVersion(int[] nums, int target, int left, int right) {
         // 不够 这里还要加左右的限制条件
         int middle = (left + right) / 2;
 
+        // 上下两个方式是等价的
+//        if (left == right)  {
+//            return nums[right] == target ? right : -1;
+//        }
+//        if (left > right) {
+//            return -1;
+//        }
+
         // 左右相等之后最后再判断一下
-        if (left == right && nums[middle] != target)  {
+        if (left >= right && nums[middle] != target)  {
             return -1;
         }
 
         if (target > nums[middle]) {
-            return binarySearch(nums, target, middle + 1, right);
+            return recursiveVersion(nums, target, middle + 1, right);
         } else if (target < nums[middle]) {
-            return binarySearch(nums, target, left, middle - 1);
+            return recursiveVersion(nums, target, left, middle - 1);
         } else {
             return middle;
         }
@@ -64,7 +74,7 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 //        }
 
 //        int index = binarySearch(nums, target, 0, nums.length - 1);
-        int index = binarySearch(nums, target);
+        int index = iterationVersion(nums, target);
 
         if (index == -1) {
             return new int[]{-1, -1};

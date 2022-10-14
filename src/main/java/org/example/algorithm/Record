@@ -98,19 +98,38 @@ Leetcode 895. Maximum Frequency Stack
     我们关心每个元素和他的频率 counter.
     我们关心maxFreq，需要用一个变量记载，之前不敢用是因为不知道maxFreq之间有没有断层，但是可以用手段避免断层，即判断有没有嘛
     配合第三个freq -> Stack两者之间的hashMap，通过stack.size()就能弥补断层
+    有遇到这种情况还可以通过sequenceNumber++的方式在入栈的时候就把他的序号带进去，方便进行直接排序
 
 二分法（Binary Search）：
-基础知识：二分法是用来解法基本模板，时间复杂度logN；常见的二分法题目可以分为两大类，显式与隐式，即是否能从字面上一眼看出二分法的特点：要查找的数据是否可以分为两部分，前半部分为X，后半部分为O
+基础知识：二分法是用来解法基本模板，时间复杂度logN；常见的二分法题目可以分为两大类，显式与隐式，
+即是否能从字面上一眼看出二分法的特点：要查找的数据是否可以分为两部分，前半部分为X，后半部分为O
+总结二分法的模板，以及注意点。二分法模版分成递归法和迭代法
+测试的时候就拿example上 好好推演一遍
+递归二分法在递归的时候因为确定nums[mid] !+ target, 所以递归调用的时候可以不用考虑mid节点，传mid + 1, right或者left, mid - 1;
+二分法的方法起初有个核心的判断 left >= right && return -1;
+具体看SimpleBinarySearch
 显式二分法： 7题
 Leetcode 34. Find First and Last Position of Element in Sorted Array
 Leetcode 33. Search in Rotated Sorted Array
+    // 数组一分为二，分成有序的和无序的，可能两部分都是有序的。看题画图ok?
+    // 找出旋转点 下策
 Leetcode 1095. Find in Mountain Array
+    // 上一题的进阶题 回想一下 findPeek时候的痛苦[0, 1]
+    // 记住!!peek的条件只是midValue > mid + 1Value 有顶点就一定有分别，到底分到左边还是右边，决定了返回是left还是right
+    // while(left <= right) 什么时候要等号 while的条件里面有判断相等的时候需要等号
+    // 算是大概弄懂了 我滴个呱呱 一天两道题
 Leetcode 162. Find Peak Element
 Leetcode 278. First Bad Version
 Leetcode 74. Search a 2D Matrix
+    感觉做的稀里糊涂的 边界问题搞死人 如果没有mountain的情况一律用 == return的方式
+    主要是mountain
 Leetcode 240. Search a 2D Matrix II
+    // 明天再来想把 二分法真给我搞没了 有没有发现二刷没有像一刷那么难嘞 好像是哦而且写出来的代码也变简洁了
 隐式二分法： 8题 // 问自己一句 能不能用二分
 Leetcode 69. Sqrt(x)
+    求两数的平均值，为了防止溢出 avg = left + (right - left) / 2;
+    为了防止溢出，乘法最好改成除法
+    return left or right?
 Leetcode 540. Single Element in a Sorted Array
 Leetcode 644. Maximum Average Subarray II    leetcode plus
 Leetcode 528. Random Pick with Weight ======== done here

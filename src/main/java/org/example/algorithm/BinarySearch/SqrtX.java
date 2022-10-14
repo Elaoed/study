@@ -13,7 +13,6 @@ package org.example.algorithm.BinarySearch;
  * 二分的square 不在乎right = target + 1
  * 因为不会比到那里去的，反而会导致溢出 ::)
  *
- *
  * // 这道题独有的，i < 2 的时候返回i
  * 尽管如此 for i = 1 还是要从1开始算
  * 最后不管是迭代还是二分都要return i(left) + 1;
@@ -32,7 +31,7 @@ public class SqrtX {
         return res;
     }
 
-    // 如果需要保留小数点后面两位呢
+    // 如果需要保留小数点后面两位呢 先变decimal * 100 在平方根求完了之后除以十就行了
     public static double mySqrt3(int x, int decimal) {
 
         if (x < 2) {
@@ -40,14 +39,14 @@ public class SqrtX {
         }
 
         int curr = decimal;
-        while (curr-- > 0) {
+        while (--curr >= 0) {
             x *= 100;
         }
 
         int left = 0, right = x;
         while (left < right) {
             int middle = left + (right - left) / 2;
-            double res = (double) x / middle;
+            int res = x / middle;
             if (middle == res) {
                 // 也要进行位移
                 return move(middle, decimal);
@@ -72,23 +71,24 @@ public class SqrtX {
 
         int left = 0, right = x;
         while (left < right) {
-            int middle = left + (right - left) / 2;
-            int res = x / middle;
-            if (middle == res) {
-                return middle;
+            System.out.println("left: " + left + ", right: " + right);
+            int mid = left + (right - left) / 2;
+            int sqrt = x / mid;
+            if (mid == sqrt) {
+                return mid;
             }
             // 说明middle大了
-            if (middle > res) {
-                right = middle;
+            if (mid > sqrt) {
+                right = mid;
             } else {
-                left = middle + 1;
+                left = mid + 1;
             }
         }
-        // 在二分的条件上 判断一下当left == right的时候 值满不满足条件
-        return left - 1;
+        // 条件结束都是left == right 对于他两来说都超了 因为right比较懒不愿意动 right一定是比目标要大的数 平方是向下求，所以需要 - 1
+        return right - 1; // 这时候left / right
         // 本质的区别是 之前的题只关心有没有，这个需要关心具体的位置，一般都是左边的位置所以要-1
-
     }
+
     // 就算是非二分法 返回也要指针 - 1
     public static int mySqrt(int x) {
         if (x < 2) {
@@ -111,7 +111,7 @@ public class SqrtX {
     }
 
     public static void main(String[] args) {
-//        System.out.println(mySqrt2(6));
+//        System.out.println(mySqrt2(8));
 //        System.out.println(mySqrt2(4));
 //        System.out.println(mySqrt2(2));
 //        System.out.println(mySqrt2(2147395599));

@@ -11,7 +11,10 @@ package org.example.algorithm.BinarySearch;
  * 最最明显的就是两个边界 可以直接考虑掉
  * 其次是原来是做山峰的，没有山谷这么一说，代码里面要考虑新的山谷的情况
  * 这种二分都是先写return的条件比较简单和明了 然后不是山顶的时候 考虑下左坡和右坡，else再考虑山谷
+ * 这是一刷的代码 ::) 果然有模板就是方便好多
+ * 搞清楚我们二分了什么东西
  */
+
 public class FindPeakElement {
 
     public static int findPeakElement(int[] nums) {
