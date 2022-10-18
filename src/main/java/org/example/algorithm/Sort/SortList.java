@@ -4,6 +4,8 @@ import org.example.algorithm.ListHelper;
 import org.example.algorithm.ListNode;
 import org.example.algorithm.TwoPointer.Pair;
 
+import java.util.HashMap;
+
 /**
  * LeetCode 148
  * Given the head of a linked list, return the list after sorting it in ascending order.
@@ -13,7 +15,7 @@ import org.example.algorithm.TwoPointer.Pair;
  * 2. merge(sort(l1), sort(l2))
  * 3. in merge function: initial newHead, tail
  * 4. while loop determined connect l1 or l2 into the tail and tail = tail.next;(这个很重要 之前就老忘)
- *
+ * <p>
  * 论仿真头的作用 是真好用
  * 无递归 空间复杂度为O1, 时间复杂度为两个list的长度和, 递归的空间复杂度也是O1啊
  * 虽然这一个方法里面空间复杂度是O1, 但是因为是递归 会有logN的方法也就会有OlogN的总空间复杂度, 怪不得是说栈的深度
@@ -115,5 +117,6 @@ public class SortList {
         ListNode sortedHead = quickSortVersion(head);
         ListHelper.printList(sortedHead);
     }
+
 
 }

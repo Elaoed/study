@@ -1,13 +1,17 @@
 package org.example.algorithm.TwoPointer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 395. Longest Substring with At Least K Repeating Characters
  * Given a string s and an integer k, return the length of the longest substring of s such that the frequency of
  * each character in this substring is greater than or equal to k.
  * 核心都是一样的，有一个int longest = 0;和counter, 一旦发现counter里面被加的那个值为 < K 就要中断了, 更新longest // 错误！
- * 是不是同向和汇合/背离 一共这么三种把
  * 滑动窗口, 在这道题里面最重要的是维护当前subString中出现次数小于K的数, 当subString为空 则更新longest
  * 无法使用二分是因为不具备有二分的条件，当一个subArray满足条件的情况下 再加一个元素不一定能满足条件
  * // 当确定了窗口内所包含的字符数量时，区间重新具有了二段性质 略高级 没看懂
@@ -15,12 +19,35 @@ import java.util.Arrays;
  */
 public class LongestSubstringWithAtLeastKRepeatingCharacters {
 
-    public static int longestSubString2(String s, int k) {
-        // python 牛啊，用的是递归和分支
+    public static int longestSubstring2(String s, int k) {
         // 先维护一个计数器，如果计数器里面某个东西在整个字符串内小于k 那就通过字符串split, 去计算剩下的subArray
         // divide and conquer 不止是divide成两份也可能是split成n份
         // 后面算法还是用python做好了 快一点
-        return -1;
+        // 当有三个值不满足条件
+        // 判空，left, right, hashMap 中
+        if (s == null || s.length() < k) {
+            return 0;
+        }
+
+        // 有了题解之后感觉就好写很多 思路最重要细节我自己把控
+        // 通过根据s中不满足k个数的char进行分割 对每一块儿再进行递归的分割 然后挨个比较
+        HashMap<Character, Integer> counter = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            counter.put(s.charAt(i), counter.getOrDefault(s.charAt(i), 0) + 1);
+        }
+        int max = 0;
+        for (Character c: counter.keySet()) {
+            if (counter.get(c) < k) {
+                for (String t: s.split(String.valueOf(c))) {
+                    if (!t.isEmpty()) {
+                        max = Math.max(max, longestSubstring2(t, k));
+                    }
+                }
+                return max;
+            }
+        }
+        // 整个子串都可以
+        return s.length();
 
     }
 
@@ -72,7 +99,9 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
     }
 
     public static void main(String[] args) {
-        System.out.println(longestSubstring("aaabb", 2));
+//        System.out.println(longestSubstring2("aaabb", 2));
+        String s = "1232a3b";
+        System.out.println(Arrays.toString(s.split("2|3")));
     }
 
 }

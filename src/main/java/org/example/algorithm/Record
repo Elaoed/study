@@ -125,39 +125,70 @@ Leetcode 74. Search a 2D Matrix
     主要是mountain
 Leetcode 240. Search a 2D Matrix II
     // 明天再来想把 二分法真给我搞没了 有没有发现二刷没有像一刷那么难嘞 好像是哦而且写出来的代码也变简洁了
+    // 四种解法
 隐式二分法： 8题 // 问自己一句 能不能用二分
 Leetcode 69. Sqrt(x)
     求两数的平均值，为了防止溢出 avg = left + (right - left) / 2;
     为了防止溢出，乘法最好改成除法
-    return left or right?
+    return left or right? 取决于你对他们的定义
 Leetcode 540. Single Element in a Sorted Array
-Leetcode 644. Maximum Average Subarray II    leetcode plus
-Leetcode 528. Random Pick with Weight ======== done here
-Leetcode 1300. Sum of Mutated Array Closest to Target // hi 真难受 不做了
+Leetcode 644. Maximum Average Subarray II leetcode plus && 困难 && 微软也不考 算了把宝
+Leetcode 528. Random Pick with Weight
+    前缀和 + 二分法 前缀和也是这种权重概率类问题的解法之一
+    // 真的简单 只是random.nextInt(range) 这个range不要弄错了 是最大值而不是最大Index
+Leetcode 1300. Sum of Mutated Array Closest to Target // hi 真难受 不做了 // new message 铁子们 我跨过去了！！
+    // 前缀和 记住就行了 每次判断的条件是前面的都加起来 后面的都变成nums[mid] 和target进行比较判断 k
+    // 两个边界考虑起来很难吗?哥 还有close to target 小数的情况下会存在两个值 需要跟target进行比较 接近的那个才是答案
+    // 以及核心的二分法判断式 突然觉得二分本身好简单 最重要的就是搞清楚我们在分什么 right代表了什么 很多都是mountain
 Leetcode 1060. Missing Element in Sorted Array leetcode plus
+    // 1. 考虑边界 2. 考虑核心表达式 3. 考虑返回的内容
 Leetcode 1062. Longest Repeating Substring leetcode plus
+    // 这题我没心情把他看懂
 Leetcode 1891. Cutting Ribbons leetcode plus
+// 所以后面这些题当时都没刷过了咯 = =
+// 对二分的有感觉了
 
 双指针（2 Pointer）： 19题
-基础知识：常见双指针算法分为三类，同向（即两个指针都相同一个方向移动），背向（两个指针从相同或者相邻的位置出发，背向移动直到其中一根指针到达边界为止），相向（两个指针从两边出发一起向中间移动直到两个指针相遇）
+基础知识：常见双指针算法分为三类，同向（即两个指针都相同一个方向移动），
+背向（两个指针从相同或者相邻的位置出发，背向移动直到其中一根指针到达边界为止），
+相向（两个指针从两边出发一起向中间移动直到两个指针相遇）
 背向双指针：(基本上全是回文串的题)
 Leetcode 409. Longest Palindrome
 Leetcode 125. Valid Palindrome
-Leetcode 5. Longest Palindromic Substring  这题的正解是dp
+    奇怪的这题 代码感觉没错但是最后一个case过不了
+Leetcode 5. Longest Palindromic Substring  这题的正解是dp 和上面一题1062一样 等dp把
+    for字符串的每个位置，双指针向两侧游走，而且是同时兼顾单回和双回的情况，i, i -> i, i + 1
 相向双指针：(以two sum为基础的一系列题)
-Leetcode 1. Two Sum (这里使用的是先排序的双指针算法，不同于hashmap做法)
+Leetcode 1. Two Sum (这里使用的是先排序的双指针算法，不同于hashmap做法) 那就是暴力了 不用写了...
 Leetcode 167. Two Sum II - Input array is sorted (都说用指针了 constant为常数 O(1) 如果用hash的话就是O(n)了)
+    因为是排序的，指针从两头往中间走，根据和target的大小判断走哪个指针
 Leetcode 15. 3Sum
+    不能用哈希表做, 双指针要注意去重方式和index和num之间不要搞混
 Leetcode 16. 3Sum Closest
+    总体思路没错 注意细节, 如果有存在对比变量，对比变量的初始值要小心
+
 Leetcode 18. 4Sum
+    傻逼 注意溢出 long sum = (long) nums[first] + nums[second];
 Leetcode 454. 4Sum II
+    和上面一题不一样 这是四个数组 可以使用两两数组求和的办法 变成两数之和
+    N个数组内数字求和的方式都可以这么做
 Leetcode 277. Find the Celebrity  ======== > leetcode plus
+    脑筋急转弯 我认识谁而谁又认识我
 Leetcode 11. Container With Most Water
+    如果最大的两个数在中间怎么办 [1, 2, 3, 24, 25, 5]; 需要让两个指针比较小的那个移动来碰碰运气 满足这种最极端需求的才是正确的解
+    这道面试题考的可多了 要记住
+
 同向双指针：（个人觉得最难的一类题，可以参考下这里 TimothyL：Leetcode 同向双指针/滑动窗口类代码模板）
 // 搜类SlideWindowTemplate
 Leetcode 283. Move Zeroes
+    就算是简单的也要模拟一下输入，还是浮躁，我都能感觉到
+    醉了 这么简单一道题 果然做数学题的时候脑子都要清楚
 Leetcode 26. Remove Duplicate Numbers in Array
+    和上一道题一起组成 什么移0️⃣去重剩下的数据放一边队伍
+    返回值也要好好考虑考虑
 Leetcode 395. Longest Substring with At Least K Repeating Characters
+    离谱 我就这么被绕进去了
+    往往中等题的思路都不复杂 如果能get到那个点
 Leetcode 340. Longest Substring with At Most K Distinct Characters  leetcode plus
 Leetcode 424. Longest Repeating Character Replacement *** 还需要再考虑看看 后面再来回味吧 先往前走走看
 Leetcode 76. Minimum Window Substring // 这tm就是变态 巨难 后面再好好看看题解
@@ -358,6 +389,4 @@ Leetcode 1235 Maximum Profit in Job Scheduling (DP + binary search)
 Leetcode 1043 Partition Array for Maximum Sum
 Leetcode 926 Flip String to Monotone Increasing
 
-// 第二轮的时候就可以开始写总结笔记了，比如在什么环境下可以用什么思维方式，什么模板，哪些地方需要注意什么
-// 接下来还是把dp的都刷了 再刷别的吧 其实也快的感觉
 // 翻转链表? 部分节点翻转多次链表?

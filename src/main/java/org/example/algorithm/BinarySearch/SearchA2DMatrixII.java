@@ -6,11 +6,67 @@ package org.example.algorithm.BinarySearch;
  * Integers in each row are sorted in ascending from left to right.
  * Integers in each column are sorted in ascending from top to bottom.
  * 这题和I的区别在于，I可以转换成一个一维数组，II不行
- * 能想到两个方案，1. 还未能证明的二分法
+ * 能想到两个方案，
+ * 1. 还未能证明的二分法
  * 2. 二分归并 O(2nlogm + log(m*n)) m行n列
  * 这题只能在具体一行中二分，不能在选行的时候二分，先要锁定具体哪一行，需要通过一行的首尾比较 选出那几行 然后挨个进行二分
+ *
+ * 四种解法
+ * 1. for 循环比较头尾 中间二分
+ * 2. 从右上角到左下角 大于target往左 小于target往下
+ * 3. 从中间二分 分成四个矩阵，如果是Search a 2DMatrix I 的话每次可以丢掉两个矩阵，但是这里只能丢掉一个 还要判断边界
+ * 4. 我自己的解法应该也可以 我再钻研钻研 看首列和尾列 取出首列中大于target第一个行的前面一行，取出尾列中小于target的最后一行的下一行
  */
 public class SearchA2DMatrixII {
+
+    // 就复杂了那么一点点 先通过第一列排掉后面所有的，再通过最后一列排掉前面所有的
+    public boolean searchMatrixNewVersion1015(int[][] matrix, int target) {
+
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return false;
+        }
+
+        int left = 0, right = matrix.length - 1;
+        int rowLeft, rowRight;
+
+        // 两者的区别是 一个left = right是跳出循环的条件，一个跳出循环的条件已经在里面了
+        while (left < right) {
+
+            int mid = left + (right - left) / 2;
+            System.out.println("left: " + left + ", right: " + right + ", mid: " + mid);
+
+            if (matrix[mid][0] > target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        rowRight = right;
+
+
+        left = 0;
+        right = matrix.length - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            System.out.println("left: " + left + ", right: " + right + ", mid: " + mid);
+            if (matrix[mid][matrix[0].length - 1] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        rowLeft = left;
+
+        System.out.println("rowLeft: " + rowLeft + ", rowRight: " + rowRight);
+        // 对rowLeft到rowRight的闭区间每一行进行二分
+        for (int i = rowLeft; i <= rowRight; i++) {
+            if (SimpleBinarySearch.binarySearchPlain(matrix[i], target) != -1) {
+                return true;
+            }
+        }
+        return false;
+
+    }
 
     // matrix = 4 * 5
     public static boolean searchMatrix(int[][] matrix, int target) {

@@ -11,18 +11,10 @@ import java.util.Map;
  * 15. 3Sum
  * Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
  * Notice that the solution set must not contain duplicate triplets.
- *
+ * <p>
  * 按照2Sum的思路 用O(n^2) 的复杂度可以用map和二分法，还有双指针, 思路么错
  * XSum都可以用双指针汇合的方式做
  * ==========================================
- * 和2Sum有点不太一样，2Sum是通过余数查Map的方式 普通的业务代码可以这么写，但是算法题不行
- * 解题思路:  0 0 0 (out) -1, 0, 1
- * 先找0 然后找对数 用map
- * n个0就有n个组合, 还有3个0
- * 其次是1负数2正数
- * 再次是2负数1正数
- * 就简化成为2Sum了
- * 2 -->
  * 双指针法，求和和比大小，required: 数组必须有序
  * 之前两数之和的时候也想到过这个解法，但是因为不是有序的 所以放弃了 可以先排序呀宝，除非题目里面要求了时间的 不然都可以排序的
  * 结果最致命的是看错题目了
@@ -38,52 +30,54 @@ public class ThreeSum {
 
     public static void main(String[] args) {
 
-        int[] nums = {-1, 0, 1, 2, -1, -4};
-//        int[] nums = {1, 1, -2};
-        List<List<Integer>> result = version2(nums);
+//        int[] nums = {-1, 0, 1, 2, -1, -4};
+        int[] nums = {1, -1, -1, 0};
+//        List<List<Integer>> result = version3(nums);
 //        List<List<Integer>> result = version1(nums);
 
-        System.out.println(result);
+//        System.out.println(result);
+        System.out.println(Integer.MIN_VALUE + 1);
     }
 
-    // doesn't work
-    public static List<List<Integer>> version1(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        int zeroNum = 0;
-//        Map<Integer, Integer>
-        HashSet<Integer> negativeSet = new HashSet<>();
-        HashSet<Integer> positiveSet = new HashSet<>();
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] == 0) {
-                zeroNum += 1;
-            } else if (nums[i] < 0) {
-                // 这样是不行的老铁 可能要用那种支持duplicatedKey的Map了
-                negativeSet.add(nums[i]);
-            } else {
-                positiveSet.add(nums[i]);
+    public static List<List<Integer>> version3(int[] nums) {
+        // 需要数组去重 数组去重要怎么做？
+        // 因为返回的不是index 所以可以直接进行排序
+        Arrays.sort(nums);
+        System.out.println(Arrays.toString(nums));
+        List<List<Integer>> res = new ArrayList<>();
+        for (int first = 0; first < nums.length - 2; first++) {
+            // 不仅要对z进行去重，x，y也需要
+            if (first > 0 && nums[first] == nums[first - 1]) {
+                continue;
             }
-        }
-
-        if (zeroNum >= 3) {
-            result.add(Arrays.asList(0, 0, 0));
-        }
-
-        if (negativeSet.size() == 0 || positiveSet.size() == 0) {
-            return result;
-        }
-
-//        HashMap<Integer, Integer> tmp = new HashMap<>();
-        for (Integer positive : positiveSet) {
-            for (Integer negative : negativeSet) {
-                int reminder = -positive - negative;
-                if (positiveSet.contains(reminder) || negativeSet.contains(reminder)) {
-                    result.add(Arrays.asList(positive, negative, reminder));
+            int target = -nums[first];
+            int left = first + 1, right = nums.length - 1;
+            while (left < right) {
+                if (left > first + 1 && nums[left] == nums[left - 1]) {
+                    left++;
+                    continue;
+                }
+                if (right < nums.length - 1 && nums[right] == nums[right + 1]) {
+                    right--;
+                    continue;
+                }
+                System.out.println("left: " + left + ", right: " + right + ", target: " + target);
+                if (nums[left] + nums[right] == target) {
+                    System.out.println("left: " + left + ", right: " + right + ", target: " + target);
+                    res.add(Arrays.asList(nums[first], nums[left], nums[right]));
+                    left++;
+                    right--;
+                } else if (nums[left] + nums[right] > target) {
+                    right--;
+                } else {
+                    left++;
                 }
             }
         }
 
-        return result;
+        return res;
     }
+
 
     public static List<List<Integer>> version2(int[] nums) {
 
@@ -130,5 +124,7 @@ public class ThreeSum {
 
         return result;
     }
+
+
 
 }

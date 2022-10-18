@@ -68,6 +68,7 @@ public class FindInMountainArray {
         if (mountainArr.length() < 3) {
             return -1;
         }
+        // 花花！我悟了！
 
         // 二分法找到中间的顶端，然后二分法分别找两条坡
         int peek = binarySearch(0, mountainArr.length() - 1, (mid) -> mountainArr.get(mid) > mountainArr.get(mid + 1));

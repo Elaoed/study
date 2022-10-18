@@ -11,10 +11,14 @@ package org.example.algorithm.BinarySearch;
  * <p>
  * 寻找山峰的逻辑和普通二分查找的逻辑略有区别 162.Find Peak Element 1095. Find Mountain Array
  * peak可能也想用while里面 == return的方式 但是他实在是不好做
+ *
  */
 public class SimpleBinarySearch {
 
     /**
+     * 细究之下(好意思说哦
+     * mountain的right是山顶 条件是最后一个 >= 右侧数据的点
+     * 普通的[1 2 3 4 5] 其实也是找一个target 条件是最后一个 <= 右侧的数据 wuwuwu
      */
     public static int findPeak(int[] nums, int target) {
 
@@ -23,6 +27,8 @@ public class SimpleBinarySearch {
         // right永远取不到 如果是普通二分法 这里right = nums.length 因为普通二分法只有nums[mid]
         int right = nums.length - 1;
 
+        // <= 还是 < 如果这时候数组里面是[1] left == right == mid == 1的时候 mid + 1会越界
+        // 所以 + 1 所以就不能用 <= 这么想想也是 plain版本就可以用 <=
         while (left < right) {
             System.out.println("left: " + left + ", right: " + right);
             int mid = left + (right - left) / 2;
@@ -33,6 +39,7 @@ public class SimpleBinarySearch {
                 left = mid + 1;
             }
         }
+        // 如果存在mid + 1 right 不能是nums.length 会越界
         return right;
     }
 
@@ -62,7 +69,7 @@ public class SimpleBinarySearch {
 
     }
 
-    public static int binarySearch2(int[] nums, int target) {
+    public static int binarySearchPlain(int[] nums, int target) {
 
         int left = 0, right = nums.length - 1; // left和right永远可达
 
