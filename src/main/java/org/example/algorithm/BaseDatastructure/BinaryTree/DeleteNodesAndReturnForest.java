@@ -23,10 +23,8 @@ import java.util.Set;
  * 3. 整个流程从根节点开始走
  * // 怎么样把这个大框很好的整理出来 判断当前节点要不要加入返回列表 是哪一边的活儿？
  * 应该是判断两个子节点要不要加入返回列表是递归的活儿
- * 二叉树的删除应该是要带有父子关系断绝
  * ====================================== 别人的题解
  * 1. 后续遍历删除子节点，再删除根节点 呜呜呜呜 昨天晚上看了白看了
- * 2. Set容器存值方便查找，前提是每个val都是唯一的
  * 3. 如果被删节点不是叶子节点，则看他的左孩子和右孩子，把不为空的放进数组，且没被删除
  * 4. 如果处理完后root不为空，要把root节点保存到结果数组里
  */
@@ -82,53 +80,6 @@ public class DeleteNodesAndReturnForest {
         }
         dfs(root, res, set, true);
         return res;
-
-    }
-
-    // 改一改这个
-    public static List<TreeNode> delNodes2(TreeNode root, int[] to_delete) {
-        List<TreeNode> res = new ArrayList<>();
-        Set<Integer> set = new HashSet<>();
-        for (int j : to_delete) {
-            set.add(j);
-        }
-        process(root, res, set);
-        if (root != null) {
-            res.add(root);
-        }
-        // 如果root == null 是不是在process里面判断了
-        return res;
-
-    }
-
-    private static TreeNode process(TreeNode node, List<TreeNode> res, Set<Integer> set) {
-        if (node == null) {
-            return null;
-        }
-        // 后序遍历
-        TreeNode left = process(node.left, res, set);
-        TreeNode right = process(node.right, res, set);
-        node.left = left;
-        node.right = right;
-
-        boolean isDeleted = set.contains(node.val);
-        // isDeleted and fatherDeleted
-        // 才会addToRes
-        return isDeleted ? null : node;
-
-//        if (isDeleted) {
-//            if (node.left != null) {
-//                res.add(node.left);
-//            }
-//            if (node.right != null) {
-//                res.add(node.right);
-//            }
-//            // 需要解除父子关系
-//        }
-        // 当前节点要是没删 是不是就不用做任何处理 yes
-        // 死在这里了
-
-
 
     }
 

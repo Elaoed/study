@@ -1,6 +1,7 @@
 package org.example.algorithm.TwoPointer;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * 424. Longest Repeating Character Replacement
@@ -8,6 +9,45 @@ import java.util.Arrays;
  * Return the length of the longest substring containing the same letter you can get after performing the above operations.
  */
 public class LongestRepeatingCharacterReplacement {
+
+    public int secondRoundVersion(String s, int k) {
+
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+
+        // 其他边界条件可以都包含在整个表达式中
+        int left = 0;
+        HashMap<Character, Integer> counter = new HashMap<>();
+        Character mostChar = null;
+        int res = 0;
+        for (int right = 0; right < s.length(); right++) {
+            Character rightChar = s.charAt(right);
+            counter.put(rightChar, counter.getOrDefault(rightChar, 0) + 1);
+            if (mostChar == null || counter.get(rightChar) > counter.get(mostChar)) {
+                mostChar = rightChar;
+            }
+
+            // 上面是 满足条件的区间 + 新元素 不一定满足条件的
+            while (right - left + 1 - counter.get(mostChar) > k) {
+                Character leftChar = s.charAt(left);
+                int leftCharCount = counter.get(leftChar);
+                counter.put(leftChar, --leftCharCount);
+                // 当leftChar不是老大的时候 要让位
+
+                for (Character key: counter.keySet()) {
+                    if (counter.get(key) > counter.get(mostChar)) {
+                        mostChar = key;
+                    }
+                }
+                left++;
+            }
+
+            // 所以对比要在shrink之后对比
+            res = Math.max(res, right - left + 1);
+        }
+        return res;
+    }
 
     // 有了这两个值就好做了
     public static int calcMostCharAndDiffNum(String s, int left, int right) {

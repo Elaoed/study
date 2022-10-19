@@ -108,7 +108,11 @@ public class MinimumWindowSubstring {
 //    }
 
     public static void main(String[] args) {
-        System.out.println(minWindow("ADBECOEBAC", "ABC"));
+//        System.out.println(minWindow("ADBECOEBAC", "ABC"));
+        String s = "ABC";
+        System.out.println(s.indexOf('C'));
+        System.out.println(s.indexOf('C'));
+
 
     }
 }

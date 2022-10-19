@@ -1,11 +1,8 @@
 package org.example.algorithm.TwoPointer;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 /**
  * 395. Longest Substring with At Least K Repeating Characters
@@ -14,8 +11,8 @@ import java.util.stream.Collectors;
  * 核心都是一样的，有一个int longest = 0;和counter, 一旦发现counter里面被加的那个值为 < K 就要中断了, 更新longest // 错误！
  * 滑动窗口, 在这道题里面最重要的是维护当前subString中出现次数小于K的数, 当subString为空 则更新longest
  * 无法使用二分是因为不具备有二分的条件，当一个subArray满足条件的情况下 再加一个元素不一定能满足条件
- * // 当确定了窗口内所包含的字符数量时，区间重新具有了二段性质 略高级 没看懂
  * 可枚举的东西是可以利用起来的，用来减少复杂度
+ * 那啥二刷一次过 nice!
  */
 public class LongestSubstringWithAtLeastKRepeatingCharacters {
 
@@ -102,6 +99,11 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
 //        System.out.println(longestSubstring2("aaabb", 2));
         String s = "1232a3b";
         System.out.println(Arrays.toString(s.split("2|3")));
+        HashMap<Character, Integer> characterIntegerHashMap = new HashMap<>();
+        for (Map.Entry<Character, Integer> entry: characterIntegerHashMap.entrySet()) {
+
+        }
+
     }
 
 }
