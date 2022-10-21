@@ -328,6 +328,9 @@ Leetcode 698 Partition to K Equal Sum Subsets
 Leetcode 526 Beautiful Arrangement (similar to 46)
 记忆化搜索（DFS + Memoization Search）：算是动态规划的一种，递归每次返回时同时记录下已访问过的节点特征，避免重复访问同一个节点，可以有效的把指数级别的DFS时间复杂度降为多项式级别; 注意这一类的DFS必须在最后有返回值，不可以用排列组合类型的DFS方法写; for循环的dp题目都可以用记忆化搜索的方式写，但是不是所有的记忆化搜索题目都可以用for循环的dp方式写。
 Leetcode 139 Word Break II
+    也是老一套 转移方程是 if (set.contains(s.substring(i - j, i + 1)) && dp[i - j] == 1)
+    if (i >= len && word.equals(s.substring(i - len, i))) { dp[i] = dp[i] || dp[i - len]; }
+    dp = new int[length + 1] 真是妙啊 初始化值要设置好 还有涉及到String的位置是真的麻烦
 Leetcode 72 Edit Distance
 Leetcode 377 Combination Sum IV ✅
 Leetcode 1235 Maximum Profit in Job Scheduling
@@ -397,42 +400,92 @@ Leetcode 318 Count of Smaller Numbers After Self (这个题线段树、二分索
 基础知识：这里指的是用for循环方式的动态规划，非Memoization Search方式。DP可以在多项式时间复杂度内解决DFS需要指数级别的问题。常见的题目包括找最大最小，找可行性，找总方案数等，一般结果是一个Integer或者Boolean。动态规划有很多分支，暂时还没想好怎么去写这部分，后面想好了再具体写吧。
 常见题目：
     最重要的是状态转移方程 dp[i] = dp[i - 1] + dp[i - 2]; 根据关联情况决定到底要用多少的存储空间，这里n只跟n - 1, n - 2相关, 所以只要三个指针
-Leetcode 674 Longest Continuous Increasing Subsequence (接龙型dp)
 Leetcode 62 Unique Paths II
+    毫无悬念
 Leetcode 70 Climbing Stairs ✅
 Leetcode 198 House Robber ✅
+    状态转移方程 Math.max(house[n] + dp[n - 2], dp[n - 1]); 前一个是选择偷这一家，后一个是选择不偷这一家
 Leetcode 64 Minimum Path Sum ✅
     状态转移方程是 Math.min(pos[row - 1][column], pos[row][column - 1]) + grid[row][column];
     if (i == 0) else (j == 0) else {};
     二维存储空间的dp 和一维存储空间的dp 因为for for是一行行下去的，当前一行的值只和上一行有关系，所以可以直接在一行里更新
     如果遇到从左侧来的 dp[j] = dp[j - 1] + value, 如果遇到从上侧来的 dp[j] = dp[j] + value;
     这道题里是顺序覆盖，后面还会遇到需要倒序覆盖的
-Leetcode 368 Largest Divisible Subset (接龙型dp)
 Leetcode 300 Longest Increasing Subsequence (接龙型dp)
+    接龙型dp的核心解决方案是dp[i]可以表示以i结尾、最长子序列长度
+    核心在龙尾
+    其他没了 这道题记住要返回的是longest，不一定是在dp[n] 所以需要用额外的max记录
+
+Leetcode 674 Longest Continuous Increasing Subsequence (接龙型dp)
+    双指针就行，完全用不到dp 简单到让我怀疑人生
+Leetcode 368 Largest Divisible Subset (接龙型dp)
+    接龙吗 算是接龙吧
+    比较麻烦，核心是记录最大长度和从何而来 里层for循环用于查找满足条件的最长的前辈们, 最终通过maxPos往回找到从-1为止
+    len = 1, prev = -1
 Leetcode 354 Russian Doll Envelopes (接龙型dp， 300的2D版)
+    套娃 hard 有意思 但是超时，3、4题解没看下去，4主要说的是二分
+
+Leetcode 312 Burst Balloons (区间型dp) =========== not done yet
+Leetcode 1143 Longest Common Subsequence (前缀型dp)
+    前缀型，没看出来前缀 +1 大法
+    核心是用一个二维数组记录dp[][] 当text1[i] text2[j]时候两者拥有的最长子序列长度
+    if text1[i] == text2[j] ? dp[i][j] = dp[i + 1][j + 1] : dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+Leetcode 1062 Longest Repeating Substring (dp方法与longest common substring一致)
+Leetcode 718 Maximum Length of Repeated Subarray (和1062本质上一样)
+
+Leetcode 279 Perfect Squares 分割型的dp 跟普通dp不一样，普通dp只依赖相邻位置，分割型依赖的是满足分割条件的位置
+    for (int j = 1; j * j <= i; j++)
+    dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
+     因为要和自己判断最小 Arrays.fill(dp, Integer.MAX_VALUE);
+
+等值背包比较简单 dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]]; 不选或者选
+第二层forj可以从0开始 可以从nums[i - 1]开始，如果是布尔值要考虑dp[i][0]的初始化问题
+Leetcode 474 Ones and Zeros (背包问题
+判断0的数量要大于字符串需要0的数量，1的数量要大于字符串需要1的数量
+Leetcode 518 Coin Change II (01背包型)
+    外层target内层item是求组合数 阶梯 + 零钱兑换
+    外层item内层target是求排列数 经典背包
+    差别在于外层item是指定了顺序，不会重复所以叫组合，适合凑零钱的无差别情况
+
 Leetcode 256 Paint House
+    三种情况分开来讨论 prevRed, prevBlue, prevGreen. curRed = min(blue, green) + costs[i][0];
+    return min(min());
+
 Leetcode 121 Best Time to Buy and Sell Stock
 Leetcode 55 Jump Game
 Leetcode 45 Jump Game II
 Leetcode 132 Palindrome Partitioning II
-Leetcode 312 Burst Balloons (区间型dp)
-Leetcode 1143 Longest Common Subsequence (前缀型dp)
-Leetcode 1062 Longest Repeating Substring (dp方法与longest common substring一致)
-Leetcode 718 Maximum Length of Repeated Subarray (和1062本质上一样)
+
 Leetcode 174 Dungeon Game
 Leetcode 115 Distinct Subsequences
 Leetcode 72 Edit Distance
 Leetcode 91 Decode Ways
+    难是不难的，普通讨论，状态转移方程 dp[i] = dp[i - 1] + dp[i - 2]; 必须保证dp[i - 2]不为空，所以用了dp = int[length + 1]并且在01两个位置赋1
+    原理是我把当前的字符当成单独的，但是把他跟前面一个拼起来当成一个二位数
+    只是=右边的两个值是有条件的相加，当前值不为0才可以当成单独的数，两位数必须满足条件才能组成数字
+    最大的问题是0的处理，当0在最前面的时候整个题解不成立，当连续两个0在字符串中间的时候题解不成立，判断数字的时候也如此
+
 Leetcode 639 Decode Ways II
-Leetcode 712 Minimum ASCII Delete Sum for Two Strings
+    跟上题相比 核心是增加对*的处理 当一个*的时候 * 9 d* dd ** *d 四种情况
+
 Leetcode 221 Maximal Square ✅ 左上和右下
-Leetcode 1277 Count Square Submatrices with All Ones (可以使用221一样的解法)
+    这个图一画我就有点懂了嘛，重要的是dp怎么赋值，当x > 0 && y > 0 需要左边，上边，左上边三边的最小值 + 1
+    通过new int[m + 1][n + 1]的方式 来避免一部分边界的处理，这种只可以存在于多加了边界没关系的情况
+    核心判断: if (matrix[j - 1][j - 1] == '1') dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + 1;
 Leetcode 213 House Robber II
+    其实相比于直线型就多了一个限制，当第一个房间被抢的时候，不允许抢最后一个房间 that's all;
+    不需要判断，直接设置两种结果，第一个房间抢和第一个房间没抢 两个结果做比较
+    当无法判断的时候就直接自己分别计算两种情况再合
+    既然两个不能碰就不让他们见面好了
+    return Math.max(myRob(Arrays.copyOfRange(nums, 0, nums.length - 1)), myRob(Arrays.copyOfRange(nums, 1, nums.length)));
+    绝了
+
+Leetcode 712 Minimum ASCII Delete Sum for Two Strings
+Leetcode 1277 Count Square Submatrices with All Ones (可以使用221一样的解法)
 Leetcode 740 Delete and Earn
 Leetcode 87 Scramble String
 Leetcode 1140 Stone Game II
 Leetcode 322 Coin Change
-Leetcode 518 Coin Change II (01背包型)
 Leetcode 1048 Longest String Chain
 Leetcode 44 Wildcard Matching
 Leetcode 10 Regular Expression Matching
@@ -441,4 +494,4 @@ Leetcode 1235 Maximum Profit in Job Scheduling (DP + binary search)
 Leetcode 1043 Partition Array for Maximum Sum
 Leetcode 926 Flip String to Monotone Increasing
 
-// 翻转链表? 部分节点翻转多次链表?
+

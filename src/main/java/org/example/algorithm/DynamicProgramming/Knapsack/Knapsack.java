@@ -56,7 +56,7 @@ public class Knapsack {
     public static int[] value = new int[]{15, 20, 30};
     public static int itemNum = weight.length;
 
-    public static int[][] dp = new int[itemNum + 1][bagWeight + 1];
+    public static int[][] ddp = new int[itemNum + 1][bagWeight + 1];
 
     // result[i] := {w -> maxV} for first i items
     public static void dfs(int s, int curWeight, int curValue) {
@@ -75,38 +75,43 @@ public class Knapsack {
         }
     }
 
-    public static void main(String[] args) {
-        // 第一个物品?
-//        dfs(0, 0, 0);
-        dpTwoDimensionVersion();
-//        dpOneDimensionVersion();
-        System.out.println(answer);
-    }
-
 
     /**
      * 整一个模型可以用树来表示 dp(4, 4) 用4件物品来完成重量是4的组合
      * 树的模型要看是否有overlapping, 如果有的话需要用动态规划，没有的话可以用搜索
      * 二维dp是因为我们的目标是书包内物品的总价值，而变量是物品和书包的限重
      * dp的核心是解决存在overlapping子逻辑的方案，避免重复计算带来的额外空间复杂度
+     *
+     * 背包问题是一种组合优化的 NP 完全问题:有 N 个物品和容量为 W 的背包，每个物品都有 自己的体积 w 和价值 v，
+     * 求拿哪些物品可以使得背包所装下物品的总价值最大。如果限定每种物 品只能选择 0 个或 1 个，
+     * 则问题称为 0-1 背包问题;如果不限定每种物品的数量，则问题称为无 界背包问题或完全背包问题。
+     *
      */
-    public static void dpTwoDimensionVersion() {
+    public static int dpTwoDimensionVersion(int[] weight, int[] value, int packCapacity) {
+        // dp核心的内容就是确定dp中值的意思;
+        // 比如这题不存在在leetcode上背包的原题
+        // TODO: 所以dp[i][j]是<<前i件物品>>装进<<限重为j>>的背包可以获得的<<最大价值: value>>
+        int[][] dp = new int[weight.length + 1][packCapacity + 1];
+        int itemNum = weight.length;
 
-        // TODO: 所以dp[i][j]是前i件物品装进限重为j的背包可以获得的最大价值
         // 初始化是第0件物品装进限重为0-bagWeight的背包能获得的最大价值，因为没有物品装进去所以价值都为0
-        Arrays.fill(dp[0], 0); // 第一行变成0, 放0个东西那不管背包有多大，价值也是0
+        // 第一行变成0, 放0个东西那不管背包有多大，价值也是0 默认就是0
         // 之所以第一列不能设置全部是0, 第一列的意思是不管可以放几个东西，但是背包的重量是0，一般都为0的
         // 但是不排除数字世界存在重量为0，但是价值不为0
+        // int[][] 初始化默认 都是0
 
         // 包里能放几个东西和取第几个东西的关系？取前面东西的路子都被走过了 可以直接照搬，比较关心多一个空格对大家的影响
         // 遍历这个袋子里可以装几个东西, 第一次遍历的时候袋子里只能装一个东西，哎嘿
+        // 对于i, j只有dp用到时候直接用，在入参取值的时候都要 - 1
         for (int i = 1; i <= itemNum; i++) {
             // 遍历袋子里东西的数量限定的时候，怎么发挥
             int itemWeight = weight[i - 1];
-            for (int j = 0; j <= bagWeight; j++) {
+            int itemValue = value[i - 1];
+            for (int j = weight[i - 1]; j <= packCapacity; j++) {
                 // j是剩余的容量/当前包的容量 不足以拿第weight[i] 所以i 就拿i - 1的冲
                 // dp[i - 1][j] 也就是所谓的不装入第i件商品, j < itemWeight 背包无法容纳itemWeight
                 // 背包虽然无法容纳这么大个 但是按照上次的来容纳一个15还是没问题的 woc 我又悟了
+                // 放不下了
                 if (j < itemWeight) {
                     dp[i][j] = dp[i - 1][j];
                 } else {
@@ -118,8 +123,9 @@ public class Knapsack {
                     // 左边是 15， 右边那个是0 + 20, 再往下走是 左边的是15，右边的是15 + 20
                     // 急速定位上上一层的左侧，
                     // 01和完全在这里的区别是要不要i - 1
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - itemWeight] + value[i - 1]);
-                    // 这里才是拿和不拿，上面的if是不能拿
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - itemWeight] + itemValue);
+                    // 这里才是拿和不拿，上面的if是不能拿 左边是不拿 右边是拿,
+                    // j - itemWeight 当然原先包里的东西是越重越好，最重是j - itemWeight, 剩下的多的空间才可以塞itemWeight, 并且要在原先的价值的基础之上加上itemValue妙啊
                     // 妈的我悟了
                 }
             }
@@ -128,24 +134,28 @@ public class Knapsack {
         for (int[] ints : dp) {
             System.out.println(Arrays.toString(ints));
         }
-        answer = dp[itemNum][bagWeight];
-        // 等下整理下吧
+
+        return dp[itemNum][packCapacity];
 
     }
 
-    // 优化 代码告诉我们 我们只需要上一排的数据
-    // 一种是可以用每次数组替代，另外一种就是滚动数组 但是必须要reverse(只要一个int[])
-    public static void dpOneDimensionVersion() {
-        // 放的是什么？ 放的肯定不是物品的数量的，既然是bagWeight肯定是包包的重量
-        int[] dp = new int[bagWeight + 1];
-        Arrays.fill(dp, 0);
+    /**
+     * 优化的核心理念是: 只需要上一排的数据
+     * 一种是可以用每次数组替代，另外一种就是滚动数组 但是必须要reverse(只要一个int[])
+     */
+    public static int dpOneDimensionVersion(int[] weight, int[] value, int packCapacity) {
+        // 放的是什么？ 放的肯定不是物品的数量的，既然是bagWeight肯定是包包的重量 当包的容量为i的时候包里最大价值是value
+        int[] dp = new int[packCapacity + 1];
+        int itemNum = weight.length;
 
         // 两层循环还是不能少, 这个i即代表了能放几个东西，也代表了准备拿第几个东西 (双重含义所以比较难理解)
         for (int i = 1; i <= itemNum; i++) {
             // 旧的物品都用过了不管, 也不一定是用过，后面可能要拿出来的那拿出来再说
             // 拿出来也算用过派和拿出来算没用过派
             int w = weight[i - 1], v = value[i - 1];
-            for (int j = bagWeight; j >= w; j--) {
+            // 现在结果是[0, 15, 15, 20, 35]
+            // 如果改成完全背包的话结果会变成[0, 15, 30, 45, 60]
+            for (int j = packCapacity; j >= w; j--) {
                 // 之所以要倒序是因为，同一个列表反复用，每次新开始的时候，列表是上一个列表
                 // 而我们最关心上一个列表的的前面部分，如果是正序来的，前面部分就被覆盖了...
                 // 那是这样的 1. 也不是把整个列表都颠覆了，还是留下了前面w个存活
@@ -155,7 +165,7 @@ public class Knapsack {
             }
         }
         System.out.println(Arrays.toString(dp));
-        answer = dp[bagWeight];
+        return dp[packCapacity];
 
     }
 
@@ -166,15 +176,17 @@ public class Knapsack {
      *          knapsack(w[i], v[i])
      *
      */
-    public static void dpUnBoundedKnapsack() {
+    public static int dpUnBoundedTwoDimension(int[] weight, int[] value, int packCapacity) {
 
-        Arrays.fill(dp[0], 0);
+        int itemNum = weight.length;
+        int[][] dp = new int[itemNum + 1][packCapacity + 1];
 
         for (int i = 1; i <= itemNum; i++) {
             int itemWeight = weight[i - 1];
             int itemValue = value[i - 1];
-            for (int j = 0; j <= bagWeight; j++) {
+            for (int j = 0; j <= packCapacity; j++) {
                 if (j < itemWeight) {
+
                     dp[i][j] = dp[i - 1][j];
                 } else {
                     // 如果是0，1背包，在拿了新东西之后只要判断拿不拿就行了 max(dp[i - 1][j], dp[i - 1][j - itemWeight] + itemValue);
@@ -183,7 +195,13 @@ public class Knapsack {
                     // 差异仅仅是从i - 1变成i, 考虑这两者的区别
                     // 0, 1背包外层循环到这里已经是没有新物品时候的最优解，只要判断要不要放入就行
                     // 完全背包用i行的数据 上一层把没有新物品的完全背包问题完成了，这一行加了新物品之后要看放几个合适
+                    // i - 1是放i - 1件物品的时候包里最大价值，但是这里没有物品放置数量的限制，一个物品可以放无限次，所以就按照大的来
+                    // i - 1和i的区别 应该是
+                    // 核心还是要看j，j就是包有多少容量
                     dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - itemWeight] + itemValue);
+                    // dp[i - 1][j - itemWeight] + itemValue: 后面一段还算懂的，前面的i - 1
+                    // 突然就悟了 01背包和无限背包的区别在于当前的物品能不能无限放，i - 1的意思是选一个不能放当前物品的结果 然后选择要不要加入当前物品
+                    // i的意思是选一个可以放过当前物品的结果 然后可以继续放
                 }
             }
         }
@@ -191,7 +209,7 @@ public class Knapsack {
         for (int[] ints : dp) {
             System.out.println(Arrays.toString(ints));
         }
-        answer = dp[itemNum][bagWeight];
+        return dp[itemNum][packCapacity];
 
     }
 
@@ -205,20 +223,22 @@ public class Knapsack {
      * bounded是每件物品被使用n次 也就是多重背包
      * both of them can be reduce to 0 - 1 problem but low efficient
      */
-    public static void dpUnboundedKnapsackOneDimension() {
+    public static int dpUnboundedOneDimension(int[] weight, int[] value, int packCapacity) {
 
-        int[] dp = new int[bagWeight + 1];
-        Arrays.fill(dp, 0);
+        int itemNum = weight.length;
+        int[] dp = new int[packCapacity + 1];
 
-        for (int i = 1; i < itemNum; i++) {
+        for (int i = 1; i <= itemNum; i++) {
             int w = weight[i - 1], v = value[i - 1];
-            // 正向和逆向的区别在于要不要历史的小数据来支撑 TODO:
-            for (int j = w; j <= bagWeight; j++) {
+            // 正向和逆向的区别在于要不要历史的小数据来支撑
+            for (int j = w; j <= packCapacity; j++) {
+                // 需要历史数据，但是只需要w位以前的历史数据, 同样都是j - w一个是从后面往前面防止前面被覆盖，一个是直接从w开始
+                // 同样的正序和逆序的区别在于，逆序用到的数据都是上一行的数据，没有当前物品参与的最大值，而正序用的是可以有当前商品参与的结果
                 dp[j] = Math.max(dp[j], dp[j - w] + v);
             }
         }
         System.out.println(Arrays.toString(dp));
-        answer = dp[bagWeight];
+        return dp[packCapacity];
 
     }
 
@@ -232,10 +252,47 @@ public class Knapsack {
         // CoinChangeII518
     }
 
-    //
-    public static void dpMultiKnapsack() {
-        // CombinationSumIV377
+    /**
+     * 爬楼梯 每次只能爬一阶或者两阶
+     * @return
+     */
+    public static int climbStairs(int n) {
+        // dp中的每一项代表着爬n阶有几种解法
+        int[] steps = new int[]{2, 3, 5};
+        int min = Integer.MAX_VALUE;
+        for (int step: steps) {
+            min = Math.min(min, step);
+        }
+
+        int[] dp = new int[n + 1];
+        dp[0] = 1; // 重要测试dp[0] 这个无边界值是1
+        // 外侧是target 内侧是nums是排列 数量会多, 反之是组合(针对硬币这种无序的题目), 核心在于2、3，3,2两种情况会不会重复
+        // 内外循环调换的区别在于 step会执行多次
+        for (int step : steps) {
+            for (int i = 1; i <= n; i++) {
+            // 转移方程变成了 dp[n] = dp[n - steps[0]] + dp[n - steps[1]] + dp[n - steps[2]];
+            // steps里面最小的值 之前的步子都是0?
+                if (i >= step) {
+                    dp[i] += dp[i - step];
+                }
+            }
+        }
+        // 之所以这里当n = 5的时候有错误是这么三种情况 5、2 + 3、3 + 2 重复算了2/3 当外层是items的时候 实际上是固定了顺序 所以只会有一种2、3
+        // 没问题，先跨2和先跨3的确是两种不同的走法
+        System.out.println(Arrays.toString(dp));
+        return dp[n];
+
     }
 
+
+
+    public static void main(String[] args) {
+//        int answer = dpTwoDimensionVersion(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
+//        int answer = dpOneDimensionVersion(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
+//        int answer = dpUnBoundedTwoDimension(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
+//        int answer = dpUnboundedOneDimension(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
+//        System.out.println(answer);
+        System.out.println(climbStairs(5));
+    }
 
 }
