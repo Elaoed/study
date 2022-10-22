@@ -287,7 +287,7 @@ public class Knapsack {
 
 
     public static void main(String[] args) {
-//        int answer = dpTwoDimensionVersion(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
+        int answer = dpTwoDimensionVersion(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
 //        int answer = dpOneDimensionVersion(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
 //        int answer = dpUnBoundedTwoDimension(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
 //        int answer = dpUnboundedOneDimension(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);

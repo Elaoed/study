@@ -426,12 +426,26 @@ Leetcode 354 Russian Doll Envelopes (接龙型dp， 300的2D版)
     套娃 hard 有意思 但是超时，3、4题解没看下去，4主要说的是二分
 
 Leetcode 312 Burst Balloons (区间型dp) =========== not done yet
+
+//  前缀型优点难搞啊
 Leetcode 1143 Longest Common Subsequence (前缀型dp)
     前缀型，没看出来前缀 +1 大法
     核心是用一个二维数组记录dp[][] 当text1[i] text2[j]时候两者拥有的最长子序列长度
-    if text1[i] == text2[j] ? dp[i][j] = dp[i + 1][j + 1] : dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+    if text1[i] == text2[j] ? dp[i][j] = dp[i - 1][j - 1] + 1 : dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+    这题是不需要连续的 所以后面是一个max
+
+Leetcode 712 Minimum ASCII Delete Sum for Two Strings
+    两字字符串型的dp[][]装的一定是当s1在0-i地位置，s2在0-j的位置两个有共同的子串
+    解决了我最担心的隔了一个的问题 没说要连续的主要是 连续就更好办 这种方法是可以应对不连续的
+    初始化首行和首列分别为s1,s2的ASCII，if(c1[i - 1] == c2[i - 1]) dp[i][j] = dp[i - 1][j - 1]; 现在是最小值，这时候不会做删减所以被删的值不会增加
+    dp[i][j] = Math.min(dp[i - 1][j] + c1[i - 1], dp[i][j - 1] + c2[j -1]); // 左边是删左边，右边是删右边
+    不过还是不知道为啥这样可以，主要心里有一根刺，会不会这个地方不应该删emmm 或者只通过大小来删莽了一点 不管了
+
 Leetcode 1062 Longest Repeating Substring (dp方法与longest common substring一致)
+    这题是需要连续的，所以if(c[i - 1] != c[j - 1]): dp[i][j] = 0;
+
 Leetcode 718 Maximum Length of Repeated Subarray (和1062本质上一样)
+    一毛一样，是需要连续的子区间
 
 Leetcode 279 Perfect Squares 分割型的dp 跟普通dp不一样，普通dp只依赖相邻位置，分割型依赖的是满足分割条件的位置
     for (int j = 1; j * j <= i; j++)
@@ -441,24 +455,37 @@ Leetcode 279 Perfect Squares 分割型的dp 跟普通dp不一样，普通dp只�
 等值背包比较简单 dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]]; 不选或者选
 第二层forj可以从0开始 可以从nums[i - 1]开始，如果是布尔值要考虑dp[i][0]的初始化问题
 Leetcode 474 Ones and Zeros (背包问题
-判断0的数量要大于字符串需要0的数量，1的数量要大于字符串需要1的数量
+    判断0的数量要大于字符串需要0的数量，1的数量要大于字符串需要1的数量
+
+// 今晚好好把这两题高了就干别的去了 两道题都是完全背包啊
+Leetcode 322 Coin Change
+    完全背包 因为是求最小值 先fill amount + 1; 为了不关心顺序把coin放在外面; 因为是完全背包 所以第二层是正序 可以无限用当前的东西
+    求组成target最少的硬币数量
+    dp[j] = Math.min(dp[j], dp[j - coin] + 1);
 Leetcode 518 Coin Change II (01背包型)
+    是组合数量 就是有多少种组合
     外层target内层item是求组合数 阶梯 + 零钱兑换
     外层item内层target是求排列数 经典背包
     差别在于外层item是指定了顺序，不会重复所以叫组合，适合凑零钱的无差别情况
+    dp[i] += dp[i - coin];
 
 Leetcode 256 Paint House
     三种情况分开来讨论 prevRed, prevBlue, prevGreen. curRed = min(blue, green) + costs[i][0];
-    return min(min());
+    return min(min()); 和House Robber II有那么一点点像
 
 Leetcode 121 Best Time to Buy and Sell Stock
+    无语 什么dp 正常遍历一遍就行了 主要是过去的最小值永远只有一个且会随着时间改变
 Leetcode 55 Jump Game
-Leetcode 45 Jump Game II
-Leetcode 132 Palindrome Partitioning II
+    就也不需要dp 一个farest指针就够了还能往前走几步 if (farest == 0 && i < nums.length - 1) return false;
 
-Leetcode 174 Dungeon Game
-Leetcode 115 Distinct Subsequences
-Leetcode 72 Edit Distance
+Leetcode 45 Jump Game II
+    也是蛮简单的dp 这个主要边界值麻烦 dp中的内容代表走到当前这一格最短需要几步 if (nums[j - 1] + j < i) continue; dp[i] = Math.min(dp[i], dp[j] + 1);
+Leetcode 132 Palindrome Partitioning II
+    hard题 不想写了 写一下思路吧 为了避免每次都去判断目标字符串是否是回文，可以建立一个isParlindrome[][]去记录[i, j]的子串是否是回文
+    i == j / cs[i] != cs[j] / i - j == 1 || isPalindrome[i + 1][j - 1];
+    下面只是单纯的处理回文和Math.min(dp[i], dp[j] + 1);
+    s.charAt 可以用 s.toCharArray() 转换成char[]来处理
+
 Leetcode 91 Decode Ways
     难是不难的，普通讨论，状态转移方程 dp[i] = dp[i - 1] + dp[i - 2]; 必须保证dp[i - 2]不为空，所以用了dp = int[length + 1]并且在01两个位置赋1
     原理是我把当前的字符当成单独的，但是把他跟前面一个拼起来当成一个二位数
@@ -468,10 +495,14 @@ Leetcode 91 Decode Ways
 Leetcode 639 Decode Ways II
     跟上题相比 核心是增加对*的处理 当一个*的时候 * 9 d* dd ** *d 四种情况
 
-Leetcode 221 Maximal Square ✅ 左上和右下
+Leetcode 221 Maximal Square
     这个图一画我就有点懂了嘛，重要的是dp怎么赋值，当x > 0 && y > 0 需要左边，上边，左上边三边的最小值 + 1
     通过new int[m + 1][n + 1]的方式 来避免一部分边界的处理，这种只可以存在于多加了边界没关系的情况
     核心判断: if (matrix[j - 1][j - 1] == '1') dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + 1;
+
+Leetcode 1277 Count Square Submatrices with All Ones (可以使用221一样的解法)
+    我就感觉哪里做过 把01的matrix转化为dp是以当前这个位置为右下角端点，能有几个正方形，上一题是边多长，其实一个意思
+
 Leetcode 213 House Robber II
     其实相比于直线型就多了一个限制，当第一个房间被抢的时候，不允许抢最后一个房间 that's all;
     不需要判断，直接设置两种结果，第一个房间抢和第一个房间没抢 两个结果做比较
@@ -480,18 +511,27 @@ Leetcode 213 House Robber II
     return Math.max(myRob(Arrays.copyOfRange(nums, 0, nums.length - 1)), myRob(Arrays.copyOfRange(nums, 1, nums.length)));
     绝了
 
-Leetcode 712 Minimum ASCII Delete Sum for Two Strings
-Leetcode 1277 Count Square Submatrices with All Ones (可以使用221一样的解法)
 Leetcode 740 Delete and Earn
-Leetcode 87 Scramble String
-Leetcode 1140 Stone Game II
-Leetcode 322 Coin Change
-Leetcode 1048 Longest String Chain
+    转化题意为House Robber.
+
+==== hard晚点刷吧
+Leetcode 87 Scramble String 困难
+Leetcode 174 Dungeon Game
+Leetcode 115 Distinct Subsequences
+Leetcode 72 Edit Distance
+
 Leetcode 44 Wildcard Matching
 Leetcode 10 Regular Expression Matching
 Leetcode 32 Longest Valid Parentheses
+    可以通过栈的方式找到所有的下标设置为1，然后找到最长连续为1的长度就是答案
+    核心dp[i]是以i结尾的最长有效括号 如果是左括号为0，如果是有括号又分左边是左括号还是右括号
+    dp[i] = dp[i-1] + 2 + dp[i-dp[i-1]-2]; 基本不会遇到 遇到的话就把思路写一下
+
+Leetcode 1140 Stone Game II 题意太复杂
+Leetcode 1048 Longest String Chain
 Leetcode 1235 Maximum Profit in Job Scheduling (DP + binary search)
 Leetcode 1043 Partition Array for Maximum Sum
 Leetcode 926 Flip String to Monotone Increasing
 
-
+字节题目:
+ByteDance1
