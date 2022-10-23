@@ -29,14 +29,16 @@ public class TrimABinarySearchTree {
             return null;
         }
 
+        // 如果当前节点(根节点)比low还要小，说明左侧全部都是要切除的
         if (node.val < low) {
             return trimBST(node.right, low, high);
         }
 
+        // 说明右侧全部都是要切除的
         if (node.val > high) {
             return trimBST(node.left, low, high);
         }
-
+        // 到这里root节点可以被保留 检查他的左右子树的修剪情况
         node.left = trimBST(node.left, low, high);
         node.right = trimBST(node.right, low, high);
 

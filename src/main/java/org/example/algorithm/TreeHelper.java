@@ -1,9 +1,13 @@
 package org.example.algorithm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class TreeHelper {
+
+    public static List<Integer> col = new ArrayList<>();
 
     public static TreeNode makeTree() {
         TreeNode root = new TreeNode(10);
@@ -79,6 +83,31 @@ public class TreeHelper {
             return true;
         }
         return node.left == null && node.right == null;
+    }
+
+    /**
+     * 前中后序遍历，记住后续遍历不是右序遍历，永远都是拿的最左边的
+     *    2
+     * 4    5 永远都是作用在这么一个小三角形里面，前序是245、中序是425、后续是452
+     * 中序和后序遍历的一个好处是可以获取从孩子那边拿过来的返回值
+     * 还有一个层序遍历，就是每一层每一层的遍历，通常是用在bfs中, bfs不需要层数的话就可以不需要for循环
+     * DFS就是不断深入下去，在树这边就是指的前中后序遍历
+     * @param root
+     */
+    public static void traverse(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        traverse(root.left);
+        traverse(root.right);
+        col.add(root.val);
+    }
+
+    public static void main(String[] args) {
+        TreeNode treeNode = makeTree(1, 2, 3, 4, 5, 6);
+        traverse(treeNode);
+        System.out.println(col);
+
     }
 
 }

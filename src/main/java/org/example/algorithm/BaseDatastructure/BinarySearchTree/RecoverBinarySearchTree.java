@@ -34,9 +34,6 @@ public class RecoverBinarySearchTree {
     private int node1Direction;
     private int node2Direction;
 
-
-
-
     public void recoverTree(TreeNode root) {
 
         if (root.left == null && root.right == null) {
@@ -47,8 +44,6 @@ public class RecoverBinarySearchTree {
             // 这个root出问题了还是这个right出问题了？
 
         }
-
-
 
     }
 

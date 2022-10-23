@@ -14,8 +14,8 @@ import org.example.algorithm.TreeTypeNode;
  * 所以平衡二叉树是一种二叉查找树、也是一种完全二叉树，是一种完全二叉查找树 ::)
  * 其实就也不难
  *
- * 考虑二叉查找树是否允许插入重复值 注意: 二叉查找树不是满二叉树，也不是完全二叉树， 甚至可能是链表
- * 二叉树的删除涉及到拼接，所以都会通过递归把自己的的儿子们组成一颗心树 然后给到爷爷拼接
+ * 考虑二叉查找树是否允许插入重复值 注意: 二叉查找树不是满二叉树，也不是完全二叉树，甚至可能是链表
+ * 二叉树的删除涉及到拼接，所以都会通过递归把自己的的儿子们组成一颗新树 然后给到爷爷拼接
  *
  */
 @ToString
@@ -101,19 +101,19 @@ public class BaseSearchTree<E extends Comparable<E>> {
             if (node.left == null && node.right == null) {
                 return null;
             }
-            // 如何把下面的节点提上来
-            // 分只有一个节点和有两个节点
-            if (node.left != null && node.right != null) {
-                // 组成一颗新树返回
-                // 需要找一个备胎，备胎的话需要找目标左树的最大值 或者目标右树的最小值
-                TreeTypeNode<E> successorRight = removeMin(node.right); // 这个remove相当于pop
-//                TreeTypeNode<E> successorLeft = removeMax(node.left);
-                node.right = successorRight;
-                return node;
+            // 如何把下面的节点提上来 组成一颗新树返回
+            // size--; node.left = null, node.right = null;
+            // 只有一个节点
+            if (node.left == null || node.right == null) {
+                return node.left == null ? node.right : node.left;
             }
 
-            // size--; node.left = null, node.right = null;
-            return node.left == null ? node.right : node.left;
+            // 有两个节点
+            // 需要找一个备胎，备胎的话需要找目标左树的最大值 或者目标右树的最小值
+            TreeTypeNode<E> successorRight = removeMin(node.right); // 这个remove相当于pop
+//                TreeTypeNode<E> successorLeft = removeMax(node.left);
+            node.right = successorRight;
+            return node;
 
         }
 
