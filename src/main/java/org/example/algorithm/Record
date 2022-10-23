@@ -306,20 +306,23 @@ Leetcode 572 Subtree of Another Tree
 二叉查找树和完全二叉树的区别，完全二叉树只能保证父比子大且父子的关系一定是i, 2 * i, 2 * i + 1;
 二叉搜索树（BST）：BST特征：中序遍历为单调递增的二叉树，换句话说，根节点的值比左子树任意节点值都大，比右子树任意节点值都小，
 增删查改均为O（h）复杂度，h为树的高度；注意不是所有的BST题目都需要递归，有的题目只需要while循环即可
-Leetcode 99 RecoveBinarySearchTree 困难的可以放一放
+Leetcode 99 Recove Binary SearchTree 困难的可以放一放
 Leetcode 230 Kth Smallest element in a BST
+    直接中序遍历不就行了，都加到集合中。巨简单 不超过十行代码，可以优化空间，不需要集合，就只要两个变量。
+    o--k1 == 0: ans = node.val return;
+    还有一个迭代版本的 需要一个Queue = LinkedList<>()
+Leetcode 669 Trim a Binary Search Tree
+    done: 很简单 判断当前值和左右边界的关系，如果超出边界，就可以只处理另外一边(相当于抛弃当前节点); 不然就可以保留节点，继续处理左右子树
 Leetcode 98 Validate Binary Search Tree
 Leetcode 270 Closest Binary Search Tree Value
 Leetcode 235 Lowest Common Ancestor of a Binary Search Tree
-Leetcode 669 Trim a Binary Search Tree
-    done: 很简单 判断当前值和左右边界的关系，如果超出边界，就可以只处理另外一边(相当于抛弃当前节点); 不然就可以保留节点，继续处理左右子树
 
 Leetcode 700 Search in a Binary Search Tree
 Leetcode 108 Convert Sorted Array to Binary Search Tree
 Leetcode 333 Largest BST Subtree (与98类似)
 Leetcode 285 Inorder Successor in BST (I, II)
 基于图的DFS: 和BFS一样一般需要一个set来记录访问过的节点，避免重复访问造成死循环; Word XXX 系列面试中非常常见，例如word break，word ladder，word pattern，word search。
-Leetcode 341TreeNode root, TreeNode target, int k Flatten Nested List Iterator (339 364)
+Leetcode 341 TreeNode root, TreeNode target, int k Flatten Nested List Iterator (339 364)
 Leetcode 394 Decode String
 Leetcode 51 N-Queens (I II基本相同)
 Leetcode 291 Word Pattern II (I为简单的Hashmap题)
