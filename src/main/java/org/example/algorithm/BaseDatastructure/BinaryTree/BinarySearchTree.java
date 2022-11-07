@@ -9,7 +9,7 @@ import java.util.Stack;
 /**
  *  对于二叉树这种题目就很容易 基本上都是 每一个节点有些什么样的考虑 从上还是从下
  */
-public class BaseBinaryTree {
+public class BinarySearchTree {
 
     // 除了递归别无他法
     // 104 Maximum Depth of Binary Tree (Easy)
@@ -88,10 +88,11 @@ public class BaseBinaryTree {
         System.out.println(isBalancedTree(root));
         System.out.println("================> preorder traversal recursive version");
 //        root = TreeHelper.makeTree(1, null, 2, 3);
+        // 10 8 6 4 null 2
         root = TreeHelper.makeTree();
         preorderTraversal(root);
         System.out.println("================> preorder traversal iteration version");
-        preorderTraversalIterVersion(root);
+//        preorderTraversalIterVersion(root);
 
     }
 }

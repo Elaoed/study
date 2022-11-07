@@ -35,17 +35,10 @@ import java.util.Arrays;
  * <p>
  * 背包一定都是>= <=不要忘记等于号
  * <p>
- * dp表格如何画 第一行作为表头代表target的递增，第一列作为表头代表nums数量的增加 // 回头再吸收一下花花的方法
- * ==============
- * ==============
- * ==============
- * 或许二维的方案更容易理解和拓展？
- * 把搜索的状态压缩
  * w要控制在一定范围之内 也就是weight? W(totalWeight) < 10^6
  * n >> 20
  * dp[i][j] = max(dp[i - 1][j - w[i] + v[i]), w[j] <= j <= W
- * 状态压缩
- * 可用可不用
+ * 状态压缩 * 可用可不用
  * Time complexity:O(NW)
  * Space complexity: O(NW) -> O(W)
  */
@@ -153,9 +146,10 @@ public class Knapsack {
             // 旧的物品都用过了不管, 也不一定是用过，后面可能要拿出来的那拿出来再说
             // 拿出来也算用过派和拿出来算没用过派
             int w = weight[i - 1], v = value[i - 1];
-            // 现在结果是[0, 15, 15, 20, 35]
-            // 如果改成完全背包的话结果会变成[0, 15, 30, 45, 60]
-            for (int j = packCapacity; j >= w; j--) {
+            // 0， 1 背包版本[0, 15, 15, 20, 35]
+//            for (int j = packCapacity; j >= w; j--) {
+            // 完全背包版本[0, 15, 30, 45, 60]
+            for (int j = w; j <= packCapacity; j++) {
                 // 之所以要倒序是因为，同一个列表反复用，每次新开始的时候，列表是上一个列表
                 // 而我们最关心上一个列表的的前面部分，如果是正序来的，前面部分就被覆盖了...
                 // 那是这样的 1. 也不是把整个列表都颠覆了，还是留下了前面w个存活
@@ -287,12 +281,12 @@ public class Knapsack {
 
 
     public static void main(String[] args) {
-        int answer = dpTwoDimensionVersion(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
-//        int answer = dpOneDimensionVersion(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
+//        int answer = dpTwoDimensionVersion(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
+        int answer = dpOneDimensionVersion(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
 //        int answer = dpUnBoundedTwoDimension(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
 //        int answer = dpUnboundedOneDimension(new int[]{1, 3, 4}, new int[]{15, 20, 30}, 4);
 //        System.out.println(answer);
-        System.out.println(climbStairs(5));
+//        System.out.println(climbStairs(5));
     }
 
 }

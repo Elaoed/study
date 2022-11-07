@@ -32,7 +32,8 @@ public class SimpleBinarySearch {
         while (left < right) {
             System.out.println("left: " + left + ", right: " + right);
             int mid = left + (right - left) / 2;
-            // 当前mid可能是山峰 所以mid不用 - 1
+            // 当前mid可能是山峰 所以mid不用 - 1 普通二分法的条件是 nums[mid] == target
+            // 只要满足mid > mid + 1 说明mid还在右坡，不然就在左坡
             if (nums[mid] > nums[mid + 1]) {
                 right = mid;
             } else { // 当前mid不可能是山峰 而且动只能让left动，只有right可以等于mid
@@ -44,13 +45,12 @@ public class SimpleBinarySearch {
     }
 
 
-    // 1 3 5
-    // 1 3 5 7
-    // 左开右闭区间 不知道是不是这种适用范围更广
+    // 1 3 5 // 1 3 5 7 左开右闭区间 不知道是不是这种适用范围更广
     public static int binarySearch(int[] nums, int target) {
         // 一种是右边永远取不到系列，一种是取得到系列，取不到的容易判断
         // right和判断条件一定要一致，要么right都能取到，要么right都取不到
         // 当right = nums.length的时候 (left + right) / 2 可能
+        // 如果必在，那 == target return的方式更好，但是为了兼容性，我们就考虑不在的情况
         int left = 0, right = nums.length;
         while (left < right) {
             int mid = left + (right - left) / 2;
@@ -63,12 +63,15 @@ public class SimpleBinarySearch {
                 left = mid + 1;
             }
         }
-        // 右边永远取不到的情况下直接拿左边就好了
-        return right; // 果然这里返回left - 1 和right - 1就没有区别了
-        // 但是这种情况下 调用方就不知道到底取到没有 = = 需要调用方配合判断nums[res] == target
+        // 右边永远取不到且left == right; 目标一定是left/right - 1;
+        return left - 1; // 果然这里返回left和right - 1就没有区别了
+        // 但是这种情况下 调用方就不知道到底取到没有 = = 需要调用方配合判断nums[res] == target 对
 
     }
 
+    /**
+     * 没啥参考价值了，上面那个更advance
+     */
     public static int binarySearchPlain(int[] nums, int target) {
 
         int left = 0, right = nums.length - 1; // left和right永远可达
@@ -94,24 +97,24 @@ public class SimpleBinarySearch {
 
     public static void main(String[] args) {
         System.out.println(binarySearch(new int[]{1, 3, 5}, 1));  // 0
-        System.out.println(binarySearch(new int[]{1, 3, 5}, 3));  // 1
-        System.out.println(binarySearch(new int[]{1, 3, 5}, 5));  // 2
-        System.out.println(binarySearch(new int[]{1, 3, 5}, 0));  // 0
-        System.out.println(binarySearch(new int[]{1, 3, 5}, 2));  // 1
-        System.out.println(binarySearch(new int[]{1, 3, 5}, 4));  // 2
-        System.out.println(binarySearch(new int[]{1, 3, 5}, 6));  // 3
-        // 如果target不在列表里面 二分法最后指针(lastIndex)的位置会在大于target的第一个数上，大于最后一个数的指针 = nums.length + 1 针对于 left <= right的二分法模板
-
-        System.out.println("=================> 入参单数个 done");
-        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 1));  // 0
-        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 3));  // 1
-        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 5));  // 2
-        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 7));  // 3
-        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 0));  // 0
-        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 2));  // 1
-        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 4));  // 2
-        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 6));  // 3
-        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 8));  // 4
-        System.out.println("=================> 入参偶数个 done");
+//        System.out.println(binarySearch(new int[]{1, 3, 5}, 3));  // 1
+//        System.out.println(binarySearch(new int[]{1, 3, 5}, 5));  // 2
+//        System.out.println(binarySearch(new int[]{1, 3, 5}, 0));  // 0
+//        System.out.println(binarySearch(new int[]{1, 3, 5}, 2));  // 1
+//        System.out.println(binarySearch(new int[]{1, 3, 5}, 4));  // 2
+//        System.out.println(binarySearch(new int[]{1, 3, 5}, 6));  // 3
+//        // 如果target不在列表里面 二分法最后指针(lastIndex)的位置会在大于target的第一个数上，大于最后一个数的指针 = nums.length + 1 针对于 left <= right的二分法模板
+//
+//        System.out.println("=================> 入参单数个 done");
+//        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 1));  // 0
+//        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 3));  // 1
+//        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 5));  // 2
+//        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 7));  // 3
+//        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 0));  // 0
+//        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 2));  // 1
+//        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 4));  // 2
+//        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 6));  // 3
+//        System.out.println(binarySearch(new int[]{1, 3, 5, 7}, 8));  // 4
+//        System.out.println("=================> 入参偶数个 done");
     }
 }

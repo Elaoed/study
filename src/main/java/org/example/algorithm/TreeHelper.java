@@ -107,6 +107,8 @@ public class TreeHelper {
         TreeNode treeNode = makeTree(1, 2, 3, 4, 5, 6);
         traverse(treeNode);
         System.out.println(col);
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
 
     }
 

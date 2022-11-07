@@ -50,7 +50,8 @@ public class ListHelper {
             slow = slow.next;
         }
 
-        // 举个例子 如果是1/2 -> 5/10 当10是null的时候只有九个元素，就选slow第五个，前四后五，如果10有值的话，就选第六个元素，总归前面的链条是要比后面的长的
+        // 举个例子 如果是1/2 -> 5/10 当10是null的时候只有九个元素，就选slow第五个，前四后五，如果10有值的话，就选第六个元素
+        // 总归前面的链条是要比后面的长的 **
         return fast == null ? slow : slow.next;
     }
 
@@ -64,24 +65,20 @@ public class ListHelper {
      * @return
      */
     public static ListNode reverseList(ListNode head) {
+
         if (head == null) {
             return null;
         }
-
-        ListNode prev = null;
-        ListNode curr = head;
-        ListNode next = curr.next;
-        while (curr != null) {
-            curr.next = prev;
-            prev = curr;
-            curr = next;
-            if (next != null) {
-                next = next.next;
-            }
+        // 两个核心的字段
+        ListNode dummy = new ListNode(0);
+        ListNode next;
+        while (head != null) {
+            next = head.next;
+            head.next = dummy.next;
+            dummy.next = head;
+            head = next;
         }
-
-//        return curr; // return null
-        return prev; // lastNode
+        return dummy.next;
 
     }
 
@@ -91,37 +88,58 @@ public class ListHelper {
     // 头插法三个字给我了灵感
     public static ListNode reverseLinkAdvance(ListNode head, int left, int right) {
 
-        // 有dummy的写法
+        if (head == null) {
+            return null;
+        }
+
+        // 有dummy的写法 如果从0开始翻转就没东西了 所以dummy必须是new的对象
         ListNode dummy = new ListNode(0, head);
-        ListNode prev = dummy;
         // 获取endNodeOfFirstList
-        for (int i = 1; i < left; i++) {
-            prev = prev.next;
+        int count = left;
+        // 取决于left是从0开始的吗
+        while (--count > 0) {
+            dummy = dummy.next;
         }
-//        int count = left;
-//        while (--count > 0) {
-//            prev = prev.next;
-//        }
+        // 记录要翻转的首节点
+        ListNode cur = dummy.next;
+        // dummy.next需要到right后面才行
+        count = right - left + 1;
+        while (--count >= 0) {
+            // 保持dummy
+            dummy.next = dummy.next.next;
+        }
+
         // startNodeOfSecondList
-        head = prev.next;
-        ListNode next = head.next; // next是第left这个节点
-        for (int i = left; i < right; i++) {
-            head.next = next.next;
-            next.next = prev.next;
-            prev.next = next; // 应该核心是这一行，把新的头插入到prev后面
-            next = head.next;
-            // prev是不变的永远是endNodeOfFirstList, next是最新要头插的节点
-            // 1, 2, 3, 4, 5 - 2后面连4，1后面连3，3后面连2
-            // before: prev head next. after: prev next head
-            // 还要遵循从后往前这样才不会搞乱指针所以是head.next = next, next.next = head, prev.next = next
-            // 相当于是吧i个元素后面的元素插到头上去 ⭐️⭐️⭐️ 就是这一句
-            // 这种方式完全就省了laterHead的情况
-            // 全链路翻转的时候prev = dummy, laterHead = null;
-            // 因为是头插法，所以操作的次数应该就是right - left，有两个元素就只操作一次
-            // prev永远保持不动，head永远是新链表的head，next在一个个的往下走 × head永远是next的上一家，用来承载next的，next插入的位置不是prev和head之间，而是prev和prev.next之间
-            //
+        // 2 - 1 = 1 其实要翻转两个
+        ListNode next;
+        count = right - left + 1;
+        while (--count >= 0) {
+            next = cur.next;
+            cur.next = dummy.next;
+            dummy.next = cur;
+            cur = next;
         }
-        return dummy.next; // 仿真头的各种作用
+        return left == 1 ? dummy.next : head;
+
+//        for (int i = left; i < right; i++) {
+//            head.next = next.next;
+//            next.next = prev.next;
+//            prev.next = next; // 应该核心是这一行，把新的头插入到prev后面
+//            next = head.next;
+//            // prev是不变的永远是endNodeOfFirstList, next是最新要头插的节点
+//            // 1, 2, 3, 4, 5 - 2后面连4，1后面连3，3后面连2
+//            // before: prev head next. after: prev next head
+//            // 还要遵循从后往前这样才不会搞乱指针所以是head.next = next, next.next = head, prev.next = next
+//            // 相当于是吧i个元素后面的元素插到头上去 ⭐️⭐️⭐️ 就是这一句
+//            // 这种方式完全就省了laterHead的情况
+//            // 全链路翻转的时候prev = dummy, laterHead = null;
+//            // 因为是头插法，所以操作的次数应该就是right - left，有两个元素就只操作一次
+//            // prev永远保持不动，head永远是新链表的head，next在一个个的往下走 × head永远是next的上一家，用来承载next的，next插入的位置不是prev和head之间，而是prev和prev.next之间
+//            //
+//        }
+        // dummy是作为需要翻转对象的前一个哨兵节点存在, 初始化dummy.next = 尾部
+        // 还需要一个真正的头节点
+//        return dummy.next; // 仿真头的各种作用
 
     }
 
@@ -142,12 +160,7 @@ public class ListHelper {
                 l2 = l2.next;
             }
         }
-        if (l1 != null) {
-            tail.next = l1;
-        }
-        if (l2 != null) {
-            tail.next = l2;
-        }
+        tail.next = l1 == null ? l2 : l1;
 
         return dummy.next;
     }
