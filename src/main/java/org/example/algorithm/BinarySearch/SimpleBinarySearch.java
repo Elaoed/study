@@ -12,6 +12,8 @@ package org.example.algorithm.BinarySearch;
  * 寻找山峰的逻辑和普通二分查找的逻辑略有区别 162.Find Peak Element 1095. Find Mountain Array
  * peak可能也想用while里面 == return的方式 但是他实在是不好做
  *
+ * 那啥二分法分三种，寻找不重复节点，寻找左边界、右边界
+ *
  */
 public class SimpleBinarySearch {
 

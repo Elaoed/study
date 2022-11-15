@@ -2,7 +2,6 @@ package org.example.algorithm.other;
 
 public class ByteDance1 {
 
-
     public static int rotate(int pos, int n) {
 
         return pos < n ? pos: pos - n;

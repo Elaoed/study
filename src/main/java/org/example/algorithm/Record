@@ -77,6 +77,8 @@ Leetcode 160. Intersection of Two Linked Lists
 
 Leetcode 141. Linked List Cycle (Linked List Cycle II)
     快慢指针或者哈希表 因为结束条件是node = node
+    II 精妙绝伦的数学  f = 2s, f = s + nb; s = nb, f = 2nb;
+    一共分别走了n个环周长和2n个环周长，加上a就相遇了 + 1才相遇
 
 Leetcode 328. Odd Even Linked List
     两个dummy头 while中四行代码
@@ -109,7 +111,15 @@ Leetcode 1249. Minimum Remove to Make Valid Parentheses
 Leetcode 735. Asteroid Collision
 Hashmap/ Hashset题目： 8题
 Leetcode 1. Two Sum
-Leetcode 146. LRU Cache 要求默写核心是双向链表 + 哈希 处理头尾之间链接的问题
+Leetcode 146. LRU Cache 要求默写核心是双向链表(head, tail 其中tail存储最近使用的) + 哈希
+    还有一个核心是Node节点要自己实现，包括next和prev
+    LinkedList之所以只有头尾是因为他的Node是内部包装的结构不对外透出，所以没法找到某个节点进行next和prev
+    我昨天懵也是懵在这里 为什么LinkedList好像从来没听过prev和next 但是明明是双向链表啊 啊 啊
+    LFU可能就是一个跳表结构了
+
+    removeInList: 两步走 node != head, node != tail 处理头尾之间链接的问题
+    put: cache.put + addLast
+
 Leetcode 128. Longest Consecutive Sequence
 Leetcode 73. Set Matrix Zeroes
 Leetcode 380. Insert Delete GetRandom O(1)
@@ -154,7 +164,7 @@ Leetcode 895. Maximum Frequency Stack [hard]
     配合第三个freq -> Stack两者之间的hashMap，通过stack.size()就能弥补断层
     有遇到这种情况还可以通过sequenceNumber++的方式在入栈的时候就把他的序号带进去，方便进行直接排序
 
-二分法（Binary Search）：
+（Binary Search）：
 基础知识：二分法是用来解法基本模板，时间复杂度logN；常见的二分法题目可以分为两大类，显式与隐式，
 即是否能从字面上一眼看出二分法的特点：要查找的数据是否可以分为两部分，前半部分为X，后半部分为O
 总结二分法的模板，以及注意点。二分法模版分成递归法和迭代法 测试的时候就拿example上 好好推演一遍
@@ -293,7 +303,7 @@ FS优先搜索:
         通过stack/queue和正序倒序可以做到比较灵活 可以替换掉递归结构 递归的消耗比较大 通过queue.size保证这一层的拿完不会拿到下一层
 
     深度优先搜索最明显的就是有一个map记录走过的路劲，先一条路走到底直到不满足条件就退回来换一边，递归和回溯
-    DFS适合目标明确，BFS适合大范围查找
+    DFS适合目标明确，BFS适合大范围查找 BFS空间复杂度高，专门用作寻找最短路劲
     递归的缺陷可以用
 宽度优先搜索（BFS）：面试中最常考的 20题
 基础知识：
@@ -426,12 +436,82 @@ Leetcode 694 Number of Distinct Islands
 Leetcode 131 Palindrome Partitioning
 基于排列组合的DFS: 其实与图类DFS方法一致，但是排列组合的特征更明显
 Leetcode 17 Letter Combinations of a Phone Number
-Leetcode 39 Combination Sum（I, II, III相似， IV为动态规划题目）
-Leetcode 78 Subsets （I, II 重点在于如何去重）
-Leetcode 46 Permutation (I, II 重点在于如何去重)
-Leetcode 77 Combinations (I, II 重点在于如何去重)
-Leetcode 698 Partition to K Equal Sum Subsets
+
+// 元素无重不可复选、元素无重可以复选、元素有重不可复选
+// 并且组合的话需要start去控制，按照数的模型就是1被第一棵树都占据了
+// start = i + 1;
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 1,1元素无重不可复选 & 组合 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Leetcode 78 SubsetsI 组合 & 元素无重不可复选 基本款 1,1
+    需要剪枝，剪枝囊括在0, start, i里面
+    只要关注树的模型，会发现只有第一棵树有1，因为第一棵树把所有的情况都枚举光了，所以可以用start来控制
+    对于二叉树来说有前中后序遍历，但是对于列表来说只有前后序遍历, 前序和后序的区别在于for循环的前面还是后面处理逻辑
+    只要对这一整棵树进行前序遍历就行了，把所有的集合加入结果集中，因为没有长度限制，每一个都要收集，如果只要收集某一层就在收集之前加入判断条件
+Leetcode 216 Combination SumIII:
+    先写框架，分析是组合还是排序，如果是组合的话start必用，排序就可以不用了
+    判断结束条件，targetLeft == 0 && col.size() == k
+Leetcode 77 CombinationsI  组合 元素无重无可复选 子集款
+    // 在上一题的基础之上加上条件 == k.
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 1,1元素无重不可复选 & 组合 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 2,1元素无重不可复选 & 排列 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// 每一颗子树都要有1、2、3，所以for (int i = 0) 开始，但是自身选过的又不能选，所以需要used. 如果不用used就是可重复选了
+// start = 0
+Leetcode 46 PermutationI 排列 & 元素无重不可复选 子集款 2,1
+    ⭐️⭐️ DFS回溯非常经典的题目
+    used[i] = true;
+    col.add(nums[i]);
+    backTrace(nums, col, used);
+    col.remove(col.size() - 1);
+    used[i] = false;
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 2,1素无重不可复选 & 排列 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 1,2元素有重不可复选 & 组合 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Leetcode 90 SubsetII 子集/组合 元素可重不可复选 组合是子集的特殊场景
+    先排序，让相邻的靠在一起 只要用重复就需要排序
+    但是要怎么剪枝就是在for循环里面加判断条件continue 这一题就是 i > start 而不是 i > 0;
+    i > 0的话会把所有重复的元素当成一个 就不会出现[1, 2, 2]这样的子集
+Leetcode 40 Combination SumII: 元素有重不可复选 最复杂场景
+    排列的去重比较麻烦点 used[i]: continue; i > 0 && nums[i] == nums[i - 1] && !used[i - 1];
+    组合的去重就是简简单单的used? 还是 nums[i] == nums[i - 1];
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 1,2元素有重不可复选 & 组合 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 2,2元素有重不可复选 & 排列 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Leetcode 47 PermutationII 排列 元素可重不可复选
+    只要有重复就需要排序，不然无法剪枝
+    什么情况下要用used? 排列不需要start来控制，组合才需要;
+    可重复的元素造成影响巨大: 需要剪枝
+    如果单单是nums[i] == nums[i - 1]; continue 有什么问题呢？ 我们要1,2,2'这个值 但是不要1,2,2'这个值
+    答案是: 保证相同元素在排列中的相对位置保持不变。 用i > 0 && nums[i] > nums[i - 1] && !used[i - 1]; 两者相等的时候且前面的那个元素没用过 就continue
+    要保证前面那个数据已经用过了 就可以以2 -> 2' -> 2''的方式走
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 2,2元素有重不可复选 & 排列 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 3,1元素无重可复选 & 组合 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// start = i;
+Leetcode 39 Combination Sum: 元素无重可复选 1,3
+    组合: for (int i = start): 不管什么情况i永远都等于start
+    排列: for (int i = 0):
+    用下一层是start还是i区分到底可不可重复
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 3,1素无重可复选 & 组合 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+Leetcode 416 Partition Equal Subset Sum 分成两个等值的子集合
+    可以演变成存不存在元素可以满足相加之和刚好等于target 背包大小为target, nums为包中物体 - 组合
+    用dp: 0 -> target dp[0] = true;
+
+Leetcode 698 Partition to K Equal Sum Subsets 分成K个等值的子集合
+从球儿或者桶儿的视角来看
+可以不需要List<List<>> 转而成为数组，只要把数字望上面加就好了
+这种必须得要两个循环 or 循环 + 递归
+int[] nums, int index, int[] bucket, int target;
+index: nums的下标也就是start
+1. 当index == nums.length; 判断每个bucket里面的值等不等于target 所以target不能减
+2. 穷举每个桶，判断桶的bucket[i] + nums[index] > target;
+3. 进行放入回溯抽离三步法，判断回溯结果如果是true直接返回
+从值的角度，往每个桶里面放看行不行
+自己写巨难，现在要是考到了我也能编出来
+
+// Arrays.stream(nums).reduce(Integer::sum).orElse(0);
 Leetcode 526 Beautiful Arrangement (similar to 46)
+题目都看不懂我的亲娘哟
+
 记忆化搜索（DFS + Memoization Search）：算是动态规划的一种，递归每次返回时同时记录下已访问过的节点特征，避免重复访问同一个节点，
 可以有效的把指数级别的DFS时间复杂度降为多项式级别; 注意这一类的DFS必须在最后有返回值，不可以用排列组合类型的DFS方法写;
 for循环的dp题目都可以用记忆化搜索的方式写，但是不是所有的记忆化搜索题目都可以用for循环的dp方式写。
@@ -441,6 +521,8 @@ Leetcode 139 Word Break II
     dp = new int[length + 1] 真是妙啊 初始化值要设置好 还有涉及到String的位置是真的麻烦
     如果这时候word在外面也就是定了word的一个排序 实际上word的排序我们是不清楚的
 Leetcode 72 Edit Distance
+    这一题主要是画图，DP table. 基本上就知道 Math.min(增, 删, 改);
+    和lcs最长公共子数组的区别: 画图就知道了，这个初始化要初始化1、2、3、4、5，而lcs初始化都是0
 Leetcode 377 Combination Sum IV ✅
     组合问题统一解法 for target for num: dp[i] += dp[i - num];
     // 背包有组合、最值、目标 回头复习一下
@@ -546,23 +628,27 @@ Leetcode 64 Minimum Path Sum ✅
     二维存储空间的dp 和一维存储空间的dp 因为for for是一行行下去的，当前一行的值只和上一行有关系，所以可以直接在一行里更新
     如果遇到从左侧来的 dp[j] = dp[j - 1] + value, 如果遇到从上侧来的 dp[j] = dp[j] + value;
     这道题里是顺序覆盖，后面还会遇到需要倒序覆盖的
+
+// 子序列比较麻烦 因为可以不连续
 Leetcode 300 Longest Increasing Subsequence (接龙型dp)
     接龙型dp的核心解决方案是dp[i]可以表示以i结尾、最长子序列长度
-    核心在龙尾
-    其他没了 这道题记住要返回的是longest，不一定是在dp[n] 所以需要用额外的max记录
+    核心在龙尾 其他没了 这道题记住要返回的是longest，不一定是在dp[n] 所以需要用额外的max记录
 
 Leetcode 674 Longest Continuous Increasing Subsequence (接龙型dp)
     双指针就行，完全用不到dp 简单到让我怀疑人生
+
 Leetcode 368 Largest Divisible Subset (接龙型dp)
     接龙吗 算是接龙吧
     比较麻烦，核心是记录最大长度和从何而来 里层for循环用于查找满足条件的最长的前辈们, 最终通过maxPos往回找到从-1为止
-    len = 1, prev = -1
+    len = 1, prev = -1, maxFlag = 1, max = 0;
+    int[] length = 1, int[] from = -1;
+
 Leetcode 354 Russian Doll Envelopes (接龙型dp， 300的2D版)
     套娃 hard 有意思 但是超时，3、4题解没看下去，4主要说的是二分
 
 Leetcode 312 Burst Balloons (区间型dp) =========== not done yet
 
-//  前缀型优点难搞啊
+//  前缀型有点难搞啊 LCS
 Leetcode 1143 Longest Common Subsequence (前缀型dp)
     前缀型，没看出来前缀 +1 大法
     核心是用一个二维数组记录dp[][] 当text1[i] text2[j]时候两者拥有的最长子序列长度
@@ -577,7 +663,7 @@ Leetcode 712 Minimum ASCII Delete Sum for Two Strings
     不过还是不知道为啥这样可以，主要心里有一根刺，会不会这个地方不应该删emmm 或者只通过大小来删莽了一点 不管了
 
 Leetcode 1062 Longest Repeating Substring (dp方法与longest common substring一致)
-    这题是需要连续的，所以if(c[i - 1] != c[j - 1]): dp[i][j] = 0;
+    这题是需要连续的，所以if(c[i - 1] != c[j - 1]) ? dp[i][j] = 0;
 
 Leetcode 718 Maximum Length of Repeated Subarray (和1062本质上一样)
     一毛一样，是需要连续的子区间
@@ -585,7 +671,7 @@ Leetcode 718 Maximum Length of Repeated Subarray (和1062本质上一样)
 Leetcode 279 Perfect Squares 分割型的dp 跟普通dp不一样，普通dp只依赖相邻位置，分割型依赖的是满足分割条件的位置
     for (int j = 1; j * j <= i; j++)
     dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
-     因为要和自己判断最小 Arrays.fill(dp, Integer.MAX_VALUE);
+    因为要和自己判断最小 Arrays.fill(dp, Integer.MAX_VALUE);
 
 等值背包比较简单 dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]]; 不选或者选
 第二层forj可以从0开始 可以从nums[i - 1]开始，如果是布尔值要考虑dp[i][0]的初始化问题
@@ -597,6 +683,7 @@ Leetcode 322 Coin Change
     完全背包 因为是求最小值 先fill amount + 1; 为了不关心顺序把coin放在外面; 因为是完全背包 所以第二层是正序 可以无限用当前的东西
     求组成target最少的硬币数量
     dp[j] = Math.min(dp[j], dp[j - coin] + 1);
+
 Leetcode 518 Coin Change II (01背包型)
     是组合数量 就是有多少种组合
     外层target内层item是求组合数 阶梯 + 零钱兑换
@@ -610,8 +697,9 @@ Leetcode 256 Paint House
 
 Leetcode 121 Best Time to Buy and Sell Stock
     无语 什么dp 正常遍历一遍就行了 主要是过去的最小值永远只有一个且会随着时间改变
+
 Leetcode 55 Jump Game
-    就也不需要dp 一个farest指针就够了还能往前走几步 if (farest == 0 && i < nums.length - 1) return false;
+    就也不需要dp 一个farthest指针就够了还能往前走几步 if (farthest == 0 && i < nums.length - 1) return false;
 
 Leetcode 45 Jump Game II
     也是蛮简单的dp 这个主要边界值麻烦 dp中的内容代表走到当前这一格最短需要几步 if (nums[j - 1] + j < i) continue; dp[i] = Math.min(dp[i], dp[j] + 1);
@@ -645,6 +733,10 @@ Leetcode 213 House Robber II
     既然两个不能碰就不让他们见面好了
     return Math.max(myRob(Arrays.copyOfRange(nums, 0, nums.length - 1)), myRob(Arrays.copyOfRange(nums, 1, nums.length)));
     绝了
+    优化一下 不用复制数组 可以提供left 从0开始或者从1开始，走的步长一样 i = 2; i < nums.length; i++，dp[i - 2] + nums[i + left - 1];
+    一共走nums.length - 1步
+    再往后可以改成pre1, pre2, res的方式
+    res = 状态转移方程, pre2 = pre1; pre1 = res;
 
 Leetcode 740 Delete and Earn
     转化题意为House Robber.
@@ -670,3 +762,178 @@ Leetcode 926 Flip String to Monotone Increasing
 
 字节题目:
 ByteDance1
+Ali面试题: 1. 设计一个可以有过期时间的缓存，JDK范围内，要求不可以引发OOM。 2. 开线程，读取文件，进行split，用HashSet就能完成
+
+
+重刷算法
+公共注意点
+1. 开始的时候要做参数校验
+2. 最后的时候要看清楚返回的是什么
+3. 考虑三个要素 第一次 最后一次 和中间任意一次
+4. 注意分号
+5. 注意边界: 比如合并区间的easy题，最后是要判断两个区间的右边界值大小!! 不要理所当然！
+6. 抓住核心，核心还是需要分析，跟做技术方案和做数学题一样。每个变量弄清楚了，代码自然写出来
+
+
+题型分类
+
+排序
+No27. No75: No75用的是循环不变量这个概念，但是循环不变量在交换的时候是不保证顺序的，No27也可以用，N路就用N个指针，一个是循环变量i 剩下如果还有两路就用p0,p1如果只有一路就直接p
+KthLargestElement: quick select
+
+处理多数组的时候，比如两数组可以通过调换位置来保证第一个数组的长度一定小于等于第二个数组
+奇数个元素的中间元素就是nums[length / 2]，01234 = 5 / 2 = nums[2] = 2;
+偶数个元素的中间元素是nums[length / 2]和nums[length / 2 - 1];
+
+链表
+链表的取中间点，如果是要断链的记得一定要split
+基本上都可以用到仿真头
+翻转链表一定要能默写
+ListNode reverseList(ListNode head) {
+  ListNode prev = null;
+  ListNode curr = head;
+  ListNode next = head.next;
+  while (curr != null) {
+    curr.next = prev;
+    prev = curr;
+    curr = next;
+    next = next.next;
+  }
+}
+检测循环就要想到快慢指针，链表有一个特点就是可以通过a == b来判断是否相等
+
+数据结构
+大顶堆和小顶堆，用数组来承载，主要关注heap[0]和heap.add(k)，然后进行swim和sink。主要是在父子之间进行替换这个叫啥旋转。
+比如取第K大的值 就用最小堆只留k个元素，剩下的全部干掉，这样堆顶自然而然就是第K大的那个
+
+通过两个Queue实现一个Stack
+// 秘诀是通过第二个Queue中转，当然存在两个东西的时候，为了简便我们会永远保持第一个Queue有东西
+记住queue常用的方法 offer/add - poll/remove / peek / isEmpty | LinkedList
+记住stack常用的方法 push          pop           peek empty search
+
+涉及到对数组中所有数据的遍历，可以通过一个二维数组标记对应位置的元素是否已经被访问过来处理
+当然设计到matrix的访问，看需不需要用到削头 + 旋转数组的方式处理
+数组指定容量的情况下是有默认值的，0和false
+方向可以用{{1, 0}, {0, 1}, {0, -1}, {-1, 0}}来表示，方便直接对原pos进行加减得到下一个位置
+当然也可以用directions % 4来获得当前的位置，每次对directions++;
+
+背模版ok 包括dp 滑动窗口 链表等等
+做了足够多的题目之后，拿到题目就会有感觉，知道怎么去解，甚至遇到trick也会想起和之前自己做过的哪个题目相近
+注意细节就，不难，自己进行推演测试: Implement Queue using Stacks那一题
+Queue的模型和Stack的模式在做相关题目的时候一定要牢记，不过仅限于实现一个Queue和实现一个Stack的情况下
+
+题目中有一串数字，每次需要对两个数据进行运算，运算的结果再和另外一个数进行运算的时候用栈真的非常合适 特别还是按照顺序的 EvaluateReversePolishNotation
+
+在从字符串中的数字转化成为数字的时候 (int)s.charAt(i) - 48需要
+当然判断是否是加减乘除也可以这么做 s.charAt(i) < '0'; >=
+突然激活了记忆 calculater中的可以使用 +- 来统一一部分流程，比如有了+-之后最后的过程就是sum数据的过程
+
+计算器的题:
+1. 150: 最简单了 ["2","1","+","3","*"] = (2 + 1) * 3 顺序都给你摆好了，只要简简单单遇到数字压入栈，遇到符号把前面两个入栈的数据捞出来运算一下就行，关注减号和除号的顺序
+2. 227: " 3+5 / 2 " 困扰了我好久 看题解都看了两个小时，本来也像用跟上面一样的方式，但是发现不行，排序是核心，怎么排序呢，重要的有两点
+  1. 前者不用关心读取超过10的数字的问题，这里需要关心
+  2. 在读到操作符的时候需要关心后一个操作符，比较优先级，当然在读到字符串最后一个值的时候就不需要关心后面的操作符了
+  核心: 1. 通过前一个操作符判断入栈的数据  2. 栈里面不留操作符，把所有的数据用正负数的方式push进去，最终只要对数据求和就可以拿到答案
+最好不要做超前读 在当前的位置读取下一个或者下两个数据 感觉题目不会这么出 计算也容易出问题
+那么问题来了，不超前读的情况下怎么才能判断前方有障碍呢，答案是滞后读 = =。通过滞后的操作符判断结果
+不仅要关心后一个操作符，还要关心后一个数据。滞后读解决了这两个问题，首先数据读到了，还没入栈(也可以入栈)
+其次 A + B * C cur = *, prev = + 决定了要怎么处理B 把B直接塞进去。既然用前操作符来判断，最后一定会出现一个边界，当前操作符没有更新了，读到的是数字，但是还是要操作
+
+有加有减的原则是 先减再加防溢出
+
+我的毛病1: 经常把if判断条件里面的==写成=
+
+3. 224: 这个相比上面我也不知道是不是更难了，没有了乘除只有加减，但是却多了括号。有括号咱们就要开始拆括号
+所以其中一个核心在于 -() 不是要去拆括号 拆永远都拆不好，而是想办法把()内的运算算掉变成一个值来拆括号
+如果有全局的变量要注意全局变量是否要在循环之后初始化 比如isUnaryNow
+
+// 在条件里的i++是没有意义的，只有++i才行，i++只能加在循环最后一行要用到i的地方
+从头到尾的循环只是入栈的过程，真正处理的时候一定是从右到左的
+发愁: 从前往后的默认firstOperand = '+' 从后往前的是已经拿到了secondOperand然后回退回去操作firstOperandList
+单独写从后往前要怎么写哦 那就别单独写了
+
+合并消除类的都用栈可以实现 不然会涉及到无限循环并且要判断是否里面所有的元素都是unique
+栈有一个好处就是可以不用管右边，后续进来的内容，像RemoveAllAdjacentDuplicates这一题
+只管和栈顶的元素作比较，如果是一样的就++ 如果不一样就重新计数，就算之前有被埋没的计数，当重建天日那天会有新的同类加上去的
+
+char和int在一定程度上可以混着用，但是在做比较和输出的时候需要显示的做转换
+笔试的时候要自己给自己造丰富的testcase
+
+往stack里面塞一个MAX就是为了不检查边界？O1时间内 MinStack
+突然有种强烈的预感 到关键的时刻 LRU会用上
+
+O(n)时间求连续长度 hashMap把每个key对应的长度存在map里 叫什么reduce大法
+矩阵置0 要求O(1)的空间利用， 正常情况下都需要用到O(mn) 想要完成目标就要想办法扣空间，比如在原矩阵的边上记录信息，到时候根据信息进行清算 注意边界和验算
+
+集合里存的东西有个特点，可以用int[]的方式把在array或者List里的位置记下来 或者[val, Node]可以直接找到链表中的元素。或者用hashMap的value保存位置
+记住random的写法
+Random random = new Random();
+nums[random.nextInt(idx + 1)];
+// 还是建议一点点想，最后再把条件整合。考虑边界
+
+判断字母异位分词的方案 -> sort 和count
+分类分组的就用groupingby 看最终的返回是 分组返回List<List<>> 就要想到groupingby
+妙用数组计数1 int[] counter = new int[26];
+coutner[str.charAt(i) - 'a']++; 然后通过stringbuilder相加就可以得出结论
+妙用数组计数2 int[] counter = new int[10];
+用来替代HashMap<Integer, Integer>的count 专门用来记录数字的次数
+counter[str.charAt(i) - '0']++;
+
+delete是一种很不好的习惯 正经人谁用delete bullsAndCows
+
+return 中用StringBuider会比 "" + "" + "" 快5ms
+cows and bulls hints优点背诵
+
+Java的优先级队列PriorityQueue底层实现是一个堆，一个堆就是一个完全二叉树分大顶堆和小顶堆，Java中默认实现是小顶堆，就每次可以从arr[0]中获取最小的值，并把列表还是链表底部的数提到最上面来并进行sink
+尾部也可以因为维护着tail 看看源码吧宝
+只要是数组就会有扩容机制 PriorityQueue中用的是单词grow
+// 既然是小顶堆，peek()看的一定是最小那个值，当整个堆满了的时候，要把最大的数排掉 removeLast 这怎么做的 挤不掉啊
+
+快排的复杂度O(nlogn)，而使用优先级队列时间复杂度为O(nlogk)
+优先队列肯定比快排更快点
+当层数很多的时候，要通过计算的结果进行比较，别忘了判重 通过set判重方便 用先塞进去然后last判断的方便丑
+在叠加想成的时候看要不要用到long 一般比较少用到 丑数，丑数是这样的 我一直在纠结什么时候列表生成的长度到达k我就想停了，但是总是担心里面有没有漏的，解决方案是多生成点，生成到拿出k个数才停，后面多的那些不管了
+
+想要给面试官留下一个好印象，争取短次ac的时候，一定要注意细节 比如o1 o2到底是要怎么输出的 小在先还是大在先，这也是我以前的一个大毛病，写完大体框架让系统帮我检查，这个还是以后要慢慢的改过来
+
+Merge Sorted Array 要用O(m + n)的方法，明眼人一看就知道遍历一次，这时候的坑在最后m = 0, n = -1的时候 判断要分开，先判断m<0后判断n<0 或者直接分成 m >= 0 && n >= 0 和非来判断
+PriorityQueue还可以通过排序 + size判断 + poll的方式保证heap中的数量保持一个恒定的数，然后取出来之后再可以选择正序或者倒序
+
+去重不止可以用Set也可以用hashMap, 在count完之后直接用hashMap的key加进去
+
+2. 看到O(1)的空间利用率和排序就知道O(1)是给middle用的，用divide and conquer 快排还是归并？
+3. 看到时间复杂度O(nlogn) 应该是NO(logN)这两家伙相等的，都是有N层，N层就是地柜N次 ok? ，每次的时间复杂度都是logn
+9. 归并排序和快速排序 每天回顾 快速排序是给一个arr[low] 找到他在列表中的位置，并且过程中进行快速交换保证左边的都比他小，右边的都比他大
+
+快速排序2 * 3步走
+int index = getIndex(int[] arr, int low, int hight);
+quickSort(int[] arr, low, index - 1);
+quickSort(int[] arr, index + 1, hight);
+区间为左右闭区间
+
+int tmp = arr[low]; // 然后以tmp为基准数
+while (low < high) {
+  while (low < high && arr[high] > tmp) {
+    high--;
+  }
+  arr[low] = arr[high];
+  while (low < high && arr[low] < tmp) {
+    low++;
+  }
+  arr[high] = arr[low];
+}
+arr[low] = tmp;
+return low;
+// 最后记得 <= tmp >= tmp
+
+
+// 排序自带之后就不是什么问题了，除非单独考你排序的
+学习比较的写法
+List<int[]> sortedList = Arrays.stream(intervals).sorted(Comparator.comparingInt(k -> k[0])).collect(Collectors.toList());
+还有二位数组从List<int[]>转为int[][]
+intResult.toArray(new int[intResult.size()][]);
+
+注意关注space complexity 和time complexity
+如果给定数组 最后返回的是数组内容 无关下标 则可以考虑直接排序
+数组的去重很麻烦的 要挨个比较过来 复杂度及高 就算用+""的方式也需要先排序
+数组题 又有index又有数字的话 在对比时候需要弄清楚

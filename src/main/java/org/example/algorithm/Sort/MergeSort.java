@@ -21,9 +21,10 @@ public class MergeSort {
     private static void merge(int[] arr, int left, int mid, int right) {
 
         // 搞一个空数组，两个指针分别开始移动 i, j 分别代表左数组和右数组
-        // 左开右闭
+        // 左开右闭 aux来查询数据内容，arr里面放排序后的结果
+        // i的最后归宿是mid + 1, j的最后归宿是right + 1;
         int[] aux = Arrays.copyOfRange(arr, left, right + 1);
-        int i = left, j = mid + 1;
+        int i = left, j = mid + 1; // left  -> mid, mid + 1 -> right
         for (int k = left; k <= right; k++) {
             if (i > mid) {
                 // i超过了中线 说明左边的都比右边的最小还小
